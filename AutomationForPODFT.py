@@ -597,6 +597,7 @@ try:
     cursor, db = db_connection_func()
 
     octo_to_db_func(cursor, db)
+
     '''
     FullDataP2P = pd.read_csv(f'Initial_data/P2P/Daily/P2P_{yesterday}.csv', sep=',')
 
