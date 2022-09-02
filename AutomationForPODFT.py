@@ -50,16 +50,36 @@ def octo_to_db_func(my_cursor, mydb):
         mydb.commit()
 
     my_cursor.close()
-    '''
-    p2p = pd.DataFrame({'time_id': [], 'customer_id': [], 'user_id': [], 'operation_type': [], 'amount': [],
-                        'currency_code': [], 'currency': [], 'currency_name': [], 'acq_country_code': [], 'country': [],
-                        'masked_card_number': [], 'card_status': [], 'fio': [], 'birth_date': [], 'citizenship': [],
-                        'registration_address': [], 'document_number': [], 'doc_type': [], 'pinfl': [], 'pos_code': [],
-                        'pos_name': []})
-    '''
 
     end_octo_to_db_func = datetime.datetime.now()
     print(f'octo_to_db_func ended in {end_octo_to_db_func - start_octo_to_db_func}')
+
+
+def p2p_to_db_func(my_cursor, mydb):
+    start_p2p_to_db_func = datetime.datetime.now()
+
+    for i in range(len(FullDataP2P)):
+        sql = "INSERT INTO Initial_Data_P2P (time_id, customer_id, user_id, operation_type, amount, currency, " \
+              "acq_country_code, country, masked_card_number, card_status, fio, birth_date, citizenship, " \
+              "registration_address, document_number, doc_type, pinfl, pos_code, pos_name) " \
+              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (f"{FullDataP2P.iloc[i].time_id}", f"{FullDataP2P.iloc[i].customer_id}",
+               f"{FullDataP2P.iloc[i].user_id}", f"{FullDataP2P.iloc[i].operation_type}",
+               f"{FullDataP2P.iloc[i].amount}", f"{FullDataP2P.iloc[i].currency}",
+               f"{FullDataP2P.iloc[i].acq_country_code}", f"{FullDataP2P.iloc[i].country}",
+               f"{FullDataP2P.iloc[i].masked_card_number}", f"{FullDataP2P.iloc[i].card_status}",
+               f"{FullDataP2P.iloc[i].fio}", f"{FullDataP2P.iloc[i].birth_date}",
+               f"{FullDataP2P.iloc[i].citizenship}", f"{FullDataP2P.iloc[i].registration_address}",
+               f"{FullDataP2P.iloc[i].document_number}", f"{FullDataP2P.iloc[i].doc_type}",
+               f"{FullDataP2P.iloc[i].pinfl}", f"{FullDataP2P.iloc[i].pos_code}",
+               f"{FullDataP2P.iloc[i].pos_name}")
+        my_cursor.execute(sql, val)
+        mydb.commit()
+
+    my_cursor.close()
+
+    end_p2p_to_db_func = datetime.datetime.now()
+    print(f'p2p_to_db_func ended in {end_p2p_to_db_func - start_p2p_to_db_func}')
 
 
 def current_p2p_func(path, flag):
@@ -592,19 +612,18 @@ try:
     current_week_day = today.strftime('%A')
     current_day = today.strftime('%d')
 
-    FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
+    # FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
+    # FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
 
     cursor, db = db_connection_func()
 
-    octo_to_db_func(cursor, db)
+    # octo_to_db_func(cursor, db)
+    # p2p_to_db_func(cursor, db)
 
     '''
-    FullDataP2P = pd.read_csv(f'Initial_data/P2P/Daily/P2P_{yesterday}.csv', sep=',')
-
     filenames_to_send = []
     filenames_to_delete = []
-    '''
-    '''
+    
     current_p2p_func('Initial_data/P2P/current_week_P2P.csv', True)
     current_p2p_func('Initial_data/P2P/current_month_P2P.csv', False)
 
