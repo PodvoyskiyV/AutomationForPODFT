@@ -18,19 +18,25 @@ def db_connection_func():
     username = os.environ["$MYSQL_USER"]
     password = os.environ["$MYSQL_PASSWORD"]
 
-    mydb = mysql.connector.connect(
+    my_db = mysql.connector.connect(
         host="localhost",
         user=f"{username}",
         password=f"{password}",
         database="PodFT"
     )
 
-    my_cursor = mydb.cursor()
+    my_cursor = my_db.cursor()
+
+    my_cursor.execute("SELECT * FROM Test2_card_sender_octo;")
+    re = my_cursor.fetchall()
+
+    for row in re:
+        print(row)
 
     end_db_connection_func = datetime.datetime.now()
     print(f'db_connection_func ended in {end_db_connection_func - start_db_connection_func}')
 
-    return my_cursor, mydb
+    return my_cursor, my_db
 
 
 def octo_to_db_func(my_cursor, mydb):
@@ -485,67 +491,20 @@ def number_receiver_octo_func(path, flag):
     print(f'number_receiver_octo_func ended in {end_number_receiver_octo_func - start_number_receiver_octo_func}')
 
 
-def card_sender_octo_func(path, flag):
+def card_sender_octo_func(my_cursor, my_db):
     start_card_sender_octo_func = datetime.datetime.now()
 
-    card_sender_octo = pd.DataFrame({'masked_card_number': [], 'count': [], 'amount': []})
-    counter_i = 0
-    for i in range(len(FullDataOCTO)):
-        masked_card_number = str(FullDataOCTO.iloc[i].masked_card_number)
-        flag_k = True
-        for k in range(len(card_sender_octo)):
-            if masked_card_number == str(card_sender_octo.iloc[k].masked_card_number):
-                flag_k = False
-                break
+    my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
+                      "(SELECT DISTINCT masked_card_number, amount FROM Initial_Data_OCTO) "
+                      "X GROUP BY masked_card_number ORDER BY amount DESC;")
+    data = my_cursor.fetchall()
 
-        if flag_k:
-            counter_i += 1
-            counter_j = 0
-            sum = 0
-            for j in range(len(FullDataOCTO)):
-                if masked_card_number == str(FullDataOCTO.iloc[j].masked_card_number):
-                    counter_j += 1
-                    sum += FullDataOCTO.iloc[j].amount
-
-            string_of_data = {'masked_card_number': masked_card_number, 'count': counter_j,
-                              'amount': round(float(sum), 2)}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter_i],
-                                         columns=['masked_card_number', 'count', 'amount'])
-            card_sender_octo = pd.concat([card_sender_octo, frame_of_data])
-
-    if os.path.exists(path):
-        current_card_sender_octo = pd.read_csv(f'{path}', sep=',')
-    else:
-        current_card_sender_octo = pd.DataFrame({'masked_card_number': [], 'count': [], 'amount': []})
-
-    for i in range(len(card_sender_octo)):
-        flag_j = True
-        counter = 0
-        for j in range(len(current_card_sender_octo)):
-            counter += 1
-            if card_sender_octo.iloc[i].masked_card_number == current_card_sender_octo.iloc[j].masked_card_number:
-                current_card_sender_octo.iloc[j].count += card_sender_octo.iloc[i].count
-                current_card_sender_octo.iloc[j].amount += card_sender_octo.iloc[i].amount
-                flag_j = False
-
-        if flag_j:
-            string_of_data = {'masked_card_number': card_sender_octo.iloc[i].masked_card_number,
-                              'count': card_sender_octo.iloc[i].count,
-                              'amount': card_sender_octo.iloc[i].amount}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter + 1], columns=['masked_card_number',
-                                                                                       'count',
-                                                                                       'amount'])
-            current_card_sender_octo = pd.concat([current_card_sender_octo, frame_of_data])
-
-    current_card_sender_octo.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        mrot_func(path)
-        filenames_to_delete.append(path)
+    for row in data:
+        sql = "INSERT INTO Test2_card_sender_octo (masked_card_number, count, amount) " \
+              "VALUES (%s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_card_sender_octo_func = datetime.datetime.now()
     print(f'card_sender_octo_func ended in {end_card_sender_octo_func - start_card_sender_octo_func}')
@@ -619,6 +578,8 @@ try:
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
 
+    # card_sender_octo_func(cursor, db)
+
     '''
     filenames_to_send = []
     filenames_to_delete = []
@@ -641,8 +602,7 @@ try:
     number_receiver_octo_func('Result_data/OCTO/Number_receiver_OCTO/current_week_number_receiver_OCTO.csv', True)
     number_receiver_octo_func('Result_data/OCTO/Number_receiver_OCTO/current_month_number_receiver_OCTO.csv', False)
 
-    card_sender_octo_func('Result_data/OCTO/Card_sender_OCTO/current_week_card_sender_OCTO.csv', True)
-    card_sender_octo_func('Result_data/OCTO/Card_sender_OCTO/current_month_card_sender_OCTO.csv', False)
+    
 
     if len(filenames_to_delete):
         delete()
