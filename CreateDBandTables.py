@@ -51,7 +51,7 @@ def db_connection_func():
 
 def create_octo_table_func(my_cursor):
     sql = "CREATE TABLE Initial_Data_OCTO (octo_trxn_id VARCHAR(255), created_date TIMESTAMP(3), " \
-          "masked_card_number VARCHAR(255), amount DOUBLE(30, 10), currency VARCHAR(255), provider_id VARCHAR(255), " \
+          "masked_card_number VARCHAR(255), amount DOUBLE(30, 2), currency VARCHAR(255), provider_id VARCHAR(255), " \
           "dest_tool_id VARCHAR(255), customer_id VARCHAR(255), type_description VARCHAR(255), " \
           "bill_account_id VARCHAR(255));"
 
@@ -60,7 +60,7 @@ def create_octo_table_func(my_cursor):
 
 def create_p2p_table_func(my_cursor):
     sql = "CREATE TABLE Initial_Data_P2P (time_id TIMESTAMP(3), customer_id VARCHAR(255), user_id VARCHAR(255), " \
-          "operation_type VARCHAR(255), amount DOUBLE(30, 10), currency VARCHAR(255), country VARCHAR(255), " \
+          "operation_type VARCHAR(255), amount DOUBLE(30, 2), currency VARCHAR(255), country VARCHAR(255), " \
           "masked_card_number VARCHAR(255), card_status VARCHAR(255), fio VARCHAR(255), birth_date VARCHAR(255), " \
           "citizenship VARCHAR(255), registration_address VARCHAR(255), document_number VARCHAR(255), " \
           "doc_type VARCHAR(255), pinfl VARCHAR(255), pos_code VARCHAR(255), pos_name VARCHAR(255))"
@@ -68,16 +68,22 @@ def create_p2p_table_func(my_cursor):
     my_cursor.execute(sql)
 
 
-def create_card_sender_octo(my_cursor):
-    sql = "CREATE TABLE Test2_card_sender_octo (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 10))"
+def create_trans_gran_to_tt(my_cursor, t):
+    sql = f"CREATE TABLE trans_gran_to_tt_{t} (pos_code VARCHAR(255), count INT(255))"
     my_cursor.execute(sql)
 
-    # SELECT OrderID, SUM(Quantity) FROM (SELECT DISTINCT OrderID, Quantity FROM OrderDetails) X GROUP BY OrderID;
-    # SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM (SELECT DISTINCT masked_card_number, amount FROM Initial_Data_OCTO) X GROUP BY masked_card_number ORDER BY amount DESC
+
+def create_card_sender_octo(my_cursor, t):
+    sql = f"CREATE TABLE card_sender_octo_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2))"
+    my_cursor.execute(sql)
+
 
 # cursor, db = db_connection_func()
 cursor, db = db_connection()
 
 # create_octo_table_func(cursor)
 # create_p2p_table_func(cursor)
-create_card_sender_octo(cursor)
+create_trans_gran_to_tt(cursor, 'week')
+create_trans_gran_to_tt(cursor, 'month')
+# create_card_sender_octo(cursor, 'week')
+# create_card_sender_octo(cursor, 'month')

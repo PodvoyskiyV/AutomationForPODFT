@@ -2,8 +2,7 @@ import pandas as pd  # pip install pandas
 import pyfiglet  # pip install pyfiglet
 import mysql.connector  # pip install mysql-connector-python
 import datetime
-import os
-from dotenv import load_dotenv  # pip install python-dotenv
+import variables as var
 from termcolor import colored  # pip install termcolor
 
 banner = pyfiglet.figlet_format('Pod FT')
@@ -13,25 +12,14 @@ print(colored(banner, 'green'))
 def db_connection_func():
     start_db_connection_func = datetime.datetime.now()
 
-    load_dotenv()
-
-    username = os.environ["$MYSQL_USER"]
-    password = os.environ["$MYSQL_PASSWORD"]
-
     my_db = mysql.connector.connect(
         host="localhost",
-        user=f"{username}",
-        password=f"{password}",
+        user=f"{var.username}",
+        password=f"{var.password}",
         database="PodFT"
     )
 
     my_cursor = my_db.cursor()
-
-    my_cursor.execute("SELECT * FROM Test2_card_sender_octo;")
-    re = my_cursor.fetchall()
-
-    for row in re:
-        print(row)
 
     end_db_connection_func = datetime.datetime.now()
     print(f'db_connection_func ended in {end_db_connection_func - start_db_connection_func}')
@@ -87,220 +75,20 @@ def p2p_to_db_func(my_cursor, mydb):
     print(f'p2p_to_db_func ended in {end_p2p_to_db_func - start_p2p_to_db_func}')
 
 
-def current_p2p_func(path, flag):
-    start_current_p2p_func = datetime.datetime.now()
-
-    counter = 0
-    if os.path.exists(path):
-        current_p2p = pd.read_csv(path, sep=',')
-    else:
-        current_p2p = pd.DataFrame({'time_id': [], 'customer_id': [], 'user_id': [], 'operation_type': [], 'amount': [],
-                                    'currency_code': [], 'currency': [], 'currency_name': [], 'acq_country_code': [],
-                                    'country': [], 'masked_card_number': [], 'card_status': [], 'fio': [],
-                                    'birth_date': [], 'citizenship': [], 'registration_address': [],
-                                    'document_number': [], 'doc_type': [], 'pinfl': [], 'pos_code': [], 'pos_name': []})
-
-    new_current_p2p = pd.DataFrame({'time_id': [], 'customer_id': [], 'user_id': [], 'operation_type': [], 'amount': [],
-                                    'currency_code': [], 'currency': [], 'currency_name': [], 'acq_country_code': [],
-                                    'country': [], 'masked_card_number': [], 'card_status': [], 'fio': [],
-                                    'birth_date': [], 'citizenship': [], 'registration_address': [],
-                                    'document_number': [], 'doc_type': [], 'pinfl': [], 'pos_code': [], 'pos_name': []})
-
-    for i in range(len(current_p2p)):
-        counter += 1
-        string_of_data = {'time_id': current_p2p.iloc[i].time_id, 'customer_id': current_p2p.iloc[i].customer_id,
-                          'user_id': current_p2p.iloc[i].user_id, 'operation_type': current_p2p.iloc[i].operation_type,
-                          'amount': current_p2p.iloc[i].amount, 'currency_code': current_p2p.iloc[i].currency_code,
-                          'currency': current_p2p.iloc[i].currency, 'currency_name': current_p2p.iloc[i].currency_name,
-                          'acq_country_code': current_p2p.iloc[i].acq_country_code,
-                          'country': current_p2p.iloc[i].country,
-                          'masked_card_number': current_p2p.iloc[i].masked_card_number,
-                          'card_status': current_p2p.iloc[i].card_status,
-                          'fio': current_p2p.iloc[i].fio, 'birth_date': current_p2p.iloc[i].birth_date,
-                          'citizenship': current_p2p.iloc[i].citizenship,
-                          'registration_address': current_p2p.iloc[i].registration_address,
-                          'document_number': current_p2p.iloc[i].document_number,
-                          'doc_type': current_p2p.iloc[i].doc_type, 'pinfl': current_p2p.iloc[i].pinfl,
-                          'pos_code': current_p2p.iloc[i].pos_code, 'pos_name': current_p2p.iloc[i].pos_name}
-        frame_of_data = pd.DataFrame(string_of_data, index=[counter], columns=['time_id', 'customer_id', 'user_id',
-                                                                               'operation_type', 'amount',
-                                                                               'currency_code', 'currency',
-                                                                               'currency_name', 'acq_country_code',
-                                                                               'country', 'masked_card_number',
-                                                                               'card_status', 'fio', 'birth_date',
-                                                                               'citizenship', 'registration_address',
-                                                                               'document_number', 'doc_type', 'pinfl',
-                                                                               'pos_code', 'pos_name'])
-        new_current_p2p = pd.concat([new_current_p2p, frame_of_data])
-
-    for i in range(len(FullDataP2P)):
-        counter += 1
-        string_of_data = {'time_id': FullDataP2P.iloc[i].time_id, 'customer_id': FullDataP2P.iloc[i].customer_id,
-                          'user_id': FullDataP2P.iloc[i].user_id, 'operation_type': FullDataP2P.iloc[i].operation_type,
-                          'amount': FullDataP2P.iloc[i].amount, 'currency_code': FullDataP2P.iloc[i].currency_code,
-                          'currency': FullDataP2P.iloc[i].currency, 'currency_name': FullDataP2P.iloc[i].currency_name,
-                          'acq_country_code': FullDataP2P.iloc[i].acq_country_code,
-                          'country': FullDataP2P.iloc[i].country,
-                          'masked_card_number': FullDataP2P.iloc[i].masked_card_number,
-                          'card_status': FullDataP2P.iloc[i].card_status,
-                          'fio': FullDataP2P.iloc[i].fio, 'birth_date': FullDataP2P.iloc[i].birth_date,
-                          'citizenship': FullDataP2P.iloc[i].citizenship,
-                          'registration_address': FullDataP2P.iloc[i].registration_address,
-                          'document_number': FullDataP2P.iloc[i].document_number,
-                          'doc_type': FullDataP2P.iloc[i].doc_type, 'pinfl': FullDataP2P.iloc[i].pinfl,
-                          'pos_code': FullDataP2P.iloc[i].pos_code, 'pos_name': FullDataP2P.iloc[i].pos_name}
-        frame_of_data = pd.DataFrame(string_of_data, index=[counter], columns=['time_id', 'customer_id', 'user_id',
-                                                                               'operation_type', 'amount',
-                                                                               'currency_code', 'currency',
-                                                                               'currency_name', 'acq_country_code',
-                                                                               'country', 'masked_card_number',
-                                                                               'card_status', 'fio', 'birth_date',
-                                                                               'citizenship', 'registration_address',
-                                                                               'document_number', 'doc_type', 'pinfl',
-                                                                               'pos_code', 'pos_name'])
-        new_current_p2p = pd.concat([new_current_p2p, frame_of_data])
-
-    new_current_p2p.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-
-    end_current_p2p_func = datetime.datetime.now()
-    print(f'current_p2p_func ended in {end_current_p2p_func - start_current_p2p_func}')
-
-
-def current_octo_func(path, flag):
-    start_current_octo_func = datetime.datetime.now()
-
-    counter = 0
-    if os.path.exists(path):
-        current_octo = pd.read_csv(path, sep=',')
-    else:
-        current_octo = pd.DataFrame({'octo_trxn_id': [], 'created_date': [], 'masked_card_number': [], 'amount': [],
-                                     'currency': [], 'transaction_status': [], 'provider_id': [], 'dest_tool_id': [],
-                                     'customer_id': [], 'type_description': [], 'schema_id': [], 'bill_account_id': [],
-                                     'payload': []})
-
-    new_current_octo = pd.DataFrame({'octo_trxn_id': [], 'created_date': [], 'masked_card_number': [], 'amount': [],
-                                     'currency': [], 'transaction_status': [], 'provider_id': [], 'dest_tool_id': [],
-                                     'customer_id': [], 'type_description': [], 'schema_id': [], 'bill_account_id': [],
-                                     'payload': []})
-
-    for i in range(len(current_octo)):
-        counter += 1
-        string_of_data = {'octo_trxn_id': current_octo.iloc[i].octo_trxn_id,
-                          'created_date': current_octo.iloc[i].created_date,
-                          'masked_card_number': current_octo.iloc[i].masked_card_number,
-                          'amount': current_octo.iloc[i].amount, 'currency': current_octo.iloc[i].currency,
-                          'transaction_status': current_octo.iloc[i].transaction_status,
-                          'provider_id': current_octo.iloc[i].provider_id,
-                          'dest_tool_id': current_octo.iloc[i].dest_tool_id,
-                          'customer_id': current_octo.iloc[i].customer_id,
-                          'type_description': current_octo.iloc[i].type_description,
-                          'schema_id': current_octo.iloc[i].schema_id,
-                          'bill_account_id': current_octo.iloc[i].bill_account_id,
-                          'payload': current_octo.iloc[i].payload}
-        frame_of_data = pd.DataFrame(string_of_data, index=[counter], columns=['octo_trxn_id', 'created_date',
-                                                                               'masked_card_number', 'amount',
-                                                                               'currency', 'transaction_status',
-                                                                               'provider_id', 'dest_tool_id',
-                                                                               'customer_id', 'type_description',
-                                                                               'schema_id', 'bill_account_id',
-                                                                               'payload'])
-        new_current_octo = pd.concat([new_current_octo, frame_of_data])
-
-    for i in range(len(FullDataOCTO)):
-        counter += 1
-        string_of_data = {'octo_trxn_id': current_octo.iloc[i].octo_trxn_id,
-                          'created_date': current_octo.iloc[i].created_date,
-                          'masked_card_number': current_octo.iloc[i].masked_card_number,
-                          'amount': current_octo.iloc[i].amount, 'currency': current_octo.iloc[i].currency,
-                          'transaction_status': current_octo.iloc[i].transaction_status,
-                          'provider_id': current_octo.iloc[i].provider_id,
-                          'dest_tool_id': current_octo.iloc[i].dest_tool_id,
-                          'customer_id': current_octo.iloc[i].customer_id,
-                          'type_description': current_octo.iloc[i].type_description,
-                          'schema_id': current_octo.iloc[i].schema_id,
-                          'bill_account_id': current_octo.iloc[i].bill_account_id,
-                          'payload': current_octo.iloc[i].payload}
-        frame_of_data = pd.DataFrame(string_of_data, index=[counter], columns=['octo_trxn_id', 'created_date',
-                                                                               'masked_card_number', 'amount',
-                                                                               'currency', 'transaction_status',
-                                                                               'provider_id', 'dest_tool_id',
-                                                                               'customer_id', 'type_description',
-                                                                               'schema_id', 'bill_account_id',
-                                                                               'payload'])
-        new_current_octo = pd.concat([new_current_octo, frame_of_data])
-
-    new_current_octo.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-
-    end_current_octo_func = datetime.datetime.now()
-    print(f'current_octo_func ended in {end_current_octo_func - start_current_octo_func}')
-
-
-def trans_gran_to_tt_func(path, flag):
+def trans_gran_to_tt_func(my_cursor, my_db, start, table):
     start_trans_gran_to_tt_func = datetime.datetime.now()
 
-    trans_gran_to_tt = pd.DataFrame({'code_tt': [], 'count': []})
+    my_cursor.execute("SELECT pos_code, COUNT(*) count FROM "
+                      "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P) "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      "X GROUP BY pos_code ORDER BY count DESC;")
+    data = my_cursor.fetchall()
 
-    counter_i = 0
-    for i in range(len(FullDataP2P)):
-        pos_code = str(FullDataP2P.iloc[i].pos_code)
-        flag_k = True
-        for k in range(len(trans_gran_to_tt)):
-            if pos_code == str(trans_gran_to_tt.iloc[k].code_tt):
-                flag_k = False
-                break
-
-        if flag_k:
-            counter_i += 1
-            counter_j = 0
-            for j in range(len(FullDataP2P)):
-                if pos_code == str(FullDataP2P.iloc[j].pos_code):
-                    counter_j += 1
-
-            string_of_data = {'code_tt': pos_code, 'count': counter_j}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter_i], columns=['code_tt', 'count'])
-            trans_gran_to_tt = pd.concat([trans_gran_to_tt, frame_of_data])
-
-    if os.path.exists(path):
-        current_trans_gran_to_tt = pd.read_csv(f'{path}', sep=',')
-    else:
-        current_trans_gran_to_tt = pd.DataFrame({'code_tt': [], 'count': []})
-
-    for i in range(len(trans_gran_to_tt)):
-        flag_j = True
-        counter = 0
-        for j in range(len(current_trans_gran_to_tt)):
-            counter += 1
-            if trans_gran_to_tt.iloc[i].code_tt == current_trans_gran_to_tt.iloc[j].code_tt:
-                current_trans_gran_to_tt.iloc[j].count += trans_gran_to_tt.iloc[i].count
-                flag_j = False
-
-        if flag_j:
-            string_of_data = {'code_tt': trans_gran_to_tt.iloc[i].code_tt, 'count': trans_gran_to_tt.iloc[i].count}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter + 1], columns=['code_tt', 'count'])
-            current_trans_gran_to_tt = pd.concat([current_trans_gran_to_tt, frame_of_data])
-
-    current_trans_gran_to_tt.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
+    for row in data:
+        sql = f"INSERT INTO trans_gran_to_tt_{table} (pos_code, count) VALUES (%s, %s)"
+        val = (f"{row[0]}", f"{row[1]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_trans_gran_tt_func = datetime.datetime.now()
     print(f'trans_gran_to_tt_func ended in {end_trans_gran_tt_func - start_trans_gran_to_tt_func}')
@@ -491,17 +279,17 @@ def number_receiver_octo_func(path, flag):
     print(f'number_receiver_octo_func ended in {end_number_receiver_octo_func - start_number_receiver_octo_func}')
 
 
-def card_sender_octo_func(my_cursor, my_db):
+def card_sender_octo_func(my_cursor, my_db, start, table):
     start_card_sender_octo_func = datetime.datetime.now()
 
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
-                      "(SELECT DISTINCT masked_card_number, amount FROM Initial_Data_OCTO) "
-                      "X GROUP BY masked_card_number ORDER BY amount DESC;")
+                      "(SELECT DISTINCT masked_card_number, amount FROM Initial_Data_OCTO "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      "X GROUP BY masked_card_number ORDER BY count DESC;")
     data = my_cursor.fetchall()
 
     for row in data:
-        sql = "INSERT INTO Test2_card_sender_octo (masked_card_number, count, amount) " \
-              "VALUES (%s, %s, %s)"
+        sql = f"INSERT INTO card_sender_octo_{table} (masked_card_number, count, amount) VALUES (%s, %s, %s)"
         val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
         my_cursor.execute(sql, val)
         my_db.commit()
@@ -554,21 +342,9 @@ def mrot_func(path):
     print(f'card_sender_octo_func ended in {end_mrot_func - start_mrot_func}')
 
 
-def delete():
-    for path in filenames_to_delete:
-        os.system(f'rm {path}')
-
-
 try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
-
-    today = datetime.datetime.now()
-    yesterday = today - datetime.timedelta(days=1)
-
-    yesterday = yesterday.strftime("%Y-%m-%d")
-    current_week_day = today.strftime('%A')
-    current_day = today.strftime('%d')
 
     # FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
     # FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
@@ -578,35 +354,13 @@ try:
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
 
-    # card_sender_octo_func(cursor, db)
+    if var.current_week_day == 'Monday':
+        trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
+        card_sender_octo_func(cursor, db, var.week_ago, 'week')
+    if var.current_day == '01':
+        trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
+        card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
 
-    '''
-    filenames_to_send = []
-    filenames_to_delete = []
-    
-    current_p2p_func('Initial_data/P2P/current_week_P2P.csv', True)
-    current_p2p_func('Initial_data/P2P/current_month_P2P.csv', False)
-
-    current_octo_func('Initial_data/OCTO/current_week_OCTO.csv', True)
-    current_octo_func('Initial_data/OCTO/current_month_OCTO.csv', False)
-
-    trans_gran_to_tt_func('Result_data/P2P/Trans_gran_to_tt/current_week_trans_gran_to_tt.csv', True)
-    trans_gran_to_tt_func('Result_data/P2P/Trans_gran_to_tt/current_month_trans_gran_to_tt.csv', False)
-
-    pinfl_receiver_func('Result_data/P2P/Pinfl_receiver/current_week_pinfl_receiver.csv', True)
-    pinfl_receiver_func('Result_data/P2P/Pinfl_receiver/current_month_pinfl_receiver.csv', False)
-
-    country_p2p_func('Result_data/P2P/Country_P2P/current_week_country_P2P.csv', True)
-    country_p2p_func('Result_data/P2P/Country_P2P/current_month_country_P2P.csv', False)
-
-    number_receiver_octo_func('Result_data/OCTO/Number_receiver_OCTO/current_week_number_receiver_OCTO.csv', True)
-    number_receiver_octo_func('Result_data/OCTO/Number_receiver_OCTO/current_month_number_receiver_OCTO.csv', False)
-
-    
-
-    if len(filenames_to_delete):
-        delete()
-    '''
     end_program = datetime.datetime.now()
     print(f'\nProgram ended in {end_program - start_program}')
     print(end_program)
