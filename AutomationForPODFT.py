@@ -170,48 +170,25 @@ def card_sender_octo_func(my_cursor, my_db, start, table):
     print(f'card_sender_octo_func ended in {end_card_sender_octo_func - start_card_sender_octo_func}')
 
 
-def mrot_func(path):
+def mrot_func(my_cursor, my_db):
     start_mrot_func = datetime.datetime.now()
 
-    card_sender_octo = pd.read_csv(path, sep=',')
-    result_card_sender_octo = pd.DataFrame({'masked_card_number': [], 'count': [],
-                                            'amount': [], 'block': [], 'observation': []})
-    mrot = 920000
-    mrot_150 = mrot * 150
+    my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
+                      f"IF(SUM(amount) > {var.mrot_150}, 'Mrot', '-') AS block, "
+                      f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, 'Mrot', '-') "
+                      "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
+                      f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{var.previous_month}-01' AND '{var.today}') "
+                      "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
+    data = my_cursor.fetchall()
 
-    for i in range(len(card_sender_octo)):
-        if card_sender_octo.iloc[i].amount >= mrot_150:
-            string_of_data = {'masked_card_number': card_sender_octo.iloc[i].masked_card_number,
-                              'count': card_sender_octo.iloc[i].count,
-                              'amount': card_sender_octo.iloc[i].amount,
-                              'block': '*',
-                              'observation': ''}
-            frame_of_data = pd.DataFrame(string_of_data, index=[i + 1], columns=['masked_card_number', 'count',
-                                                                                 'amount', 'block', 'observation'])
-            result_card_sender_octo = pd.concat([result_card_sender_octo, frame_of_data])
-        elif card_sender_octo.iloc[i].amount >= mrot_150 * 0.9:
-            string_of_data = {'masked_card_number': card_sender_octo.iloc[i].masked_card_number,
-                              'count': card_sender_octo.iloc[i].count,
-                              'amount': card_sender_octo.iloc[i].amount,
-                              'block': '',
-                              'observation': '*'}
-            frame_of_data = pd.DataFrame(string_of_data, index=[i + 1], columns=['masked_card_number', 'count',
-                                                                                 'amount', 'block', 'observation'])
-            result_card_sender_octo = pd.concat([result_card_sender_octo, frame_of_data])
-        else:
-            string_of_data = {'masked_card_number': card_sender_octo.iloc[i].masked_card_number,
-                              'count': card_sender_octo.iloc[i].count,
-                              'amount': card_sender_octo.iloc[i].amount,
-                              'block': '',
-                              'observation': ''}
-            frame_of_data = pd.DataFrame(string_of_data, index=[i + 1], columns=['masked_card_number', 'count',
-                                                                                 'amount', 'block', 'observation'])
-            result_card_sender_octo = pd.concat([result_card_sender_octo, frame_of_data])
-
-    result_card_sender_octo.to_csv(path, index=False, sep=',')
+    for row in data:
+        sql = f"INSERT INTO mrot (masked_card_number, count, amount, block, observation) VALUES (%s, %s, %s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_mrot_func = datetime.datetime.now()
-    print(f'card_sender_octo_func ended in {end_mrot_func - start_mrot_func}')
+    print(f'mrot_func ended in {end_mrot_func - start_mrot_func}')
 
 
 try:
@@ -226,17 +203,19 @@ try:
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
 
-    number_receiver_octo_func(cursor, db, var.week_ago, 'week')
+    mrot_func(cursor, db)
 
     if var.current_week_day == '':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
         pinfl_receiver_func(cursor, db, var.week_ago, 'week')
         country_p2p_func(cursor, db, var.week_ago, 'week')
+        number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
     if var.current_day == '01':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
+        number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
 
     end_program = datetime.datetime.now()
