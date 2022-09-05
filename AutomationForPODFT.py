@@ -94,62 +94,20 @@ def trans_gran_to_tt_func(my_cursor, my_db, start, table):
     print(f'trans_gran_to_tt_func ended in {end_trans_gran_tt_func - start_trans_gran_to_tt_func}')
 
 
-def pinfl_receiver_func(path, flag):
+def pinfl_receiver_func(my_cursor, my_db, start, table):
     start_pinfl_receiver_func = datetime.datetime.now()
 
-    pinfl_receiver = pd.DataFrame({'pinfl': [], 'count': [], 'amount': []})
+    my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
+                      "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P) "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      "X GROUP BY pinfl ORDER BY count DESC, amount DESC;")
+    data = my_cursor.fetchall()
 
-    counter_i = 0
-    for i in range(len(FullDataP2P)):
-        pinfl = str(FullDataP2P.iloc[i].pinfl)
-        flag_k = True
-        for k in range(len(pinfl_receiver)):
-            if pinfl == str(pinfl_receiver.iloc[k].pinfl):
-                flag_k = False
-                break
-
-        if flag_k:
-            counter_i += 1
-            counter_j = 0
-            sum = 0
-            for j in range(len(FullDataP2P)):
-                if pinfl == str(FullDataP2P.iloc[j].pinfl):
-                    counter_j += 1
-                    sum += FullDataP2P.iloc[j].amount
-
-            string_of_data = {'pinfl': pinfl, 'count': counter_j, 'amount': round(float(sum), 2)}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter_i], columns=['pinfl', 'count', 'amount'])
-            pinfl_receiver = pd.concat([pinfl_receiver, frame_of_data])
-
-    if os.path.exists(path):
-        current_pinfl_receiver = pd.read_csv(f'{path}', sep=',')
-    else:
-        current_pinfl_receiver = pd.DataFrame({'pinfl': [], 'count': [], 'amount': []})
-
-    for i in range(len(pinfl_receiver)):
-        flag_j = True
-        counter = 0
-        for j in range(len(current_pinfl_receiver)):
-            counter += 1
-            if pinfl_receiver.iloc[i].pinfl == current_pinfl_receiver.iloc[j].pinfl:
-                current_pinfl_receiver.iloc[j].count += pinfl_receiver.iloc[i].count
-                current_pinfl_receiver.iloc[j].amount += pinfl_receiver.iloc[i].amount
-                flag_j = False
-
-        if flag_j:
-            string_of_data = {'pinfl': pinfl_receiver.iloc[i].pinfl, 'count': pinfl_receiver.iloc[i].count,
-                              'amount': pinfl_receiver.iloc[i].amount}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter + 1], columns=['pinfl', 'count', 'amount'])
-            current_pinfl_receiver = pd.concat([current_pinfl_receiver, frame_of_data])
-
-    current_pinfl_receiver.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
+    for row in data:
+        sql = f"INSERT INTO pinfl_receiver (pinfl, count, amount) VALUES (%s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_pinfl_receiver_func = datetime.datetime.now()
     print(f'pinfl_receiver_func ended in {end_pinfl_receiver_func - start_pinfl_receiver_func}')
@@ -354,7 +312,9 @@ try:
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
 
-    if var.current_week_day == 'Monday':
+    pinfl_receiver_func(cursor, db, var.week_ago, 'week')
+
+    if var.current_week_day == '':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
     if var.current_day == '01':
