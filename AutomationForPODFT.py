@@ -79,7 +79,7 @@ def trans_gran_to_tt_func(my_cursor, my_db, start, table):
     start_trans_gran_to_tt_func = datetime.datetime.now()
 
     my_cursor.execute("SELECT pos_code, COUNT(*) count FROM "
-                      "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P) "
+                      "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY pos_code ORDER BY count DESC;")
     data = my_cursor.fetchall()
@@ -98,7 +98,7 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
     start_pinfl_receiver_func = datetime.datetime.now()
 
     my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
-                      "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P) "
+                      "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY pinfl ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
@@ -117,7 +117,7 @@ def country_p2p_func(my_cursor, my_db, start, table):
     start_country_p2p_func = datetime.datetime.now()
 
     my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
-                      "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P) "
+                      "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY country ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
@@ -132,64 +132,20 @@ def country_p2p_func(my_cursor, my_db, start, table):
     print(f'country_p2p_func ended in {end_country_p2p_func - start_country_p2p_func}')
 
 
-def number_receiver_octo_func(path, flag):
+def number_receiver_octo_func(my_cursor, my_db, start, table):
     start_number_receiver_octo_func = datetime.datetime.now()
 
-    number_receiver_octo = pd.DataFrame({'dest_tool_id': [], 'count': [], 'amount': []})
-    counter_i = 0
-    for i in range(len(FullDataOCTO)):
-        dest_tool_id = str(FullDataOCTO.iloc[i].dest_tool_id)
-        flag_k = True
-        for k in range(len(number_receiver_octo)):
-            if dest_tool_id == str(number_receiver_octo.iloc[k].dest_tool_id):
-                flag_k = False
-                break
+    my_cursor.execute("SELECT dest_tool_id, COUNT(*) count, SUM(amount) amount FROM "
+                      "(SELECT DISTINCT dest_tool_id, created_date, amount FROM Initial_Data_OCTO "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      "X GROUP BY dest_tool_id ORDER BY amount DESC, count DESC;")
+    data = my_cursor.fetchall()
 
-        if flag_k:
-            counter_i += 1
-            counter_j = 0
-            sum = 0
-            for j in range(len(FullDataOCTO)):
-                if dest_tool_id == str(FullDataOCTO.iloc[j].dest_tool_id):
-                    counter_j += 1
-                    sum += FullDataOCTO.iloc[j].amount
-
-            string_of_data = {'dest_tool_id': dest_tool_id, 'count': counter_j, 'amount': round(float(sum), 2)}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter_i], columns=['dest_tool_id', 'count', 'amount'])
-            number_receiver_octo = pd.concat([number_receiver_octo, frame_of_data])
-
-    if os.path.exists(path):
-        current_number_receiver_octo = pd.read_csv(f'{path}', sep=',')
-    else:
-        current_number_receiver_octo = pd.DataFrame({'dest_tool_id': [], 'count': [], 'amount': []})
-
-    for i in range(len(number_receiver_octo)):
-        flag_j = True
-        counter = 0
-        for j in range(len(current_number_receiver_octo)):
-            counter += 1
-            if number_receiver_octo.iloc[i].dest_tool_id == current_number_receiver_octo.iloc[j].dest_tool_id:
-                current_number_receiver_octo.iloc[j].count += number_receiver_octo.iloc[i].count
-                current_number_receiver_octo.iloc[j].amount += number_receiver_octo.iloc[i].amount
-                flag_j = False
-
-        if flag_j:
-            string_of_data = {'dest_tool_id': number_receiver_octo.iloc[i].dest_tool_id,
-                              'count': number_receiver_octo.iloc[i].count,
-                              'amount': number_receiver_octo.iloc[i].amount}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter + 1], columns=['dest_tool_id',
-                                                                                       'count',
-                                                                                       'amount'])
-            current_number_receiver_octo = pd.concat([current_number_receiver_octo, frame_of_data])
-
-    current_number_receiver_octo.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
+    for row in data:
+        sql = f"INSERT INTO number_receiver_octo_{table} (dest_tool_id, count, amount) VALUES (%s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_number_receiver_octo_func = datetime.datetime.now()
     print(f'number_receiver_octo_func ended in {end_number_receiver_octo_func - start_number_receiver_octo_func}')
@@ -269,6 +225,8 @@ try:
 
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
+
+    number_receiver_octo_func(cursor, db, var.week_ago, 'week')
 
     if var.current_week_day == '':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
