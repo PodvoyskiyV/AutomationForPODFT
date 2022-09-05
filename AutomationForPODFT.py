@@ -104,7 +104,7 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
     data = my_cursor.fetchall()
 
     for row in data:
-        sql = f"INSERT INTO pinfl_receiver (pinfl, count, amount) VALUES (%s, %s, %s)"
+        sql = f"INSERT INTO pinfl_receiver_{table} (pinfl, count, amount) VALUES (%s, %s, %s)"
         val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
         my_cursor.execute(sql, val)
         my_db.commit()
@@ -113,62 +113,20 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
     print(f'pinfl_receiver_func ended in {end_pinfl_receiver_func - start_pinfl_receiver_func}')
 
 
-def country_p2p_func(path, flag):
+def country_p2p_func(my_cursor, my_db, start, table):
     start_country_p2p_func = datetime.datetime.now()
 
-    country_p2p = pd.DataFrame({'country': [], 'count': [], 'amount': []})
-    counter_i = 0
+    my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
+                      "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P) "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      "X GROUP BY country ORDER BY count DESC, amount DESC;")
+    data = my_cursor.fetchall()
 
-    for i in range(len(FullDataP2P)):
-        country = str(FullDataP2P.iloc[i].country)
-        flag_k = True
-        for k in range(len(country_p2p)):
-            if country == str(country_p2p.iloc[k].country):
-                flag_k = False
-                break
-
-        if flag_k:
-            counter_i += 1
-            counter_j = 0
-            sum = 0
-            for j in range(len(FullDataP2P)):
-                if country == str(FullDataP2P.iloc[j].country):
-                    counter_j += 1
-                    sum += FullDataP2P.iloc[j].amount
-
-            string_of_data = {'country': country, 'count': counter_j, 'amount': round(float(sum), 2)}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter_i], columns=['country', 'count', 'amount'])
-            country_p2p = pd.concat([country_p2p, frame_of_data])
-
-    if os.path.exists(path):
-        current_country_p2p = pd.read_csv(f'{path}', sep=',')
-    else:
-        current_country_p2p = pd.DataFrame({'country': [], 'count': [], 'amount': []})
-
-    for i in range(len(country_p2p)):
-        flag_j = True
-        counter = 0
-        for j in range(len(current_country_p2p)):
-            counter += 1
-            if country_p2p.iloc[i].country == current_country_p2p.iloc[j].country:
-                current_country_p2p.iloc[j].count += country_p2p.iloc[i].count
-                current_country_p2p.iloc[j].amount += country_p2p.iloc[i].amount
-                flag_j = False
-
-        if flag_j:
-            string_of_data = {'country': country_p2p.iloc[i].country, 'count': country_p2p.iloc[i].count,
-                              'amount': country_p2p.iloc[i].amount}
-            frame_of_data = pd.DataFrame(string_of_data, index=[counter + 1], columns=['country', 'count', 'amount'])
-            current_country_p2p = pd.concat([current_country_p2p, frame_of_data])
-
-    current_country_p2p.to_csv(path, index=False, sep=',')
-
-    if current_week_day == 'Monday' and flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
-    elif current_day == '1' and not flag:
-        filenames_to_send.append(path)
-        filenames_to_delete.append(path)
+    for row in data:
+        sql = f"INSERT INTO country_p2p_{table} (country, count, amount) VALUES (%s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
 
     end_country_p2p_func = datetime.datetime.now()
     print(f'country_p2p_func ended in {end_country_p2p_func - start_country_p2p_func}')
@@ -241,9 +199,9 @@ def card_sender_octo_func(my_cursor, my_db, start, table):
     start_card_sender_octo_func = datetime.datetime.now()
 
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
-                      "(SELECT DISTINCT masked_card_number, amount FROM Initial_Data_OCTO "
+                      "(SELECT DISTINCT masked_card_number, created_date, amount FROM Initial_Data_OCTO "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
-                      "X GROUP BY masked_card_number ORDER BY count DESC;")
+                      "X GROUP BY masked_card_number ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
     for row in data:
@@ -312,13 +270,15 @@ try:
     # octo_to_db_func(cursor, db)
     # p2p_to_db_func(cursor, db)
 
-    pinfl_receiver_func(cursor, db, var.week_ago, 'week')
-
     if var.current_week_day == '':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
+        pinfl_receiver_func(cursor, db, var.week_ago, 'week')
+        country_p2p_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
     if var.current_day == '01':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
+        pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
+        country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
 
     end_program = datetime.datetime.now()

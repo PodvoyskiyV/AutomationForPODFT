@@ -78,6 +78,11 @@ def create_pinfl_receiver(my_cursor, t):
     my_cursor.execute(sql)
 
 
+def create_country_p2p(my_cursor, t):
+    sql = f"CREATE TABLE country_p2p_{t} (country VARCHAR(255), count INT(255), amount DOUBLE(30, 2))"
+    my_cursor.execute(sql)
+
+
 def create_card_sender_octo(my_cursor, t):
     sql = f"CREATE TABLE card_sender_octo_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2))"
     my_cursor.execute(sql)
@@ -88,9 +93,13 @@ cursor, db = db_connection()
 
 # create_octo_table_func(cursor)
 # create_p2p_table_func(cursor)
+
 # create_trans_gran_to_tt(cursor, 'week')
 # create_trans_gran_to_tt(cursor, 'month')
-create_pinfl_receiver(cursor, 'week')
-create_pinfl_receiver(cursor, 'month')
+# create_pinfl_receiver(cursor, 'week')
+# create_pinfl_receiver(cursor, 'month')
+# create_country_p2p(cursor, 'week')
+# create_country_p2p(cursor, 'month')
+
 # create_card_sender_octo(cursor, 'week')
 # create_card_sender_octo(cursor, 'month')
