@@ -4,8 +4,12 @@ from dotenv import load_dotenv  # pip install python-dotenv
 
 load_dotenv()
 
-username = os.environ["$MYSQL_USER"]
-password = os.environ["$MYSQL_PASSWORD"]
+username_db = os.environ["$MYSQL_USER"]
+password_db = os.environ["$MYSQL_PASSWORD"]
+
+hostname_sftp = os.environ["$SFTP"]
+username_sftp = os.environ["$SFTP_USER"]
+password_sftp = os.environ["$SFTP_PASSWORD"]
 
 mrot = 920000
 mrot_150 = 920000 * 150

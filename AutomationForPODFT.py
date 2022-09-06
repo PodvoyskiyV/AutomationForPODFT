@@ -2,6 +2,7 @@ import pandas as pd  # pip install pandas
 import pyfiglet  # pip install pyfiglet
 import mysql.connector  # pip install mysql-connector-python
 import datetime
+import pysftp
 import variables as var
 from termcolor import colored  # pip install termcolor
 
@@ -14,8 +15,8 @@ def db_connection_func():
 
     my_db = mysql.connector.connect(
         host="localhost",
-        user=f"{var.username}",
-        password=f"{var.password}",
+        user=f"{var.username_db}",
+        password=f"{var.password_db}",
         database="PodFT"
     )
 
@@ -25,6 +26,16 @@ def db_connection_func():
     print(f'db_connection_func ended in {end_db_connection_func - start_db_connection_func}')
 
     return my_cursor, my_db
+
+
+def sftp_connection_func():
+    with pysftp.Connection(host=var.hostname_sftp, username=var.username_sftp, password=var.password_sftp) as sftp:
+        with sftp.open("address_octo") as file_OCTO:
+            file_OCTO.prefetch()
+            full_data_OCTO = pd.read_csv(file_OCTO, sep=',')
+        with sftp.open("address_p2p") as file_P2P:
+            full_data_P2P = pd.read_csv(file_P2P, sep=',')
+    return FullDataOCTO, FullDataP2P
 
 
 def octo_to_db_func(my_cursor, mydb):
