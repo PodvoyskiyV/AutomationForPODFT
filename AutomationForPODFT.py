@@ -2,7 +2,7 @@ import pandas as pd  # pip install pandas
 import pyfiglet  # pip install pyfiglet
 import mysql.connector  # pip install mysql-connector-python
 import datetime
-import pysftp
+import pysftp  # pip install pysftp
 import os
 import variables as var
 from termcolor import colored  # pip install termcolor
