@@ -3,6 +3,7 @@ import pyfiglet  # pip install pyfiglet
 import mysql.connector  # pip install mysql-connector-python
 import datetime
 import pysftp
+import os
 import variables as var
 from termcolor import colored  # pip install termcolor
 
@@ -30,12 +31,8 @@ def db_connection_func():
 
 def sftp_connection_func():
     with pysftp.Connection(host=var.hostname_sftp, username=var.username_sftp, password=var.password_sftp) as sftp:
-        with sftp.open("address_octo") as file_OCTO:
-            file_OCTO.prefetch()
-            full_data_OCTO = pd.read_csv(file_OCTO, sep=',')
-        with sftp.open("address_p2p") as file_P2P:
-            full_data_P2P = pd.read_csv(file_P2P, sep=',')
-    return FullDataOCTO, FullDataP2P
+        sftp.get("remoteOCTOFilePath", "localOCTOFilePath")
+        sftp.get("remoteP2PFilePath", "localP2PFilePath")
 
 
 def octo_to_db_func(my_cursor, mydb):
@@ -202,21 +199,24 @@ def mrot_func(my_cursor, my_db):
     print(f'mrot_func ended in {end_mrot_func - start_mrot_func}')
 
 
+def delete_files_func():
+    os.remove("OCTO_file")
+    os.remove("P2P_file")
+
+
 try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    # FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
-    # FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
+    FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
+    FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
 
     cursor, db = db_connection_func()
 
-    # octo_to_db_func(cursor, db)
-    # p2p_to_db_func(cursor, db)
+    octo_to_db_func(cursor, db)
+    p2p_to_db_func(cursor, db)
 
-    mrot_func(cursor, db)
-
-    if var.current_week_day == '':
+    if var.current_week_day == 'Monday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
         pinfl_receiver_func(cursor, db, var.week_ago, 'week')
         country_p2p_func(cursor, db, var.week_ago, 'week')
@@ -228,6 +228,9 @@ try:
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
         number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
+        mrot_func(cursor, db)
+
+    delete_files_func()
 
     end_program = datetime.datetime.now()
     print(f'\nProgram ended in {end_program - start_program}')
