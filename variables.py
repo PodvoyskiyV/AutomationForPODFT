@@ -7,9 +7,9 @@ load_dotenv()
 username_db = os.environ["$MYSQL_USER"]
 password_db = os.environ["$MYSQL_PASSWORD"]
 
-hostname_sftp = os.environ["$SFTP"]
-username_sftp = os.environ["$SFTP_USER"]
-password_sftp = os.environ["$SFTP_PASSWORD"]
+# hostname_sftp = os.environ["$SFTP"]
+# username_sftp = os.environ["$SFTP_USER"]
+# password_sftp = os.environ["$SFTP_PASSWORD"]
 
 mrot = 920000
 mrot_150 = 920000 * 150
@@ -21,9 +21,11 @@ current_month = (datetime.datetime.now()).strftime('%B')
 previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=7)).strftime("%Y-%m")
 current_day = (datetime.datetime.now()).strftime('%d')
 
+'''
 print(today)
 print(week_ago)
 print(current_week_day)
 print(current_month)
 print(previous_month)
 print(current_day)
+'''

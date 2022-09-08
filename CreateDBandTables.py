@@ -116,4 +116,4 @@ cursor, db = db_connection()
 # create_card_sender_octo(cursor, 'week')
 # create_card_sender_octo(cursor, 'month')
 
-create_mrot(cursor)
+# create_mrot(cursor)
