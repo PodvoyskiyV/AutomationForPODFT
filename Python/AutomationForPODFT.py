@@ -86,6 +86,9 @@ def p2p_to_db_func(my_cursor, mydb):
 def trans_gran_to_tt_func(my_cursor, my_db, start, table):
     start_trans_gran_to_tt_func = datetime.datetime.now()
 
+    my_cursor.execute(f"TRUNCATE TABLE trans_gran_to_tt_{table};")
+    my_db.commit()
+
     my_cursor.execute("SELECT pos_code, COUNT(*) count FROM "
                       "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
@@ -104,6 +107,9 @@ def trans_gran_to_tt_func(my_cursor, my_db, start, table):
 
 def pinfl_receiver_func(my_cursor, my_db, start, table):
     start_pinfl_receiver_func = datetime.datetime.now()
+
+    my_cursor.execute(f"TRUNCATE TABLE pinfl_receiver_{table};")
+    my_db.commit()
 
     my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
@@ -124,6 +130,9 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
 def country_p2p_func(my_cursor, my_db, start, table):
     start_country_p2p_func = datetime.datetime.now()
 
+    my_cursor.execute(f"TRUNCATE TABLE country_p2p_{table};")
+    my_db.commit()
+
     my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
@@ -142,6 +151,9 @@ def country_p2p_func(my_cursor, my_db, start, table):
 
 def number_receiver_octo_func(my_cursor, my_db, start, table):
     start_number_receiver_octo_func = datetime.datetime.now()
+
+    my_cursor.execute(f"TRUNCATE TABLE number_receiver_octo_{table};")
+    my_db.commit()
 
     my_cursor.execute("SELECT dest_tool_id, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT dest_tool_id, created_date, amount FROM Initial_Data_OCTO "
@@ -162,6 +174,9 @@ def number_receiver_octo_func(my_cursor, my_db, start, table):
 def card_sender_octo_func(my_cursor, my_db, start, table):
     start_card_sender_octo_func = datetime.datetime.now()
 
+    my_cursor.execute(f"TRUNCATE TABLE card_sender_octo_{table};")
+    my_db.commit()
+
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT masked_card_number, created_date, amount FROM Initial_Data_OCTO "
                       f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
@@ -181,9 +196,12 @@ def card_sender_octo_func(my_cursor, my_db, start, table):
 def mrot_func(my_cursor, my_db):
     start_mrot_func = datetime.datetime.now()
 
+    my_cursor.execute(f"TRUNCATE TABLE mrot;")
+    my_db.commit()
+
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
-                      f"IF(SUM(amount) > {var.mrot_150}, 'Mrot', '-') AS block, "
-                      f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, 'Mrot', '-') "
+                      f"IF(SUM(amount) > {var.mrot_150}, '+', '-') AS block, "
+                      f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') "
                       "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
                       f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{var.previous_month}-01' AND '{var.today}') "
                       "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
@@ -200,8 +218,8 @@ def mrot_func(my_cursor, my_db):
 
 
 def delete_files_func():
-    os.remove("OCTO_file")
-    os.remove("P2P_file")
+    os.remove(f"{FullDataOCTO}")
+    os.remove(f"{FullDataP2P}")
 
 
 try:

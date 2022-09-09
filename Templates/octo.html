@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS - octo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.svg') }}">
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo-details">
+            <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
+            <span class="logo_name">DS</span>
+        </div>
+        <div class="separator"></div>
+
+        <ul class="nav-links">
+            <li class="categories-item">
+                <a href="{{ url_for('index') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/dashboard.svg') }}" alt="dashboards icon">
+                    <span class="link_name">Dashboards</span>
+                </a>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('mrot') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="mrot icon">
+                        <span class="link_name">Mrot</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Month')">Month</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Dynamics')">Dynamics</button>
+                    </li>
+                </ul>
+            </li>
+            <li class="categories-item showMenu">
+                <div class="iocn-link dropdown-active">
+                    <a href="{{ url_for('octo') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/octo.svg') }}" alt="OCTO icon">
+                        <span class="link_name">OCTO</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Sender')" id="defaultOpen">Sender</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Reciever')">Reciever</button>
+                    </li>
+                </ul>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('p2p') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/p2p.svg') }}" alt="P2P icon">
+                        <span class="link_name">P2P</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Country')">Country</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Pinfl')">Pinfl</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'P2P to TT')">P2P to TT</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section class="home-section">
+        <div class="home-content">
+            <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
+            <div class="wrap">
+                <div class="search">
+                    <input type="text" class="searchTerm" placeholder="Search...">
+                    <button type="submit" class="searchButton">
+                        <img src="{{ url_for('static', filename='img/Search.svg') }}" alt="search Button">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="main-text">
+                <h2 class="main-title">Welcome to DS</h2>
+                <p class="main-desk">We are on a mission to help developers.</p>
+            </div>
+
+            <button class="setting">
+                <img src="{{ url_for('static', filename='img/Setting.svg') }}" alt="Setting">
+            </button>
+
+        </div>
+
+        <div class="content">
+            <div id="Sender" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Sender</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks sort_defaultOpen" onclick="openSort(event, 'Week')" id="Sender_defaultOpen">Week</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Month')">Month</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'From')">
+                            <label for="From">
+                                From
+                                <input type="date" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" name="date_to">
+                            </label>
+                        </button>
+                    </div>
+                    <p class="content-date">DATE: Sep 01, 2022</p>
+                </div>
+
+                <div id="Week" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoSenderWeek">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoSenderMonth">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoSenderFrom">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Reciever" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Reciever</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_Week')" id="Reciever_defaultOpen">Week</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_Month')">Month</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_From')">
+                            <label for="From">
+                                From
+                                <input type="date" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" name="date_to">
+                            </label>
+                        </button>
+                    </div>
+                    <p class="content-date">DATE: Sep 01, 2022</p>
+                </div>
+
+                <div id="Reciever_Week" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoRecieverWeek">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Reciever_Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoRecieverMonth">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Reciever_From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="octoRecieverFrom">
+                            <thead>
+                                <tr>
+                                    <th>CARD</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>111</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>222</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>333</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                                <tr>
+                                    <td>123456******1234</td>
+                                    <td>444</td>
+                                    <td>123456789.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
