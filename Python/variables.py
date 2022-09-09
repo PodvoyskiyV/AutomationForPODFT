@@ -4,8 +4,12 @@ from dotenv import load_dotenv  # pip install python-dotenv
 
 load_dotenv()
 
-username_db = os.environ["$MYSQL_USER"]
-password_db = os.environ["$MYSQL_PASSWORD"]
+if '/' in os.getcwd():
+    username_db = os.environ["$MYSQL_USER"]
+    password_db = os.environ["$MYSQL_PASSWORD"]
+else:
+    username_db = os.environ["MYSQL_USER"]
+    password_db = os.environ["MYSQL_PASSWORD"]
 
 # hostname_sftp = os.environ["$SFTP"]
 # username_sftp = os.environ["$SFTP_USER"]

@@ -22,12 +22,6 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active-tablinks";
 
-    // if (tabName == 'Reciever') {
-    //     document.getElementById("Reciever_sort_defaultOpen").click();
-    // } else {
-    //     document.getElementById("sort_defaultOpen").click();
-    // }
-
     document.getElementById(`${tabName}_defaultOpen`).click();
 }
 
