@@ -1,4 +1,5 @@
 import datetime
+import json
 import mysql.connector
 from Python import variables as var
 from flask import Flask, render_template, redirect, url_for  # pip install flask
@@ -26,16 +27,16 @@ def db_connection_func():
 
 def mrott(my_db, my_cursor):
     mrot_data_for_front = []
-    my_cursor.execute("SELECT * FROM mrot")
+    my_cursor.execute("SELECT * FROM mrot LIMIT 100")
     data = my_cursor.fetchall()
     for row in data:
         mrot_data_for_front.append({
             'card': row[0],
             'count': row[1],
-            'ammount': row[2],
+            'amount': row[2],
             'block': row[3],
             'abs': row[4]})
-    print(mrot_data_for_front[0])
+    return mrot_data_for_front
 
 
 @app.errorhandler(404)
@@ -50,7 +51,8 @@ def index():
 
 @app.route("/mrot")
 def mrot():
-    return render_template("mrot.html")
+    data = mrott(db, cursor)
+    return render_template("mrot.html", data=json.dumps(data))
 
 
 @app.route("/octo")

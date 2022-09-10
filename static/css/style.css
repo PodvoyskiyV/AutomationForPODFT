@@ -373,7 +373,7 @@
 .main {
     height: 200px;
     background-size: cover;
-    background: radial-gradient(36.28% 150.93% at 50% 50%, rgba(59, 138, 255, 0.3) 0%, rgba(0, 72, 179, 0.06) 100%), url(img/bg.jpg);
+    background: radial-gradient(36.28% 150.93% at 50% 50%, rgba(59, 138, 255, 0.3) 0%, rgba(0, 72, 179, 0.06) 100%), url(../img/bg.jpg);
     border-radius: 0px 0px 16px 16px;
     display: flex;
     justify-content: space-between;

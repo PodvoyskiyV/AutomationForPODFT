@@ -1,14 +1,15 @@
 // The HTML table.
 var tbl = document.querySelector('.mrotMonth');
+function mrot_table_from_back(DsData) {
 
 // data.
-var DsData = [
-    { card: 'demo', count: '01748329', amount: '1234', block: 'N', abs: 'Something' },
-    { card: 'test', count: '12345789', amount: '4321', block: 'Y', abs: 'Something Else' }
-];
+//var DsData = [
+//    { card: 'demo', count: '01748329', amount: '1234', block: 'N', abs: 'Something' },
+//    { card: 'test', count: '12345789', amount: '4321', block: 'Y', abs: 'Something Else' }
+//];
 
 // A function to produce a HTML table row as a string.
-var template = function template(d) {
+function template(d) {
     return '<tr>' +
         '<td>' +
         d.card +
@@ -38,3 +39,4 @@ var render = function render(tbl) {
 
 // Fire the render function. 
 render(tbl)(DsData);
+};
