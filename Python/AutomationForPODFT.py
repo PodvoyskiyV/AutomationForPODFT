@@ -51,8 +51,6 @@ def octo_to_db_func(my_cursor, mydb):
         my_cursor.execute(sql, val)
         mydb.commit()
 
-    my_cursor.close()
-
     end_octo_to_db_func = datetime.datetime.now()
     print(f'octo_to_db_func ended in {end_octo_to_db_func - start_octo_to_db_func}')
 
@@ -77,8 +75,6 @@ def p2p_to_db_func(my_cursor, mydb):
         my_cursor.execute(sql, val)
         mydb.commit()
 
-    my_cursor.close()
-
     end_p2p_to_db_func = datetime.datetime.now()
     print(f'p2p_to_db_func ended in {end_p2p_to_db_func - start_p2p_to_db_func}')
 
@@ -91,7 +87,7 @@ def trans_gran_to_tt_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT pos_code, COUNT(*) count FROM "
                       "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
-                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY pos_code ORDER BY count DESC;")
     data = my_cursor.fetchall()
 
@@ -113,7 +109,7 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
-                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY pinfl ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
@@ -135,7 +131,7 @@ def country_p2p_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
-                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
                       "X GROUP BY country ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
@@ -203,7 +199,8 @@ def mrot_func(my_cursor, my_db):
                       f"IF(SUM(amount) > {var.mrot_150}, '+', '-') AS block, "
                       f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') "
                       "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
-                      f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{var.previous_month}-01' AND '{var.today}') "
+                      f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{var.previous_month}-01' AND '{var.today}' "
+                      "AND NOT masked_card_number='nan') "
                       "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
     data = my_cursor.fetchall()
 
@@ -226,8 +223,8 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
-    FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
+    FullDataOCTO = pd.read_csv('Python/OCTO 01-1708.csv', sep=',')
+    FullDataP2P = pd.read_csv('Python/P2P 08-14.csv', sep=',')
 
     cursor, db = db_connection_func()
 
@@ -240,7 +237,7 @@ try:
         country_p2p_func(cursor, db, var.week_ago, 'week')
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
-    if var.current_day == '01':
+    if var.current_day == '12':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')

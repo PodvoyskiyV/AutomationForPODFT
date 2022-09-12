@@ -36,7 +36,19 @@ def mrott(my_db, my_cursor):
             'amount': row[2],
             'block': row[3],
             'abs': row[4]})
-    return mrot_data_for_front
+
+    mrot_data = []
+    my_cursor.execute("SELECT * FROM mrot LIMIT 10")
+    data = my_cursor.fetchall()
+    for row in data:
+        mrot_data.append({
+            'card': row[0],
+            'count': row[1],
+            'amount': row[2],
+            'block': row[3],
+            'abs': row[4]})
+
+    return mrot_data_for_front, mrot_data
 
 
 @app.errorhandler(404)
@@ -51,8 +63,8 @@ def index():
 
 @app.route("/mrot")
 def mrot():
-    data = mrott(db, cursor)
-    return render_template("mrot.html", data=json.dumps(data))
+    data, dete = mrott(db, cursor)
+    return render_template("mrot.html", data=json.dumps(data), dete=json.dumps(dete))
 
 
 @app.route("/octo")
