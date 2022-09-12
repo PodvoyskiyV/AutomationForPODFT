@@ -1,4 +1,4 @@
-files = ["templates/catalog.html", "templates/login.html", "templates/registration.html"]
+files = ["templates/mrot.html", "templates/octo.html", "templates/p2p.html"]
 
 for file in files:
     html_file = open(file)
