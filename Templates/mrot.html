@@ -43,10 +43,10 @@
                 </div>
                 <ul class="sub-menu">
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Month')" id="defaultOpen">Month</button>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Month')" id="Mrot_defaultOpen">Month</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Dynamics')">Dynamics</button>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Dynamics')">Dynamics</button>
                     </li>
                 </ul>
             </li>
@@ -60,10 +60,10 @@
                 </div>
                 <ul class="sub-menu">
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Sender')">Sender</button>
+                        <button class="tablinks" onclick="openTab(event, 'OCTO_Sender')">Sender</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Reciever')">Reciever</button>
+                        <button class="tablinks" onclick="openTab(event, 'OCTO_Reciever')">Reciever</button>
                     </li>
                 </ul>
             </li>
@@ -77,13 +77,13 @@
                 </div>
                 <ul class="sub-menu">
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Country')">Country</button>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_Country')">Country</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Pinfl')">Pinfl</button>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_Pinfl')">Pinfl</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'P2P to TT')">P2P to TT</button>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_TT')">P2P to TT</button>
                     </li>
                 </ul>
             </li>
@@ -115,7 +115,7 @@
         </div>
 
         <div class="content">
-            <div id="Month" class="tabcontent">
+            <div id="Mrot_Month" class="tabcontent">
                 <div class="tab-name">
                     <h3 class="content-title">Month</h3>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <div id="Dynamics" class="tabcontent">
+            <div id="Mrot_Dynamics" class="tabcontent">
                 <div class="tab-name">
                     <h3 class="content-title">Dynamics</h3>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -151,36 +151,6 @@
                                 <th>OBSERVATION</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>123456******1234</td>
-                                <td>111</td>
-                                <td>$100</td>
-                                <td>yes</td>
-                                <td>no</td>
-                            </tr>
-                            <tr>
-                                <td>123456******1234</td>
-                                <td>222</td>
-                                <td>$150</td>
-                                <td>yes</td>
-                                <td>no</td>
-                            </tr>
-                            <tr>
-                                <td>123456******1234</td>
-                                <td>333</td>
-                                <td>$300</td>
-                                <td>yes</td>
-                                <td>no</td>
-                            </tr>
-                            <tr>
-                                <td>123456******1234</td>
-                                <td>444</td>
-                                <td>$250</td>
-                                <td>yes</td>
-                                <td>no</td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -189,10 +159,15 @@
 
     <script src="../static/js/main.js"></script>
     <script src="../static/js/data.js"></script>
-    <script> function test_func(data) {
-        mrot_table_from_back(data);
-    }
-    test_func(    test_func({{ data|safe }}).html)
+    <script>
+        function test_func(data) {
+            mrot_table_from_back(data);
+        }
+        test_func(test_func({
+            {
+                data | safe
+            }
+        }).html)
     </script>
 
 
