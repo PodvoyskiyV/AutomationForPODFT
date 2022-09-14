@@ -12,33 +12,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
 
-    <link rel="shortcut icon" href="../static/img/logo.svg">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.svg') }}">
 
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <aside class="sidebar">
         <div class="logo-details">
-            <img class="logo-img" src="../static/img/logo.svg" alt="logo">
+            <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
             <span class="logo_name">DS</span>
         </div>
         <div class="separator"></div>
 
         <ul class="nav-links">
             <li class="categories-item">
-                <a href="../index.html" class="dropdown-btn">
-                    <img src="../static/img/dashboard.svg" alt="dashboards icon">
+                <a href="{{ url_for('index') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/dashboard.svg') }}" alt="dashboards icon">
                     <span class="link_name">Dashboards</span>
                 </a>
             </li>
             <li class="categories-item">
                 <div class="iocn-link">
-                    <a href="mrot.html" class="dropdown-btn">
-                        <img src="../static/img/mrot.svg" alt="mrot icon">
+                    <a href="{{ url_for('mrot') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="mrot icon">
                         <span class="link_name">Mrot</span>
                     </a>
-                    <img src="../static/img/Dropdown.svg" class="arrow" alt="Dropdown">
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
                 </div>
                 <ul class="sub-menu">
                     <li>
@@ -51,11 +51,11 @@
             </li>
             <li class="categories-item">
                 <div class="iocn-link">
-                    <a href="octo.html" class="dropdown-btn">
-                        <img src="../static/img/octo.svg" alt="OCTO icon">
+                    <a href="{{ url_for('octo') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/octo.svg') }}" alt="OCTO icon">
                         <span class="link_name">OCTO</span>
                     </a>
-                    <img src="../static/img/Dropdown.svg" class="arrow" alt="Dropdown">
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
                 </div>
                 <ul class="sub-menu">
                     <li>
@@ -68,11 +68,11 @@
             </li>
             <li class="categories-item showMenu">
                 <div class="iocn-link dropdown-active">
-                    <a href="p2p.html" class="dropdown-btn">
-                        <img src="../static/img/p2p.svg" alt="P2P icon">
+                    <a href="{{ url_for('p2p') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/p2p.svg') }}" alt="P2P icon">
                         <span class="link_name">P2P</span>
                     </a>
-                    <img src="../static/img/Dropdown.svg" class="arrow" alt="Dropdown">
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
                 </div>
                 <ul class="sub-menu">
                     <li>
@@ -91,12 +91,12 @@
 
     <section class="home-section">
         <div class="home-content">
-            <img class="close-menu" src="../static/img/Drag.svg" alt="open menu">
+            <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
             <div class="wrap">
                 <div class="search">
                     <input type="text" class="searchTerm" placeholder="Search...">
                     <button type="submit" class="searchButton">
-                        <img src="../static/img/Search.svg" alt="search Button">
+                        <img src="{{ url_for('static', filename='img/Search.svg') }}" alt="search Button">
                     </button>
                 </div>
             </div>
@@ -106,11 +106,6 @@
                 <h2 class="main-title">Welcome to DS</h2>
                 <p class="main-desk">We are on a mission to help developers.</p>
             </div>
-
-            <button class="setting">
-                <img src="../static/img/Setting.svg" alt="Setting">
-            </button>
-
         </div>
 
         <div class="content">
@@ -119,16 +114,19 @@
                     <h3 class="content-title">Country</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks sort_defaultOpen" onclick="openSort(event, 'Country_Week')" id="Country_defaultOpen">Week</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Country_Month')">Month</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Country_From')">
                             <label for="From">
                                 From
-                                <input type="date" name="date_from">
+                                <input type="date" id="P2P_Country_From" name="date_from">
                             </label>
                             <label for="To">
                                 To
-                                <input type="date" name="date_to">
+                                <input type="date" id="P2P_Country_To" name="date_to">
                             </label>
+                            <input type="sabmit" value="" id="P2P_Country_search" onclick="" class="sort_tablinks_search">
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -182,16 +180,19 @@
                     <h3 class="content-title">Pinfl</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Week')" id="Pinfl_defaultOpen">Week</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Month')">Month</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_From')">
                             <label for="From">
                                 From
-                                <input type="date" name="date_from">
+                                <input type="date" id="P2P_Pinfl_From" name="date_from">
                             </label>
                             <label for="To">
                                 To
-                                <input type="date" name="date_to">
+                                <input type="date" id="P2P_Pinfl_To" name="date_to">
                             </label>
+                             <input type="sabmit" value="" id="P2P_Pinfl_search" onclick="" class="sort_tablinks_search">
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -245,16 +246,19 @@
                     <h3 class="content-title">P2P to TT</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Week')" id="P2P_TT_defaultOpen">Week</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Month')">Month</button>
+                        ≤<div class="sep"≥≤/div>
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_From')">
                             <label for="From">
                                 From
-                                <input type="date" name="date_from">
+                                <input type="date" id="P2P_TT_From" name="date_from">
                             </label>
                             <label for="To">
                                 To
-                                <input type="date" name="date_to">
+                                <input type="date" id="P2P_TT_To" name="date_to">
                             </label>
+                            <input type="sabmit" value="" id="P2P_TT_search" onclick="" class="sort_tablinks_search">
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -304,7 +308,7 @@
             </div>
         </div>
     </section>
-    <script src="../static/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 </html>

@@ -398,17 +398,6 @@
     color: var(--main-color-2);
 }
 
-.setting {
-    width: 44px;
-    height: 44px;
-    background: #E9671A;
-    border-radius: 4px 0px 0px 4px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-
-
 /*  -----------------------------------------------content----------------------------------------------- */
 
 .content {
@@ -472,9 +461,14 @@ tbody tr:hover {
 }
 
 .sort_tab {
-    width: 50%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--main-color-5);
+    padding: 5px;
+    border-radius: 8px;
+    height: 60px;
+    width: 575px;
 }
 
 .sort_tablinks {
@@ -487,13 +481,15 @@ tbody tr:hover {
     color: var(--main-color-2);
     cursor: pointer;
     padding: 8px 20px;
+    display: flex;
+    align-items: center;
 }
 
 .sort_active {
     background: var(--main-color-7);
     color: var(--main-color-1);
     border-radius: 6px;
-    padding: 8px 20px;
+    height: 50px;
 }
 
 input[type="date"] {
@@ -502,9 +498,26 @@ input[type="date"] {
     text-align: center;
     padding: 2px;
     border-radius: 4px;
-    color: grey;
+    color: var(--main-color-5);
+    margin-right: 8px;
 }
 
+.sort_tablinks_search {
+    background: url(img/Dropdown.svg) no-repeat center center #E9671A;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    height: 35px;
+    width: 35px;
+    cursor: pointer;
+    transform: rotate(270deg);
+}
+
+.sep {
+    height: 40px;
+    width: 1px;
+    background-color: var(--main-color-5);
+}
 
 /* ---------------------------------------------------------- media ---------------------------------------------------------- */
 
