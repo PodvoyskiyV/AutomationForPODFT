@@ -503,7 +503,7 @@ input[type="date"] {
 }
 
 .sort_tablinks_search {
-    background: url(img/Dropdown.svg) no-repeat center center #E9671A;
+    background: url(../img/Dropdown.svg) no-repeat center center #E9671A;
     border: none;
     outline: none;
     border-radius: 3px;

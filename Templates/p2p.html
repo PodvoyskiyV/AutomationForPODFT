@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.svg') }}">
 
@@ -114,9 +116,9 @@
                     <h3 class="content-title">Country</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks sort_defaultOpen" onclick="openSort(event, 'Country_Week')" id="Country_defaultOpen">Week</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Country_Month')">Month</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Country_From')">
                             <label for="From">
                                 From
@@ -126,7 +128,7 @@
                                 To
                                 <input type="date" id="P2P_Country_To" name="date_to">
                             </label>
-                            <input type="sabmit" value="" id="P2P_Country_search" onclick="" class="sort_tablinks_search">
+                            <input type="sabmit" value="" id="P2P_Country_search" onclick="P2P_Country()" class="sort_tablinks_search" required>
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -180,9 +182,9 @@
                     <h3 class="content-title">Pinfl</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Week')" id="Pinfl_defaultOpen">Week</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Month')">Month</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_From')">
                             <label for="From">
                                 From
@@ -192,7 +194,7 @@
                                 To
                                 <input type="date" id="P2P_Pinfl_To" name="date_to">
                             </label>
-                             <input type="sabmit" value="" id="P2P_Pinfl_search" onclick="" class="sort_tablinks_search">
+                             <input type="sabmit" value="" id="P2P_Pinfl_search" onclick="P2P_Pinfl()" class="sort_tablinks_search" required>
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -246,9 +248,9 @@
                     <h3 class="content-title">P2P to TT</h3>
                     <div class="sort_tab">
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Week')" id="P2P_TT_defaultOpen">Week</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Month')">Month</button>
-                        ≤<div class="sep"≥≤/div>
+                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_From')">
                             <label for="From">
                                 From
@@ -258,7 +260,7 @@
                                 To
                                 <input type="date" id="P2P_TT_To" name="date_to">
                             </label>
-                            <input type="sabmit" value="" id="P2P_TT_search" onclick="" class="sort_tablinks_search">
+                            <input type="sabmit" value="" id="P2P_TT_search" onclick="P2P_TT()" class="sort_tablinks_search" required>
                         </button>
                     </div>
                     <p class="content-date">DATE: Sep 01, 2022</p>
@@ -309,6 +311,7 @@
         </div>
     </section>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/back.js') }}"></script>
 </body>
 
 </html>
