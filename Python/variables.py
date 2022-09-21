@@ -16,20 +16,12 @@ else:
 # password_sftp = os.environ["$SFTP_PASSWORD"]
 
 mrot = 920000
-mrot_150 = 920000 * 150
+mrot_150 = mrot * 150
 
 today = (datetime.datetime.now()).strftime("%Y-%m-%d")
+yesterday = ((datetime.datetime.now()) - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 week_ago = ((datetime.datetime.now()) - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 current_week_day = (datetime.datetime.now()).strftime('%A')
 current_month = (datetime.datetime.now()).strftime('%B')
-previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=20)).strftime("%Y-%m")
+previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=22)).strftime("%Y-%m")
 current_day = (datetime.datetime.now()).strftime('%d')
-
-'''
-print(today)
-print(week_ago)
-print(current_week_day)
-print(current_month)
-print(previous_month)
-print(current_day)
-'''

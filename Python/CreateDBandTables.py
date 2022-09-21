@@ -93,27 +93,33 @@ def create_card_sender_octo(my_cursor, t):
     my_cursor.execute(sql)
 
 
-def create_mrot(my_cursor):
-    sql = "CREATE TABLE mrot (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2), " \
-          "block VARCHAR(255), observation VARCHAR(255))"
+def create_mrot(my_cursor, t):
+    if t == 'month':
+        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2), " \
+               "block VARCHAR(255), observation VARCHAR(255))"
+    else:
+        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2), " \
+              "observation VARCHAR(255))"
     my_cursor.execute(sql)
 
 
-# cursor, db = db_connection_func()
-cursor, db = db_connection()
+cursor, db = db_connection_func()
+# cursor, db = db_connection()
 
-# create_octo_table_func(cursor)
-# create_p2p_table_func(cursor)
+create_octo_table_func(cursor)
+create_p2p_table_func(cursor)
 
-# create_trans_gran_to_tt(cursor, 'week')
-# create_trans_gran_to_tt(cursor, 'month')
-# create_pinfl_receiver(cursor, 'week')
-# create_pinfl_receiver(cursor, 'month')
-# create_country_p2p(cursor, 'week')
-# create_country_p2p(cursor, 'month')
-# create_number_receiver_octo(cursor, 'week')
-# create_number_receiver_octo(cursor, 'month')
-# create_card_sender_octo(cursor, 'week')
-# create_card_sender_octo(cursor, 'month')
+create_trans_gran_to_tt(cursor, 'week')
+create_trans_gran_to_tt(cursor, 'month')
+create_pinfl_receiver(cursor, 'week')
+create_pinfl_receiver(cursor, 'month')
+create_country_p2p(cursor, 'week')
+create_country_p2p(cursor, 'month')
+create_number_receiver_octo(cursor, 'week')
+create_number_receiver_octo(cursor, 'month')
+create_card_sender_octo(cursor, 'week')
+create_card_sender_octo(cursor, 'month')
 
-# create_mrot(cursor)
+create_mrot(cursor, 'day')
+create_mrot(cursor, 'week')
+create_mrot(cursor, 'month')

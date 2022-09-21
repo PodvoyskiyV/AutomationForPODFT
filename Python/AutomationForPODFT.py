@@ -87,7 +87,8 @@ def trans_gran_to_tt_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT pos_code, COUNT(*) count FROM "
                       "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
-                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}' "
+                      "AND NOT pos_code='nan') "
                       "X GROUP BY pos_code ORDER BY count DESC;")
     data = my_cursor.fetchall()
 
@@ -109,7 +110,8 @@ def pinfl_receiver_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
-                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}' "
+                      "AND NOT pinfl='nan') "
                       "X GROUP BY pinfl ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
@@ -131,7 +133,8 @@ def country_p2p_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
-                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE time_id BETWEEN '{start}' AND '{var.today}' "
+                      "AND NOT country='nan') "
                       "X GROUP BY country ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
@@ -153,7 +156,8 @@ def number_receiver_octo_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT dest_tool_id, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT dest_tool_id, created_date, amount FROM Initial_Data_OCTO "
-                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                      "AND NOT dest_tool_id='nan') "
                       "X GROUP BY dest_tool_id ORDER BY amount DESC, count DESC;")
     data = my_cursor.fetchall()
 
@@ -175,7 +179,8 @@ def card_sender_octo_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT masked_card_number, created_date, amount FROM Initial_Data_OCTO "
-                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}') "
+                      f"WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                      "AND NOT masked_card_number='nan') "
                       "X GROUP BY masked_card_number ORDER BY count DESC, amount DESC;")
     data = my_cursor.fetchall()
 
@@ -189,23 +194,31 @@ def card_sender_octo_func(my_cursor, my_db, start, table):
     print(f'card_sender_octo_func ended in {end_card_sender_octo_func - start_card_sender_octo_func}')
 
 
-def mrot_func(my_cursor, my_db):
+def mrot_func(my_cursor, my_db, start, t):
     start_mrot_func = datetime.datetime.now()
 
-    my_cursor.execute(f"TRUNCATE TABLE mrot;")
+    my_cursor.execute(f"TRUNCATE TABLE mrot_{t};")
     my_db.commit()
 
-    my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
-                      f"IF(SUM(amount) > {var.mrot_150}, '+', '-') AS block, "
-                      f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') "
-                      "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
-                      f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{var.previous_month}-01' AND '{var.today}' "
-                      "AND NOT masked_card_number='nan') "
-                      "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
+    if t == 'month':
+        my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
+                          f"IF(SUM(amount) > {var.mrot_150}, '+', '-') AS block, "
+                          f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') "
+                          "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
+                          f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                          "AND NOT masked_card_number='nan') "
+                          "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
+    else:
+        my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
+                          f"IF(SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') AS observation "
+                          "FROM (SELECT DISTINCT masked_card_number, created_date, amount "
+                          f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                          "AND NOT masked_card_number='nan') "
+                          "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
     data = my_cursor.fetchall()
 
     for row in data:
-        sql = f"INSERT INTO mrot (masked_card_number, count, amount, block, observation) VALUES (%s, %s, %s, %s, %s)"
+        sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, block, observation) VALUES (%s, %s, %s, %s, %s)"
         val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}")
         my_cursor.execute(sql, val)
         my_db.commit()
@@ -230,6 +243,7 @@ try:
 
     octo_to_db_func(cursor, db)
     p2p_to_db_func(cursor, db)
+    mrot_func(cursor, db, var.yesterday, 'day')
 
     if var.current_week_day == 'Monday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
@@ -237,13 +251,14 @@ try:
         country_p2p_func(cursor, db, var.week_ago, 'week')
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
-    if var.current_day == '1':
+        mrot_func(cursor, db, var.week_ago, 'week')
+    if var.current_day == '21':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
         number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
-        mrot_func(cursor, db)
+        mrot_func(cursor, db, f"{var.previous_month}-01", 'month')
 
     delete_files_func()
 

@@ -46,7 +46,10 @@
                         <button class="tablinks" onclick="openTab(event, 'Mrot_Month')" id="Mrot_defaultOpen">Month</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Mrot_Dynamics')">Dynamics</button>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Week')">Week</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Day')">Day</button>
                     </li>
                 </ul>
             </li>
@@ -113,7 +116,7 @@
             <div id="Mrot_Month" class="tabcontent">
                 <div class="tab-name">
                     <h3 class="content-title">Month</h3>
-                    <p class="content-date">DATE: Sep 01, 2022</p>
+                    <p class="content-date" id="date_1"></p>
                 </div>
                 <div class="table-wrapper">
                     <table class="mrotMonth">
@@ -130,19 +133,37 @@
                 </div>
             </div>
 
-            <div id="Mrot_Dynamics" class="tabcontent">
+            <div id="Mrot_Week" class="tabcontent">
                 <div class="tab-name">
-                    <h3 class="content-title">Dynamics</h3>
-                    <p class="content-date">DATE: Sep 01, 2022</p>
+                    <h3 class="content-title">Week</h3>
+                    <p class="content-date" id="date_2"></p>
                 </div>
                 <div class="table-wrapper">
-                    <table class="mrotDynamics">
+                    <table class="mrotWeek">
                         <thead>
                             <tr>
                                 <th>CARD</th>
                                 <th>COUNT</th>
                                 <th>AMOUNT</th>
-                                <th>BLOCK</th>
+                                <th>OBSERVATION</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Mrot_Day" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Day</h3>
+                    <p class="content-date" id="date_3"></p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="mrotDay">
+                        <thead>
+                            <tr>
+                                <th>CARD</th>
+                                <th>COUNT</th>
+                                <th>AMOUNT</th>
                                 <th>OBSERVATION</th>
                             </tr>
                         </thead>
@@ -155,7 +176,7 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script>
-        mrot_table_from_back({{month | safe}}, {{dynamics | safe}});
+        mrot_table_from_back({{month | safe}}, {{week | safe}}, {{day | safe}});
     </script>
 
 
