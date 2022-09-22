@@ -317,57 +317,6 @@
 }
 
 
-/* ------------------------------------------ search  ------------------------------------------*/
-
-.search {
-    width: 100%;
-    position: relative;
-    display: flex;
-    border: 1px solid var(--main-color-6);
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-}
-
-.search:focus-within {
-    border: 1px solid var(--main-color-7);
-}
-
-.searchTerm {
-    width: 100%;
-    border: none;
-    padding: 5px;
-    height: 36px;
-    outline: none;
-    background: transparent;
-    color: var(--main-color-5);
-}
-
-.searchTerm:focus {
-    color: var(--main-color-2);
-}
-
-.searchTerm::placeholder {
-    color: var(--main-color-5);
-}
-
-.searchButton {
-    width: 40px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    text-align: center;
-    cursor: pointer;
-}
-
-.wrap {
-    width: 30%;
-    transform: translate(100%, 0%);
-}
-
-
 /* --------------------------------------------------------- main --------------------------------------------------------- */
 
 .main {
