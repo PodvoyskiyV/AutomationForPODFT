@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS - P2P to TT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.svg') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo-details">
+            <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
+            <span class="logo_name">DS</span>
+        </div>
+        <div class="separator"></div>
+
+        <ul class="nav-links">
+            <li class="categories-item">
+                <a href="{{ url_for('index') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/dashboard.svg') }}" alt="dashboards icon">
+                    <span class="link_name">Dashboards</span>
+                </a>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('mrot') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="mrot icon">
+                        <span class="link_name">Mrot</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Month')">Month</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Week')">Week</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Mrot_Day')">Day</button>
+                    </li>
+                </ul>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('octo') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/octo.svg') }}" alt="OCTO icon">
+                        <span class="link_name">OCTO</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'OCTO_Sender')">Sender</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'OCTO_Reciever')">Reciever</button>
+                    </li>
+                </ul>
+            </li>
+            <li class="categories-item showMenu">
+                <div class="iocn-link dropdown-active">
+                    <a href="{{ url_for('p2p') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/p2p.svg') }}" alt="P2P icon">
+                        <span class="link_name">P2P</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+                <ul class="sub-menu">
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_Country')" id="P2P_defaultOpen">Country</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_Pinfl')" id="P2P_Tab_pinfl">Pinfl</button>
+                    </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'P2P_TT')" id="P2P_Tab_tt">P2P to TT</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section class="home-section">
+        <div class="home-content">
+            <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
+            <div class="wrap">
+                <div class="search">
+                    <input type="text" class="searchTerm" placeholder="Search...">
+                    <button type="submit" class="searchButton">
+                        <img src="{{ url_for('static', filename='img/Search.svg') }}" alt="search Button">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="main-text">
+                <h2 class="main-title">Welcome to DS</h2>
+                <p class="main-desk">We are on a mission to help developers.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="P2P_Country" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Country</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks sort_defaultOpen" onclick="openSort(event, 'Country_Week')" id="Country_defaultOpen">Week</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Country_Month')">Month</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Country_From')" id="Country_D_From">
+                            <label for="From">
+                                From
+                                <input type="date" id="P2P_Country_From" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" id="P2P_Country_To" name="date_to">
+                            </label>
+                            <input type="sabmit" value="" id="P2P_Country_search" onclick="P2P_Country()" class="sort_tablinks_search" required>
+                        </button>
+                    </div>
+                    <p class="content-date">DATE: Sep 01, 2022</p>
+                </div>
+
+                <div id="Country_Week" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pCountryWeek">
+                            <thead>
+                                <tr>
+                                    <th>COUNTRY</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Country_Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pCountryMonth">
+                            <thead>
+                                <tr>
+                                    <th>COUNTRY</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Country_From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pCountryFrom">
+                            <thead>
+                                <tr>
+                                    <th>COUNTRY</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="P2P_Pinfl" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Pinfl</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Week')" id="Pinfl_defaultOpen">Week</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_Month')">Month</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Pinfl_From')" id="Pinfl_D_From">
+                            <label for="From">
+                                From
+                                <input type="date" id="P2P_Pinfl_From" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" id="P2P_Pinfl_To" name="date_to">
+                            </label>
+                             <input type="sabmit" value="" id="P2P_Pinfl_search" onclick="P2P_Pinfl()" class="sort_tablinks_search" required>
+                        </button>
+                    </div>
+                    <p class="content-date">DATE: Sep 01, 2022</p>
+                </div>
+
+                <div id="Pinfl_Week" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pPinflWeek">
+                            <thead>
+                                <tr>
+                                    <th>PINFL</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Pinfl_Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pPinflMonth">
+                            <thead>
+                                <tr>
+                                    <th>PINFL</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Pinfl_From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pPinflFrom">
+                            <thead>
+                                <tr>
+                                    <th>PINFL</th>
+                                    <th>COUNT</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="P2P_TT" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">P2P to TT</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Week')" id="P2P_TT_defaultOpen">Week</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_Month')">Month</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'P2P_TT_From')" id="TT_D_From">
+                            <label for="From">
+                                From
+                                <input type="date" id="p2p_tt_from" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" id="p2p_tt_to" name="date_to">
+                            </label>
+                            <input type="sabmit" value="" id="P2P_TT_search" onclick="P2P_TT()" class="sort_tablinks_search" required>
+                        </button>
+                    </div>
+                    <p class="content-date">DATE: Sep 01, 2022</p>
+                </div>
+
+                <div id="P2P_TT_Week" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pTTWeek">
+                            <thead>
+                                <tr>
+                                    <th>TT CODE</th>
+                                    <th>COUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="P2P_TT_Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pTTMonth">
+                            <thead>
+                                <tr>
+                                    <th>TT CODE</th>
+                                    <th>COUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="P2P_TT_From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="p2pTTFrom">
+                            <thead>
+                                <tr>
+                                    <th>TT CODE</th>
+                                    <th>COUNT</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/back.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+    <script>
+        p2p_table_from_back({{country_week | safe}}, {{country_month | safe}}, {{country_search | safe}}, {{pinfl_week | safe}}, {{pinfl_month | safe}}, {{pinfl_search | safe}}, {{tt_week | safe}}, {{tt_month | safe}}, {{tt_search | safe}}, {{tab | safe}});
+    </script>
+
+</body>
+
+</html>

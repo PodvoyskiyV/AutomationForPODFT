@@ -95,31 +95,41 @@ def create_card_sender_octo(my_cursor, t):
 
 def create_mrot(my_cursor, t):
     if t == 'month':
-        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2), " \
-               "block VARCHAR(255), observation VARCHAR(255))"
+        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), " \
+              "amount DOUBLE(30, 2), block VARCHAR(255), observation VARCHAR(255))"
     else:
-        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), amount DOUBLE(30, 2), " \
-              "observation VARCHAR(255))"
+        sql = f"CREATE TABLE mrot_{t} (masked_card_number VARCHAR(255), count INT(255), " \
+              "amount DOUBLE(30, 2), observation VARCHAR(255))"
     my_cursor.execute(sql)
 
 
-cursor, db = db_connection_func()
-# cursor, db = db_connection()
+def create_offshore(my_cursor, t):
+    sql = f"CREATE TABLE offshore_{t} (person VARCHAR(255), birthday VARCHAR(255), passport VARCHAR(255), " \
+          "operation_date DATE, amount DOUBLE(30, 2), country VARCHAR(255));"
+    my_cursor.execute(sql)
 
-create_octo_table_func(cursor)
-create_p2p_table_func(cursor)
 
-create_trans_gran_to_tt(cursor, 'week')
-create_trans_gran_to_tt(cursor, 'month')
-create_pinfl_receiver(cursor, 'week')
-create_pinfl_receiver(cursor, 'month')
-create_country_p2p(cursor, 'week')
-create_country_p2p(cursor, 'month')
-create_number_receiver_octo(cursor, 'week')
-create_number_receiver_octo(cursor, 'month')
-create_card_sender_octo(cursor, 'week')
-create_card_sender_octo(cursor, 'month')
+# cursor, db = db_connection_func()
+cursor, db = db_connection()
 
-create_mrot(cursor, 'day')
-create_mrot(cursor, 'week')
-create_mrot(cursor, 'month')
+# create_octo_table_func(cursor)
+# create_p2p_table_func(cursor)
+
+# create_trans_gran_to_tt(cursor, 'week')
+# create_trans_gran_to_tt(cursor, 'month')
+# create_pinfl_receiver(cursor, 'week')
+# create_pinfl_receiver(cursor, 'month')
+# create_country_p2p(cursor, 'week')
+# create_country_p2p(cursor, 'month')
+create_offshore(cursor, 'week')
+create_offshore(cursor, 'month')
+# create_number_receiver_octo(cursor, 'week')
+# create_number_receiver_octo(cursor, 'month')
+# create_card_sender_octo(cursor, 'week')
+# create_card_sender_octo(cursor, 'month')
+
+# create_mrot(cursor, 'day')
+# create_mrot(cursor, 'week')
+# create_mrot(cursor, 'month')
+
+

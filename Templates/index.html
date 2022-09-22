@@ -109,8 +109,28 @@
                 <p class="main-desk">We are on a mission to help developers.</p>
             </div>
         </div>
+        <section class="charts">
+            <div class="charts-wrap">
+                <div class="chart-first">
+                    <canvas id="chartFirst"></canvas>
+                </div>
+
+                <div class="chart-second">
+                    <canvas id="chartSecond"></canvas>
+                </div>
+            </div>
+            <div class="charts-wrap">
+                <div class="chart-third">
+                    <canvas id="chartThird"></canvas>
+                </div>
+            </div>
+        </section>
     </section>
 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 

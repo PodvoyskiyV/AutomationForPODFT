@@ -40,14 +40,13 @@ def octo_to_db_func(my_cursor, mydb):
 
     for i in range(len(FullDataOCTO)):
         sql = "INSERT INTO Initial_Data_OCTO (octo_trxn_id, created_date, masked_card_number, amount, currency, " \
-              "transaction_status, provider_id, dest_tool_id, customer_id, type_description, bill_account_id) " \
-              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (f"{FullDataOCTO.iloc[i].octo_trxn_id}", f"{FullDataOCTO.iloc[i].created_date}",
+              "provider_id, dest_tool_id, customer_id, type_description, bill_account_id) " \
+              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (f"{FullDataOCTO.iloc[i].octo_trxn_id}", f"{FullDataOCTO.iloc[i].created_date[:-6]}",
                f"{FullDataOCTO.iloc[i].masked_card_number}", f"{FullDataOCTO.iloc[i].amount}",
-               f"{FullDataOCTO.iloc[i].currency}", f"{FullDataOCTO.iloc[i].transaction_status}",
-               f"{FullDataOCTO.iloc[i].provider_id}", f"{FullDataOCTO.iloc[i].dest_tool_id}",
-               f"{FullDataOCTO.iloc[i].customer_id}", f"{FullDataOCTO.iloc[i].type_description}",
-               f"{FullDataOCTO.iloc[i].bill_account_id}")
+               f"{FullDataOCTO.iloc[i].currency}", f"{FullDataOCTO.iloc[i].provider_id}",
+               f"{FullDataOCTO.iloc[i].dest_tool_id}", f"{FullDataOCTO.iloc[i].customer_id}",
+               f"{FullDataOCTO.iloc[i].type_description}", f"{FullDataOCTO.iloc[i].bill_account_id}")
         my_cursor.execute(sql, val)
         mydb.commit()
 
@@ -204,27 +203,73 @@ def mrot_func(my_cursor, my_db, start, t):
         my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
                           f"IF(SUM(amount) > {var.mrot_150}, '+', '-') AS block, "
                           f"IF(SUM(amount) < {var.mrot_150} AND SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') "
-                          "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount "
-                          f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                          "AS observation  FROM (SELECT DISTINCT masked_card_number, created_date, amount"
+                          f" FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
                           "AND NOT masked_card_number='nan') "
                           "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
-    else:
+        data = my_cursor.fetchall()
+
+        for row in data:
+            sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, block, observation) " \
+                  "VALUES (%s, %s, %s, %s, %s)"
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{row[5]}")
+            my_cursor.execute(sql, val)
+            my_db.commit()
+    elif t == 'week':
         my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
-                          f"IF(SUM(amount) > {var.mrot_150 * 0.9}, '+', '-') AS observation "
+                          f"IF(SUM(amount) > {var.mrot_150 * 0.9 / 30 * 7}, '+', '-') AS observation "
                           "FROM (SELECT DISTINCT masked_card_number, created_date, amount "
                           f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
                           "AND NOT masked_card_number='nan') "
                           "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
-    data = my_cursor.fetchall()
+        data = my_cursor.fetchall()
 
-    for row in data:
-        sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, block, observation) VALUES (%s, %s, %s, %s, %s)"
-        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}")
-        my_cursor.execute(sql, val)
-        my_db.commit()
+        for row in data:
+            sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, observation) " \
+                  "VALUES (%s, %s, %s, %s)"
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}")
+            my_cursor.execute(sql, val)
+            my_db.commit()
+    else:
+        my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount, "
+                          f"IF(SUM(amount) > {var.mrot_150 * 0.9 / 30}, '+', '-') AS observation "
+                          "FROM (SELECT DISTINCT masked_card_number, created_date, amount "
+                          f"FROM Initial_Data_OCTO WHERE created_date BETWEEN '{start}' AND '{var.today}' "
+                          "AND NOT masked_card_number='nan') "
+                          "X GROUP BY masked_card_number ORDER BY amount DESC, count DESC;")
+        data = my_cursor.fetchall()
+
+        for row in data:
+            sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, observation) " \
+                  "VALUES (%s, %s, %s, %s, %s)"
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}")
+            my_cursor.execute(sql, val)
+            my_db.commit()
 
     end_mrot_func = datetime.datetime.now()
     print(f'mrot_func ended in {end_mrot_func - start_mrot_func}')
+
+
+def offshore_func(my_cursor, my_db, start, table):
+    start_offshore_func = datetime.datetime.now()
+
+    my_cursor.execute(f"TRUNCATE TABLE offshore_{table};")
+    my_db.commit()
+
+    my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
+                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND country='Cyprus' "
+                      "AND NOT country='nan' ORDER BY time_id;")
+    data = my_cursor.fetchall()
+
+    for row in data:
+        sql = f"INSERT INTO offshore_{table} (person, birthday, passport, operation_date, amount, country) " \
+              f"VALUES (%s, %s, %s, %s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3][0:10]}", f"{row[4]}", f"{row[5]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
+
+    end_offshore_func = datetime.datetime.now()
+    print(f'country_p2p_func ended in {end_offshore_func - start_offshore_func}')
 
 
 def delete_files_func():
@@ -236,8 +281,8 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('Python/OCTO 01-1708.csv', sep=',')
-    FullDataP2P = pd.read_csv('Python/P2P 08-14.csv', sep=',')
+    FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
+    FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
 
     cursor, db = db_connection_func()
 
@@ -252,13 +297,15 @@ try:
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
         mrot_func(cursor, db, var.week_ago, 'week')
-    if var.current_day == '21':
+        offshore_func(cursor, db, var.week_ago, 'week')
+    if var.current_day == '1':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
         number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         mrot_func(cursor, db, f"{var.previous_month}-01", 'month')
+        offshore_func(cursor, db, f"{var.previous_month}-01", 'month')
 
     delete_files_func()
 
