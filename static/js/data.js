@@ -143,7 +143,9 @@ function render_p2p(table) {
 
 function p2p_table_from_back(country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search, tab) {
     render_octo_p2p(p2pCountryWeek)(country_week);
+    console.log(p2pCountryWeek, country_week)
     render_octo_p2p(p2pCountryMonth)(country_month);
+    console.log(p2pCountryMonth, country_month)
     render_octo_p2p(p2pCountryFrom)(country_search);
 
     render_octo_p2p(p2pPinflWeek)(pinfl_week);

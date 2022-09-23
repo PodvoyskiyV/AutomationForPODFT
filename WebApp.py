@@ -131,20 +131,80 @@ def p2p_data(my_cursor, start, end):
     p2p_country_week = []
     my_cursor.execute("SELECT * FROM country_p2p_week LIMIT 100")
     data = my_cursor.fetchall()
-    for row in data:
+    for i in range(len(data)):
+        if data[i][0] == 'United Kingdom of Great Britain and Northern Ireland':
+            data[i] = list(data[i])
+            data[i][0] = 'United Kingdom'
+            data[i] = tuple(data[i])
         p2p_country_week.append({
-            'id': row[0],
-            'count': row[1],
-            'amount': row[2]})
+            'id': data[i][0],
+            'count': data[i][1],
+            'amount': data[i][2]})
 
     p2p_country_month = []
     my_cursor.execute("SELECT * FROM country_p2p_month LIMIT 100")
     data = my_cursor.fetchall()
-    for row in data:
+    count = 0
+    for i in range(len(data)):
+        if data[i][0] == 'United Kingdom of Great Britain and Northern Ireland':
+            data[i] = list(data[i])
+            data[i][0] = 'United Kingdom'
+            data[i] = tuple(data[i])
         p2p_country_month.append({
-            'id': row[0],
-            'count': row[1],
-            'amount': row[2]})
+            'id': data[i][0],
+            'count': data[i][1],
+            'amount': data[i][2]})
+        count += data[i][1]
+
+    p2p_data_for_charts_month = {
+        'labels': "Countries",
+        'datasets': [{
+            'label': [data[0][0]],
+            'backgroundColor': "rgba(255,221,50,0.2)",
+            'borderColor': "rgba(255,221,50,1)",
+            'data': [{
+                'x': data[0][2],
+                'y': data[0][1],
+                'r': round(5 + 20 / count * data[0][1], 2)
+            }]
+        }, {
+            'label': [data[1][0]],
+            'backgroundColor': "rgba(60,186,159,0.2)",
+            'borderColor': "rgba(60,186,159,1)",
+            'data': [{
+                'x': data[1][2],
+                'y': data[1][1],
+                'r': round(5 + 20 / count * data[1][1], 2)
+            }]
+        }, {
+            'label': [data[2][0]],
+            'backgroundColor': "rgba(0,0,0,0.2)",
+            'borderColor': "#000",
+            'data': [{
+                'x': data[2][2],
+                'y': data[2][1],
+                'r': round(5 + 20 / count * data[2][1], 2)
+            }]
+        }, {
+            'label': [data[3][0]],
+            'backgroundColor': "rgba(193,46,12,0.2)",
+            'borderColor': "rgba(193,46,12,1)",
+            'data': [{
+                'x': data[3][2],
+                'y': data[3][1],
+                'r': round(5 + 20 / count * data[3][1], 2)
+            }]
+        }, {
+            'label': [data[4][0]],
+            'backgroundColor': "rgba(255,255,255,0.2)",
+            'borderColor': "rgba(255,255,255,1)",
+            'data': [{
+                'x': data[4][2],
+                'y': data[4][1],
+                'r': round(5 + 20 / count * data[4][1], 2)
+            }]
+        }]
+    }
 
     p2p_country_search = []
     my_cursor.execute("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
@@ -152,11 +212,15 @@ def p2p_data(my_cursor, start, end):
                       f"WHERE time_id BETWEEN '{start}' AND '{end}') "
                       "X GROUP BY country ORDER BY count DESC, amount DESC LIMIT 100;")
     data = my_cursor.fetchall()
-    for row in data:
+    for i in range(len(data)):
+        if data[i][0] == 'United Kingdom of Great Britain and Northern Ireland':
+            data[i] = list(data[i])
+            data[i][0] = 'United Kingdom'
+            data[i] = tuple(data[i])
         p2p_country_search.append({
-            'id': row[0],
-            'count': row[1],
-            'amount': round(float(row[2]), 2)})
+            'id': data[i][0],
+            'count': data[i][1],
+            'amount': round(float(data[i][2]), 2)})
 
     p2p_pinfl_week = []
     my_cursor.execute("SELECT * FROM pinfl_receiver_week LIMIT 100")
@@ -216,7 +280,7 @@ def p2p_data(my_cursor, start, end):
             'count': row[1]})
 
     return p2p_country_week, p2p_country_month, p2p_country_search, p2p_pinfl_week, p2p_pinfl_month, p2p_pinfl_search, \
-           p2p_tt_week, p2p_tt_month, p2p_tt_search
+           p2p_tt_week, p2p_tt_month, p2p_tt_search, p2p_data_for_charts_month
 
 
 def offshore_data(my_cursor, start, end):
@@ -323,8 +387,8 @@ def dates_p2p():
 def p2p():
     reconnect_to_db()
     global flag_p2p
-    country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search \
-        = p2p_data(cursor, start_date, end_date)
+    country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search, \
+    p2p_data_for_charts_month = p2p_data(cursor, start_date, end_date)
 
     if flag_p2p == 'country':
         tab_p2p = 'country'
@@ -336,7 +400,8 @@ def p2p():
         tab_p2p = ''
     flag_p2p = ''
 
-    return render_template("p2p.html", country_week=json.dumps(country_week), country_month=json.dumps(country_month),
+    return render_template("p2p.html", p2p_data_for_charts_month=json.dumps(p2p_data_for_charts_month),
+                           country_week=json.dumps(country_week), country_month=json.dumps(country_month),
                            country_search=json.dumps(country_search), pinfl_week=json.dumps(pinfl_week),
                            pinfl_month=json.dumps(pinfl_month), pinfl_search=json.dumps(pinfl_search),
                            tt_week=json.dumps(tt_week), tt_month=json.dumps(tt_month),

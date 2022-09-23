@@ -68,7 +68,7 @@ new Chart("chartSecond", {
 new Chart("chartThird", {
     type: 'bubble',
     data: {
-        labels: "Africa",
+        labels: "Countries",
         datasets: [{
             label: ["China"],
             backgroundColor: "rgba(255,221,50,0.2)",
@@ -128,3 +128,30 @@ new Chart("chartThird", {
         }
     }
 });
+
+function BuildChartP2PCountryMonth(data_from_front){
+new Chart("chartP2P_country", {
+    type: 'bubble',
+    data: data_from_front,
+    options: {
+        title: {
+            display: true,
+            text: 'Top 5 for ' + 'August'
+        },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: "Transactions Count"
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: "Transactions Amount"
+                }
+            }]
+        }
+    }
+});
+};

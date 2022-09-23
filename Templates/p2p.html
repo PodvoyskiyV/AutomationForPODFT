@@ -12,7 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.svg') }}">
 
@@ -112,12 +113,14 @@
         <div class="home-content">
             <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
         </div>
-        <div class="main">
-            <div class="main-text">
-                <h2 class="main-title">Welcome to DS</h2>
-                <p class="main-desk">We are on a mission to help developers.</p>
+        <section class="charts">
+            <div class="charts-wrap">
+                <div class="chart-third">
+                    <canvas id="chartP2P_country"></canvas>
+                    <script>BuildChartP2PCountryMonth({{p2p_data_for_charts_month | safe}})</script>
+                </div>
             </div>
-        </div>
+        </section>
 
         <div class="content">
             <div id="P2P_Country" class="tabcontent">
@@ -316,6 +319,7 @@
             </div>
         </div>
     </section>
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/back.js') }}"></script>
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>

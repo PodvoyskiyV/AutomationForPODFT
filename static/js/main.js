@@ -18,29 +18,20 @@ function openTab(evt, tabName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active-tablinks", "");
     }
-    console.log('fjfjj')
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active-tablinks";
 
-    console.log('fjfjj')
-
     if (tabName == "OCTO_Sender") {
-        console.log('no')
         default_sort_OCTO(1)
     } else if (tabName == "OCTO_Reciever") {
-        console.log('no')
         default_sort_OCTO(2)
     } else if (tabName == "P2P_Country") {
-        console.log('no')
         default_sort_P2P(1);
     } else if (tabName == "P2P_Pinfl") {
-        console.log('no')
         default_sort_P2P(2);
     } else if (tabName == "P2P_TT") {
-        console.log('no')
         default_sort_P2P(3);
     } else if (tabName == "Offshore_Cyprus") {
-        console.log('yeye')
         default_sort_Offshore(1)
     }
 }
@@ -52,7 +43,6 @@ if (document.getElementById("Mrot_defaultOpen")) {
 } else if (document.getElementById("P2P_defaultOpen")) {
     document.getElementById("P2P_defaultOpen").click();
 } else if (document.getElementById("Offshore_defaultOpen")) {
-    console.log('yeyeyeye')
     document.getElementById("Offshore_defaultOpen").click();
 }
 
