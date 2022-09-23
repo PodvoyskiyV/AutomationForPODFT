@@ -1,4 +1,3 @@
-import datetime
 import json
 import mysql.connector
 from Python import variables as var
@@ -12,7 +11,6 @@ flag_offshore = ''
 
 
 def db_connection_func():
-    start_db_connection_func = datetime.datetime.now()
 
     my_db = mysql.connector.connect(
         host="localhost",
@@ -22,9 +20,6 @@ def db_connection_func():
     )
 
     my_cursor = my_db.cursor()
-
-    end_db_connection_func = datetime.datetime.now()
-    print(f'db_connection_func ended in {end_db_connection_func - start_db_connection_func}')
 
     return my_cursor, my_db
 
@@ -52,8 +47,6 @@ def mrot_data(my_cursor):
             'count': row[1],
             'amount': row[2],
             'abs': row[3]})
-
-    print(mrot_week)
 
     mrot_day = []
     my_cursor.execute("SELECT * FROM mrot_day LIMIT 100")
@@ -226,6 +219,48 @@ def p2p_data(my_cursor, start, end):
            p2p_tt_week, p2p_tt_month, p2p_tt_search
 
 
+def offshore_data(my_cursor, start, end):
+    offshore_cyprus_week = []
+    my_cursor.execute("SELECT * FROM offshore_week;")
+    data = my_cursor.fetchall()
+    for row in data:
+        offshore_cyprus_week.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[2],
+            'operation_date': str(row[3]),
+            'amount': row[4],
+            'country': row[5]})
+
+    offshore_cyprus_month = []
+    my_cursor.execute("SELECT * FROM offshore_month;")
+    data = my_cursor.fetchall()
+    for row in data:
+        offshore_cyprus_month.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[2],
+            'operation_date': str(row[3]),
+            'amount': row[4],
+            'country': row[5]})
+
+    offshore_cyprus_search = []
+    my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
+                      f"WHERE (time_id BETWEEN '{start}' AND '{end}') AND country='Cyprus' "
+                      "AND NOT country='nan' ORDER BY time_id;")
+    data = my_cursor.fetchall()
+    for row in data:
+        offshore_cyprus_search.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[2],
+            'operation_date': str(row[3]),
+            'amount': row[4],
+            'country': row[5]})
+
+    return offshore_cyprus_week, offshore_cyprus_month, offshore_cyprus_search
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     return redirect(url_for('index'))
@@ -291,8 +326,6 @@ def p2p():
     country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search \
         = p2p_data(cursor, start_date, end_date)
 
-    print(flag_p2p, country_search)
-
     if flag_p2p == 'country':
         tab_p2p = 'country'
     elif flag_p2p == 'pinfl':
@@ -310,30 +343,31 @@ def p2p():
                            tt_search=json.dumps(tt_search), tab=json.dumps(tab_p2p))
 
 
+@app.route("/dates_offshore")
+def dates_offshore():
+    global start_date, end_date, flag_offshore
+    start_date = request.args["start_date"]
+    end_date = request.args["end_date"]
+    flag_offshore = request.args["flag"]
+    return "OK"
+
+
 @app.route("/offshore")
 def offshore():
     reconnect_to_db()
     global flag_offshore
-    country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search \
-        = p2p_data(cursor, start_date, end_date)
+    cyprus_week, cyprus_month, cyprus_search = offshore_data(cursor, start_date, end_date)
 
-    print(flag_offshore, country_search)
+    print(flag_offshore, cyprus_week)
 
-    if flag_offshore == 'country':
-        tab_offshore = 'country'
-    elif flag_offshore == 'pinfl':
-        tab_offshore = 'pinfl'
-    elif flag_offshore == 'tt':
-        tab_offshore = 'tt'
+    if flag_offshore == 'cyprus':
+        tab_offshore = 'cyprus'
     else:
         tab_offshore = ''
     flag_offshore = ''
 
-    return render_template("offshore.html", country_week=json.dumps(country_week), country_month=json.dumps(country_month),
-                           country_search=json.dumps(country_search), pinfl_week=json.dumps(pinfl_week),
-                           pinfl_month=json.dumps(pinfl_month), pinfl_search=json.dumps(pinfl_search),
-                           tt_week=json.dumps(tt_week), tt_month=json.dumps(tt_month),
-                           tt_search=json.dumps(tt_search), tab=json.dumps(tab_offshore))
+    return render_template("offshore.html", cyprus_week=json.dumps(cyprus_week), cyprus_month=json.dumps(cyprus_month),
+                           cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_offshore))
 
 
 def reconnect_to_db():

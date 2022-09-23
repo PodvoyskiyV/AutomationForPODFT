@@ -39,3 +39,11 @@ function P2P_TT() {
     $.get("/dates_p2p", { "start_date": P2PTTFrom, "end_date": P2PTTTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
+
+function Offshore_Cyprus() {
+    var OffshoreCyprusFrom = $("#offshore_Cyprus_From").val();
+    var OffshoreCyprusTo = $("#offshore_Cyprus_To").val();
+    var flag = 'cyprus';
+    $.get("/dates_offshore", { "start_date": OffshoreCyprusFrom, "end_date": OffshoreCyprusTo, "flag": flag });
+    setTimeout(function() {window.location.reload();}, 1000)
+}

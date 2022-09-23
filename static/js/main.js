@@ -18,19 +18,30 @@ function openTab(evt, tabName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active-tablinks", "");
     }
+    console.log('fjfjj')
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active-tablinks";
 
+    console.log('fjfjj')
+
     if (tabName == "OCTO_Sender") {
-        default_sort_OCTO(true)
+        console.log('no')
+        default_sort_OCTO(1)
     } else if (tabName == "OCTO_Reciever") {
-        default_sort_OCTO(false)
+        console.log('no')
+        default_sort_OCTO(2)
     } else if (tabName == "P2P_Country") {
+        console.log('no')
         default_sort_P2P(1);
     } else if (tabName == "P2P_Pinfl") {
+        console.log('no')
         default_sort_P2P(2);
     } else if (tabName == "P2P_TT") {
+        console.log('no')
         default_sort_P2P(3);
+    } else if (tabName == "Offshore_Cyprus") {
+        console.log('yeye')
+        default_sort_Offshore(1)
     }
 }
 
@@ -40,6 +51,9 @@ if (document.getElementById("Mrot_defaultOpen")) {
     document.getElementById("OCTO_defaultOpen").click();
 } else if (document.getElementById("P2P_defaultOpen")) {
     document.getElementById("P2P_defaultOpen").click();
+} else if (document.getElementById("Offshore_defaultOpen")) {
+    console.log('yeyeyeye')
+    document.getElementById("Offshore_defaultOpen").click();
 }
 
 // Open table_sort tab
@@ -61,7 +75,7 @@ function openSort(evt, sort_tabName) {
 
 
 function default_sort_OCTO(flag_sort) {
-    if (flag_sort) {
+    if (flag_sort == 1) {
         document.getElementById("Sender_defaultOpen").click();
     } else {
         document.getElementById("Reciever_defaultOpen").click();
@@ -78,16 +92,21 @@ function default_sort_P2P(flag_sort) {
     }
 }
 
+function default_sort_Offshore(flag_sort) {
+    if (flag_sort == 1) {
+        document.getElementById("Cyprus_defaultOpen").click();
+    }
+}
 
 
 // Date on pages
 var today = new Date();
 var options = { year: 'numeric', month: 'long', day: 'numeric' };
 var now = today.toLocaleString('en-US', options);
-var contenDateCounter = document.getElementsByClassName('content-date');
+var contentDateCounter = document.getElementsByClassName('content-date');
 var idDate = 'date_';
 
-for (i = 1; i <= contenDateCounter.length; i++) {
+for (i = 1; i <= contentDateCounter.length; i++) {
     idDate = 'date_';
     idDate = idDate + i;
 
