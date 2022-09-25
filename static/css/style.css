@@ -368,6 +368,27 @@
     color: var(--main-color-2);
 }
 
+.download_btn {
+    height: 44px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--main-color-2);
+    background: transparent;
+    border: 1px solid var(--main-color-2);
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+}
+
+.download_btn img {
+    margin-left: 15px;
+}
+
 
 /* ----------------------------------------------------- table ----------------------------------------------------- */
 

@@ -143,7 +143,9 @@
                             <input type="sabmit" value="" id="sender_search" onclick="OCTO_Sender();" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <p class="content-date">DATE: Sep 01, 2022</p>
+                    <button class="download_btn" onclick="" id="down_OCTO_Sender">Download
+                        <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
+                    </button>
                 </div>
 
                 <div id="Sender_Week" class="sort_tabcontent">
@@ -209,7 +211,9 @@
                             <input type="sabmit" value="" id="reciever_search" onclick="OCTO_Reciever()" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <p class="content-date">DATE: Sep 01, 2022</p>
+                    <button class="download_btn" onclick="" id="down_OCTO_Reciever">Download
+                        <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
+                    </button>
                 </div>
 
                 <div id="Reciever_Week" class="sort_tabcontent">
