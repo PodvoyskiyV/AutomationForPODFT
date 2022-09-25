@@ -18,6 +18,9 @@ else:
 mrot = 920000
 mrot_150 = mrot * 150
 
+brv = 300000
+brv_500 = brv * 500
+
 today = (datetime.datetime.now()).strftime("%Y-%m-%d")
 yesterday = ((datetime.datetime.now()) - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 week_ago = ((datetime.datetime.now()) - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
