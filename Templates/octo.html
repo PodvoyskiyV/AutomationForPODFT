@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DS - octo</title>
+    <title>Humans</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,7 @@
 <body>
     <aside class="sidebar">
         <div class="logo-details">
-            <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo">
-            <span class="logo_name">DS</span>
+            <img class="logo-img" src="{{ url_for('static', filename='img/infosec.svg') }}" alt="logoSec">
         </div>
         <div class="separator"></div>
 
@@ -112,10 +111,13 @@
     <section class="home-section">
         <div class="home-content">
             <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
+            <div class="logos">
+                <img class="logo-img" src="{{ url_for('static', filename='img/LOGO.svg') }}" alt="logoHumans">
+            </div>
         </div>
         <div class="main">
             <div class="main-text">
-                <h2 class="main-title">Welcome to DS</h2>
+                <h2 class="main-title">Welcome</h2>
                 <p class="main-desk">We are on a mission to help developers.</p>
             </div>
         </div>
@@ -253,6 +255,9 @@
                 </div>
             </div>
         </div>
+        <footer class="footer">
+            <div class="footer-info">© <span class="copyright_Date"></span> Zhidko Ulyana</div>
+        </footer>
     </section>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

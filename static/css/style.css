@@ -572,6 +572,7 @@ input[type="date"] {
     padding: 16px 24px;
     height: 50px;
     background: var(--main-color-3);
+    margin-top: 20px;
 }
 
 .footer-info {
