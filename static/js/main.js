@@ -1,3 +1,4 @@
+
 // open menu
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".close-menu");
@@ -61,6 +62,7 @@ function openSort(evt, sort_tabName) {
 
     document.getElementById(sort_tabName).style.display = "block";
     evt.currentTarget.className += " sort_active";
+    change_flag(sort_tabName)
 }
 
 

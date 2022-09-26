@@ -142,7 +142,7 @@
                             <input type="sabmit" value="" id="offshore_Cyprus_search" onclick="Offshore_Cyprus()" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <button class="download_btn" onclick="" id="down_Offshore_Cyprus">Download
+                    <button class="download_btn" onclick="Download()" id="down_Offshore_Cyprus">Download
                         <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
                     </button>
                 </div>
@@ -203,9 +203,9 @@
             <div class="footer-info">© <span class="copyright_Date"></span> Zhidko Ulyana</div>
         </footer>
     </section>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/back.js') }}"></script>
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         offshore_table_from_back({{cyprus_week | safe}}, {{cyprus_month | safe}}, {{cyprus_search | safe}}, {{tab | safe}});
     </script>

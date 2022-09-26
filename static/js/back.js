@@ -1,3 +1,9 @@
+let flag_download = ''
+
+function change_flag(new_flag) {
+    flag_download = new_flag
+}
+
 function OCTO_Sender() {
     var senderFrom = $("#sender_From").val();
     var senderTo = $("#sender_To").val();
@@ -47,3 +53,9 @@ function Offshore_Cyprus() {
     $.get("/dates_offshore", { "start_date": OffshoreCyprusFrom, "end_date": OffshoreCyprusTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
+
+function Download(){
+    $.get("/download", { "flag": flag_download });
+}
+
+
