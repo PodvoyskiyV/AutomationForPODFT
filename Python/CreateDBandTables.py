@@ -61,9 +61,10 @@ def create_octo_table_func(my_cursor):
 def create_p2p_table_func(my_cursor):
     sql = "CREATE TABLE Initial_Data_P2P (time_id TIMESTAMP(3), customer_id VARCHAR(255), user_id VARCHAR(255), " \
           "operation_type VARCHAR(255), amount DOUBLE(30, 2), currency VARCHAR(255), country VARCHAR(255), " \
-          "masked_card_number VARCHAR(255), card_status VARCHAR(255), fio VARCHAR(255), birth_date VARCHAR(255), " \
-          "citizenship VARCHAR(255), registration_address VARCHAR(255), document_number VARCHAR(255), " \
-          "doc_type VARCHAR(255), pinfl VARCHAR(255), pos_code VARCHAR(255), pos_name VARCHAR(255))"
+          "mcc VARCHAR(255), merch_name VARCHAR(255), masked_card_number VARCHAR(255), card_status VARCHAR(255), " \
+          "fio VARCHAR(255), birth_date VARCHAR(255), citizenship VARCHAR(255), registration_address VARCHAR(255), " \
+          "document_number VARCHAR(255), doc_type VARCHAR(255), pinfl VARCHAR(255), pos_code VARCHAR(255), " \
+          "pos_name VARCHAR(255))"
 
     my_cursor.execute(sql)
 

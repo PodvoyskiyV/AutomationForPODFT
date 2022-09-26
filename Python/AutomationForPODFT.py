@@ -59,12 +59,13 @@ def p2p_to_db_func(my_cursor, mydb):
 
     for i in range(len(FullDataP2P)):
         sql = "INSERT INTO Initial_Data_P2P (time_id, customer_id, user_id, operation_type, amount, currency, " \
-              "country, masked_card_number, card_status, fio, birth_date, citizenship, " \
+              "country, mcc, merch_name, masked_card_number, card_status, fio, birth_date, citizenship, " \
               "registration_address, document_number, doc_type, pinfl, pos_code, pos_name) " \
-              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (f"{FullDataP2P.iloc[i].time_id}", f"{FullDataP2P.iloc[i].customer_id}",
                f"{FullDataP2P.iloc[i].user_id}", f"{FullDataP2P.iloc[i].operation_type}",
                f"{FullDataP2P.iloc[i].amount}", f"{FullDataP2P.iloc[i].currency}", f"{FullDataP2P.iloc[i].country}",
+               f"{FullDataP2P.iloc[i].mcc}", f"{FullDataP2P.iloc[i].merch_name}",
                f"{FullDataP2P.iloc[i].masked_card_number}", f"{FullDataP2P.iloc[i].card_status}",
                f"{FullDataP2P.iloc[i].fio}", f"{FullDataP2P.iloc[i].birth_date}",
                f"{FullDataP2P.iloc[i].citizenship}", f"{FullDataP2P.iloc[i].registration_address}",
