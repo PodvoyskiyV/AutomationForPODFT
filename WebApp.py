@@ -1,6 +1,6 @@
 import json
 from Python import BackOfWebApp as Back
-from flask import Flask, render_template, redirect, url_for, request  # pip install flask
+from flask import Flask, render_template, redirect, url_for, request, send_file  # pip install flask
 
 app = Flask(__name__)
 
@@ -96,8 +96,6 @@ def offshore():
     Back.reconnect_to_db()
     cyprus_week, cyprus_month, cyprus_search = Back.offshore_data(Back.cursor, Back.start_date, Back.end_date)
 
-    print(Back.flag_offshore, cyprus_week)
-
     if Back.flag_offshore == 'cyprus':
         tab_offshore = 'cyprus'
     else:
@@ -106,6 +104,13 @@ def offshore():
 
     return render_template("offshore.html", cyprus_week=json.dumps(cyprus_week), cyprus_month=json.dumps(cyprus_month),
                            cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_offshore))
+
+
+@app.route('/download')
+def download():
+    flag = request.args['flag']
+    path = Back.create_file_func(flag)
+    return send_file(path, as_attachment=True)
 
 
 app.run(host="0.0.0.0", port=80)
