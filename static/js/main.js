@@ -88,22 +88,6 @@ function default_sort_Offshore(flag_sort) {
     }
 }
 
-/*
-// Date on pages
-var today = new Date();
-var options = { year: 'numeric', month: 'long', day: 'numeric' };
-var now = today.toLocaleString('en-US', options);
-var contentDateCounter = document.getElementsByClassName('content-date');
-var idDate = 'date_';
-
-for (i = 1; i <= contentDateCounter.length; i++) {
-    idDate = 'date_';
-    idDate = idDate + i;
-
-    document.getElementById(`${idDate}`).innerHTML = `DATE: ${now}`;
-}
-*/
-
 // Изменение года в футере
 var now = new Date().getFullYear();
 document.querySelector('span.copyright_Date').innerHTML = now;
