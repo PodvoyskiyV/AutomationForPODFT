@@ -35,37 +35,41 @@ def sftp_connection_func():
         sftp.get("remoteP2PFilePath", "localP2PFilePath")
 
 
-def octo_to_db_func(my_cursor, mydb):
+def octo_to_db_func(my_cursor, my_db):
     start_octo_to_db_func = datetime.datetime.now()
 
     for i in range(len(FullDataOCTO)):
         sql = "INSERT INTO Initial_Data_OCTO (octo_trxn_id, created_date, masked_card_number, amount, currency, " \
-              "provider_id, dest_tool_id, customer_id, type_description, bill_account_id) " \
-              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+              "transaction_status, provider_id, dest_tool_id, customer_id, type_description, schema_id, " \
+              "bill_account_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (f"{FullDataOCTO.iloc[i].octo_trxn_id}", f"{FullDataOCTO.iloc[i].created_date[:-6]}",
                f"{FullDataOCTO.iloc[i].masked_card_number}", f"{FullDataOCTO.iloc[i].amount}",
-               f"{FullDataOCTO.iloc[i].currency}", f"{FullDataOCTO.iloc[i].provider_id}",
-               f"{FullDataOCTO.iloc[i].dest_tool_id}", f"{FullDataOCTO.iloc[i].customer_id}",
-               f"{FullDataOCTO.iloc[i].type_description}", f"{FullDataOCTO.iloc[i].bill_account_id}")
+               f"{FullDataOCTO.iloc[i].currency}", f"{FullDataOCTO.iloc[i].transaction_status}",
+               f"{FullDataOCTO.iloc[i].provider_id}", f"{FullDataOCTO.iloc[i].dest_tool_id}",
+               f"{FullDataOCTO.iloc[i].customer_id}", f"{FullDataOCTO.iloc[i].type_description}",
+               f"{FullDataOCTO.iloc[i].schema_id}", f"{FullDataOCTO.iloc[i].bill_account_id}")
         my_cursor.execute(sql, val)
-        mydb.commit()
+        my_db.commit()
 
     end_octo_to_db_func = datetime.datetime.now()
     print(f'octo_to_db_func ended in {end_octo_to_db_func - start_octo_to_db_func}')
 
 
-def p2p_to_db_func(my_cursor, mydb):
+def p2p_to_db_func(my_cursor, my_db):
     start_p2p_to_db_func = datetime.datetime.now()
 
     for i in range(len(FullDataP2P)):
-        sql = "INSERT INTO Initial_Data_P2P (time_id, customer_id, user_id, operation_type, amount, currency, " \
-              "country, mcc, merch_name, masked_card_number, card_status, fio, birth_date, citizenship, " \
-              "registration_address, document_number, doc_type, pinfl, pos_code, pos_name) " \
-              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO Initial_Data_P2P (time_id, customer_id, user_id, operation_type, amount, currency_code, " \
+              "currency, currency_name, country_code, mcc, merch_name, country, masked_card_number, " \
+              "card_status, fio, birth_date, citizenship, registration_address, document_number, doc_type, pinfl, " \
+              "pos_code, pos_name) " \
+              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (f"{FullDataP2P.iloc[i].time_id}", f"{FullDataP2P.iloc[i].customer_id}",
                f"{FullDataP2P.iloc[i].user_id}", f"{FullDataP2P.iloc[i].operation_type}",
-               f"{FullDataP2P.iloc[i].amount}", f"{FullDataP2P.iloc[i].currency}", f"{FullDataP2P.iloc[i].country}",
-               f"{FullDataP2P.iloc[i].mcc}", f"{FullDataP2P.iloc[i].merch_name}",
+               f"{FullDataP2P.iloc[i].amount}", f"{FullDataP2P.iloc[i].currency_code}",
+               f"{FullDataP2P.iloc[i].currency}", f"{FullDataP2P.iloc[i].currency_name}",
+               f"{FullDataP2P.iloc[i].acq_country_code}", f"{FullDataP2P.iloc[i].acq_mcc}",
+               f"{FullDataP2P.iloc[i].acq_merch_name}", f"{FullDataP2P.iloc[i].country}",
                f"{FullDataP2P.iloc[i].masked_card_number}", f"{FullDataP2P.iloc[i].card_status}",
                f"{FullDataP2P.iloc[i].fio}", f"{FullDataP2P.iloc[i].birth_date}",
                f"{FullDataP2P.iloc[i].citizenship}", f"{FullDataP2P.iloc[i].registration_address}",
@@ -73,7 +77,7 @@ def p2p_to_db_func(my_cursor, mydb):
                f"{FullDataP2P.iloc[i].pinfl}", f"{FullDataP2P.iloc[i].pos_code}",
                f"{FullDataP2P.iloc[i].pos_name}")
         my_cursor.execute(sql, val)
-        mydb.commit()
+        my_db.commit()
 
     end_p2p_to_db_func = datetime.datetime.now()
     print(f'p2p_to_db_func ended in {end_p2p_to_db_func - start_p2p_to_db_func}')
@@ -213,7 +217,7 @@ def mrot_func(my_cursor, my_db, start, t):
         for row in data:
             sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, block, observation) " \
                   "VALUES (%s, %s, %s, %s, %s)"
-            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{row[5]}")
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}")
             my_cursor.execute(sql, val)
             my_db.commit()
     elif t == 'week':
@@ -242,7 +246,7 @@ def mrot_func(my_cursor, my_db, start, t):
 
         for row in data:
             sql = f"INSERT INTO mrot_{t} (masked_card_number, count, amount, observation) " \
-                  "VALUES (%s, %s, %s, %s, %s)"
+                  "VALUES (%s, %s, %s, %s)"
             val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}")
             my_cursor.execute(sql, val)
             my_db.commit()
@@ -257,20 +261,82 @@ def offshore_func(my_cursor, my_db, start, table):
     my_cursor.execute(f"TRUNCATE TABLE offshore_{table};")
     my_db.commit()
 
-    my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
+    my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
+                      "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                       f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND country='Cyprus' "
-                      "AND NOT country='nan' ORDER BY time_id;")
+                      "ORDER BY time_id;")
     data = my_cursor.fetchall()
 
     for row in data:
-        sql = f"INSERT INTO offshore_{table} (person, birthday, passport, operation_date, amount, country) " \
-              f"VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3][0:10]}", f"{row[4]}", f"{row[5]}")
+        sql = f"INSERT INTO offshore_{table} (person, birthday, citizenship, registration_address, passport, " \
+              "operation_date, amount, currency, country, merch_name, mcc) " \
+              "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{str(row[5])[0:10]}", f"{row[6]}",
+               f"{row[7]}", f"{row[8]}", f"{row[9]}", f"{row[10]}")
         my_cursor.execute(sql, val)
         my_db.commit()
 
     end_offshore_func = datetime.datetime.now()
     print(f'country_p2p_func ended in {end_offshore_func - start_offshore_func}')
+
+
+def questionable_operations_func(my_cursor, my_db, start, table):
+    start_questionable_operations_func = datetime.datetime.now()
+
+    my_cursor.execute(f"TRUNCATE TABLE questionable_operations_{table};")
+    my_db.commit()
+
+    my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
+                      "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
+                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (mcc='7995' OR mcc='6211') "
+                      "AND NOT country='Cyprus'"
+                      "ORDER BY time_id;")  # AND NOT country='nan'
+    data = my_cursor.fetchall()
+
+    for row in data:
+        sql = f"INSERT INTO questionable_operations_{table} (person, birthday, citizenship, registration_address, " \
+              f"passport, operation_date, amount, currency, country, merch_name, mcc) " \
+              f"VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{str(row[5])[0:10]}", f"{row[6]}",
+               f"{row[7]}", f"{row[8]}", f"{row[9]}", f"{row[10]}")
+        my_cursor.execute(sql, val)
+        my_db.commit()
+
+    end_questionable_operations_func = datetime.datetime.now()
+    print(f'country_p2p_func ended in {end_questionable_operations_func - start_questionable_operations_func}')
+
+
+def brv_func(my_cursor, my_db, start, table):
+    start_brv_func = datetime.datetime.now()
+
+    my_cursor.execute(f"TRUNCATE TABLE brv_{table};")
+    my_db.commit()
+
+    if table == 'month':
+        my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, "
+                          f"SUM(amount) AS amount, IF(SUM(amount) > {var.brv_500}, '+', '-') AS block, "
+                          f"IF(SUM(amount) < {var.brv_500} AND SUM(amount) > {var.brv_500 * 0.9}, '+', '-') "
+                          "AS observation FROM (SELECT DISTINCT fio, birth_date, citizenship, registration_address, "
+                          "document_number, amount FROM  Initial_Data_P2P "
+                          f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') "
+                          "AND operation_type='Incoming P2P transfer' ) "
+                          "X GROUP BY document_number, fio, birth_date, citizenship, registration_address "
+                          "ORDER BY amount DESC;")
+        data = my_cursor.fetchall()
+
+        for row in data:
+            sql = f"INSERT INTO brv_{table} (person, birthday, citizenship, registration_address, passport, amount, " \
+                  "block, observation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{row[5]}", f"{row[6]}",
+                   f"{row[7]}")
+            my_cursor.execute(sql, val)
+            my_db.commit()
+
+    elif table == 'day':
+        pass
+
+    end_brv_func = datetime.datetime.now()
+    print(f'country_p2p_func ended in {end_brv_func - start_brv_func}')
 
 
 def delete_files_func():
@@ -282,14 +348,17 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('OCTO 01-1708.csv', sep=',')
-    FullDataP2P = pd.read_csv('P2P 08-14.csv', sep=',')
+    FullDataOCTO = pd.read_csv('OCTO 27.09.22 - OCTO 27.09.22.csv', sep=',')
+    FullDataP2P = pd.read_csv('P2P 27.09.22 - P2P 27.09.22.csv', sep=',')
 
     cursor, db = db_connection_func()
 
     octo_to_db_func(cursor, db)
     p2p_to_db_func(cursor, db)
     mrot_func(cursor, db, var.yesterday, 'day')
+    offshore_func(cursor, db, var.yesterday, 'day')
+    questionable_operations_func(cursor, db, var.yesterday, 'day')
+    brv_func(cursor, db, var.month_ago, 'month')
 
     if var.current_week_day == 'Monday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
@@ -298,7 +367,6 @@ try:
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
         mrot_func(cursor, db, var.week_ago, 'week')
-        offshore_func(cursor, db, var.week_ago, 'week')
     if var.current_day == '1':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
@@ -306,9 +374,6 @@ try:
         number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         mrot_func(cursor, db, f"{var.previous_month}-01", 'month')
-        offshore_func(cursor, db, f"{var.previous_month}-01", 'month')
-
-    delete_files_func()
 
     end_program = datetime.datetime.now()
     print(f'\nProgram ended in {end_program - start_program}')

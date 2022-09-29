@@ -22,9 +22,10 @@ brv = 300000
 brv_500 = brv * 500
 
 today = (datetime.datetime.now()).strftime("%Y-%m-%d")
-yesterday = ((datetime.datetime.now()) - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+yesterday = ((datetime.datetime.now()) - datetime.timedelta(days=1)).strftime("%Y-%m-%d")  # 1
 week_ago = ((datetime.datetime.now()) - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+month_ago = ((datetime.datetime.now()) - datetime.timedelta(days=30)).strftime("%Y-%m-%d")
 current_week_day = (datetime.datetime.now()).strftime('%A')
 current_month = (datetime.datetime.now()).strftime('%B')
-previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=22)).strftime("%Y-%m")
+previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=30)).strftime("%Y-%m")
 current_day = (datetime.datetime.now()).strftime('%d')
