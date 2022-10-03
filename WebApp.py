@@ -89,8 +89,8 @@ def dates_offshore():
     return "OK"
 
 
-@app.route("/offshore")
-def offshore():
+@app.route("/bank")
+def bank():
     Back.reconnect_to_db()
     cyprus_week, cyprus_search = Back.offshore_data(Back.cursor, Back.start_date, Back.end_date)
 
@@ -101,7 +101,7 @@ def offshore():
 
     print(Back.start_date, Back.flag_offshore)
     print(cyprus_search)
-    return render_template("offshore.html", cyprus_week=json.dumps(cyprus_week),
+    return render_template("bank.html", cyprus_week=json.dumps(cyprus_week),
                            cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_offshore))
 
 
