@@ -50,7 +50,7 @@ function Offshore_Cyprus() {
     var OffshoreCyprusFrom = $("#offshore_Cyprus_From").val();
     var OffshoreCyprusTo = $("#offshore_Cyprus_To").val();
     var flag = 'cyprus';
-    $.get("/dates_offshore", { "start_date": OffshoreCyprusFrom, "end_date": OffshoreCyprusTo, "flag": flag });
+    $.get("/dates_bank", { "start_date": OffshoreCyprusFrom, "end_date": OffshoreCyprusTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
 

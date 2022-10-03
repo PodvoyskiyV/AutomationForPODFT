@@ -83,8 +83,8 @@ def p2p():
                            tt_search=json.dumps(tt_search), tab=json.dumps(tab_p2p))
 
 
-@app.route("/dates_offshore")
-def dates_offshore():
+@app.route("/dates_bank")
+def dates_bank():
     Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
     return "OK"
 
