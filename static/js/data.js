@@ -201,9 +201,8 @@ function render_offshore_cyprus(table) {
         };
     };
 
-function offshore_table_from_back(cyprus_week, cyprus_month, cyprus_search, tab) {
-    render_offshore_cyprus(OffshoreCyprusWeek)(cyprus_week);
-    render_offshore_cyprus(OffshoreCyprusMonth)(cyprus_month);
+function offshore_table_from_back(cyprus_day, cyprus_search, tab) {
+    render_offshore_cyprus(OffshoreCyprusWeek)(cyprus_day);
     render_offshore_cyprus(OffshoreCyprusFrom)(cyprus_search);
 
     if (tab == 'cyprus') {

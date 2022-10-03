@@ -1,5 +1,4 @@
-
-// open menu
+// Open menu
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".close-menu");
 
@@ -10,14 +9,14 @@ sidebarBtn.addEventListener("click", () => {
 
 // Open tab sidebar
 function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+    var i, tab_content, tab_links;
+    tab_content = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tab_content.length; i++) {
+        tab_content[i].style.display = "none";
     }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active-tablinks", "");
+    tab_links = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tab_links.length; i++) {
+        tab_links[i].className = tab_links[i].className.replace(" active-tablinks", "");
     }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active-tablinks";
@@ -49,15 +48,15 @@ if (document.getElementById("Mrot_defaultOpen")) {
 
 // Open table_sort tab
 function openSort(evt, sort_tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("sort_tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+    var i, tab_content, tab_links;
+    tab_content = document.getElementsByClassName("sort_tabcontent");
+    for (i = 0; i < tab_content.length; i++) {
+        tab_content[i].style.display = "none";
     }
 
-    tablinks = document.getElementsByClassName("sort_tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" sort_active", "");
+    tab_links = document.getElementsByClassName("sort_tablinks");
+    for (i = 0; i < tab_links.length; i++) {
+        tab_links[i].className = tab_links[i].className.replace(" sort_active", "");
     }
 
     document.getElementById(sort_tabName).style.display = "block";
@@ -90,6 +89,6 @@ function default_sort_Offshore(flag_sort) {
     }
 }
 
-// Изменение года в футере
+// Change year at footer
 var now = new Date().getFullYear();
 document.querySelector('span.copyright_Date').innerHTML = now;

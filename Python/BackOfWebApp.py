@@ -286,28 +286,16 @@ def p2p_data(my_cursor, start, end):
 
 def offshore_data(my_cursor, start, end):
     offshore_cyprus_week = []
-    my_cursor.execute("SELECT * FROM offshore_week;")
+    my_cursor.execute("SELECT * FROM offshore_day;")
     data = my_cursor.fetchall()
     for row in data:
         offshore_cyprus_week.append({
             'person': row[0],
             'birthday': row[1],
-            'passport': row[2],
-            'operation_date': str(row[3]),
-            'amount': row[4],
-            'country': row[5]})
-
-    offshore_cyprus_month = []
-    my_cursor.execute("SELECT * FROM offshore_month;")
-    data = my_cursor.fetchall()
-    for row in data:
-        offshore_cyprus_month.append({
-            'person': row[0],
-            'birthday': row[1],
-            'passport': row[2],
-            'operation_date': str(row[3]),
-            'amount': row[4],
-            'country': row[5]})
+            'passport': row[4],
+            'operation_date': str(row[5]),
+            'amount': row[6],
+            'country': row[7]})
 
     offshore_cyprus_search = []
     my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
@@ -323,7 +311,7 @@ def offshore_data(my_cursor, start, end):
             'amount': row[4],
             'country': row[5]})
 
-    return offshore_cyprus_week, offshore_cyprus_month, offshore_cyprus_search
+    return offshore_cyprus_week, offshore_cyprus_search
 
 
 def create_file_func(flag):
@@ -340,6 +328,16 @@ def create_file_func(flag):
 
 def delete_file(path):
     os.remove(path)
+
+
+def flags_change_func(start, end, flag):
+    if flag == 'cyprus':
+        global start_date, end_date, flag_offshore
+
+    start_date = start
+    end_date = end
+    flag_offshore = flag
+    print(start_date, end_date, flag_offshore)
 
 
 cursor, db = db_connection_func()

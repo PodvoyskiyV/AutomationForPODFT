@@ -128,8 +128,6 @@
                     <div class="sort_tab">
                         <button class="sort_tablinks sort_defaultOpen" onclick="openSort(event, 'Cyprus_Week')" id="Cyprus_defaultOpen">Week</button>
                         <div class="sep"></div>
-                        <button class="sort_tablinks" onclick="openSort(event, 'Cyprus_Month')">Month</button>
-                        <div class="sep"></div>
                         <button class="sort_tablinks" onclick="openSort(event, 'Cyprus_From')" id="Cyprus_D_From">
                             <label for="From">
                                 From
@@ -150,23 +148,6 @@
                 <div id="Cyprus_Week" class="sort_tabcontent">
                     <div class="table-wrapper">
                         <table class="offshoreCyprusWeek">
-                            <thead>
-                                <tr>
-                                    <th>PERSON</th>
-                                    <th>BIRTHDAY</th>
-                                    <th>PASSPORT</th>
-                                    <th>OPERATION DATE</th>
-                                    <th>AMOUNT</th>
-                                    <th>COUNTRY</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="Cyprus_Month" class="sort_tabcontent">
-                    <div class="table-wrapper">
-                        <table class="offshoreCyprusMonth">
                             <thead>
                                 <tr>
                                     <th>PERSON</th>
@@ -207,7 +188,7 @@
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        offshore_table_from_back({{cyprus_week | safe}}, {{cyprus_month | safe}}, {{cyprus_search | safe}}, {{tab | safe}});
+        offshore_table_from_back({{cyprus_week | safe}}, {{cyprus_search | safe}}, {{tab | safe}});
     </script>
 
 </body>

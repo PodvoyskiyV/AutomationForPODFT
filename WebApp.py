@@ -85,24 +85,23 @@ def p2p():
 
 @app.route("/dates_offshore")
 def dates_offshore():
-    Back.start_date = request.args["start_date"]
-    Back.end_date = request.args["end_date"]
-    Back.flag_offshore = request.args["flag"]
+    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
     return "OK"
 
 
 @app.route("/offshore")
 def offshore():
     Back.reconnect_to_db()
-    cyprus_week, cyprus_month, cyprus_search = Back.offshore_data(Back.cursor, Back.start_date, Back.end_date)
+    cyprus_week, cyprus_search = Back.offshore_data(Back.cursor, Back.start_date, Back.end_date)
 
     if Back.flag_offshore == 'cyprus':
         tab_offshore = 'cyprus'
     else:
         tab_offshore = ''
-    Back.flag_offshore = ''
 
-    return render_template("offshore.html", cyprus_week=json.dumps(cyprus_week), cyprus_month=json.dumps(cyprus_month),
+    print(Back.start_date, Back.flag_offshore)
+    print(cyprus_search)
+    return render_template("offshore.html", cyprus_week=json.dumps(cyprus_week),
                            cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_offshore))
 
 
