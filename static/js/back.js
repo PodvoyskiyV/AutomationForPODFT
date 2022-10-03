@@ -46,11 +46,11 @@ function P2P_TT() {
     setTimeout(function() {window.location.reload();}, 1000)
 }
 
-function Bank_Cyprus() {
-    var BankCyprusFrom = $("#bank_Cyprus_From").val();
-    var BankCyprusTo = $("#bank_Cyprus_To").val();
-    var flag = 'cyprus';
-    $.get("/dates_bank", { "start_date": BankCyprusFrom, "end_date": BankCyprusTo, "flag": flag });
+function Bank_Offshore() {
+    var BankOffshoreFrom = $("#bank_Offshore_From").val();
+    var BankOffshoreTo = $("#bank_Offshore_To").val();
+    var flag = 'offshore';
+    $.get("/dates_bank", { "start_date": BankOffshoreFrom, "end_date": BankOffshoreTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
 

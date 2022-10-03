@@ -1,5 +1,5 @@
 import os
-import csv
+# import csv
 import mysql.connector
 from Python import variables as var
 
@@ -317,11 +317,8 @@ def bank_data(my_cursor, start, end):
 def create_file_func(flag):
     if flag == '':
         pass
-    elif flag == 'Cyprus_Week':
-        cyprus_week, cyprus_month, cyprus_search = bank_data(cursor, start_date, end_date)
-        with open(f'{flag}.csv', 'w') as f:
-            f.write('\n'.join(f'{tup[0]} {tup[1]} {tup[2]} {tup[3]} {tup[4]} {tup[5]}' for tup in cyprus_week))
-        return f'{flag}.csv'
+    elif flag == 'Offshore_Day':
+        pass
     elif flag == '':
         pass
 

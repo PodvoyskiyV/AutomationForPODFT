@@ -31,7 +31,7 @@ function openTab(evt, tabName) {
         default_sort_P2P(2);
     } else if (tabName == "P2P_TT") {
         default_sort_P2P(3);
-    } else if (tabName == "Bank_Cyprus") {
+    } else if (tabName == "Bank_Offshore") {
         default_sort_Bank(1)
     }
 }
@@ -85,7 +85,7 @@ function default_sort_P2P(flag_sort) {
 
 function default_sort_Bank(flag_sort) {
     if (flag_sort == 1) {
-        document.getElementById("Cyprus_defaultOpen").click();
+        document.getElementById("Offshore_defaultOpen").click();
     }
 }
 
