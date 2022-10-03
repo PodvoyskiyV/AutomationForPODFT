@@ -92,17 +92,17 @@ def dates_bank():
 @app.route("/bank")
 def bank():
     Back.reconnect_to_db()
-    cyprus_week, cyprus_search = Back.offshore_data(Back.cursor, Back.start_date, Back.end_date)
+    cyprus_week, cyprus_search = Back.bank_data(Back.cursor, Back.start_date, Back.end_date)
 
-    if Back.flag_offshore == 'cyprus':
-        tab_offshore = 'cyprus'
+    if Back.flag_bank == 'cyprus':
+        tab_bank = 'cyprus'
     else:
-        tab_offshore = ''
+        tab_bank = ''
 
-    print(Back.start_date, Back.flag_offshore)
+    print(Back.start_date, Back.flag_bank)
     print(cyprus_search)
     return render_template("bank.html", cyprus_week=json.dumps(cyprus_week),
-                           cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_offshore))
+                           cyprus_search=json.dumps(cyprus_search), tab=json.dumps(tab_bank))
 
 
 @app.route('/download')

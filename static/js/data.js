@@ -166,11 +166,11 @@ function p2p_table_from_back(country_week, country_month, country_search, pinfl_
     }
 }
 
-var OffshoreCyprusWeek = document.querySelector('.offshoreCyprusWeek');
-var OffshoreCyprusMonth = document.querySelector('.offshoreCyprusMonth');
-var OffshoreCyprusFrom = document.querySelector('.offshoreCyprusFrom');
+var BankCyprusWeek = document.querySelector('.bankCyprusWeek');
+var BankCyprusMonth = document.querySelector('.bankCyprusMonth');
+var BankCyprusFrom = document.querySelector('.bankCyprusFrom');
 
-function template_offshore_cyprus(d) {
+function template_bank_cyprus(d) {
     return '<tr>' +
             '<td>' +
             d.person +
@@ -193,17 +193,17 @@ function template_offshore_cyprus(d) {
             '</tr>';
 };
 
-function render_offshore_cyprus(table) {
+function render_bank_cyprus(table) {
         return function(d) {
             return table.innerHTML += d.map(function(i) {
-                return template_offshore_cyprus(i);
+                return template_bank_cyprus(i);
             }).join('');
         };
     };
 
-function offshore_table_from_back(cyprus_day, cyprus_search, tab) {
-    render_offshore_cyprus(OffshoreCyprusWeek)(cyprus_day);
-    render_offshore_cyprus(OffshoreCyprusFrom)(cyprus_search);
+function bank_table_from_back(cyprus_day, cyprus_search, tab) {
+    render_bank_cyprus(BankCyprusWeek)(cyprus_day);
+    render_bank_cyprus(BankCyprusFrom)(cyprus_search);
 
     if (tab == 'cyprus') {
         document.getElementById("Cyprus_defaultOpen").click();

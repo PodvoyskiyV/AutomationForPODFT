@@ -36,7 +36,7 @@
             <li class="categories-item">
                 <div class="iocn-link">
                     <a href="{{ url_for('mrot') }}" class="dropdown-btn">
-                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="mrot icon">
+                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="Mrot icon">
                         <span class="link_name">Mrot</span>
                     </a>
                     <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
@@ -93,14 +93,14 @@
             <li class="categories-item showMenu">
                 <div class="iocn-link dropdown-active">
                     <a href="{{ url_for('bank') }}" class="dropdown-btn">
-                        <img src="{{ url_for('static', filename='img/offshore.svg') }}" alt="Offshore icon">
-                        <span class="link_name">Offshore</span>
+                        <img src="{{ url_for('static', filename='img/offshore.svg') }}" alt="Bank icon">
+                        <span class="link_name">Bank</span>
                     </a>
                     <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
                 </div>
                 <ul class="sub-menu">
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'Offshore_Cyprus')" id="Offshore_defaultOpen">Cyprus</button>
+                        <button class="tablinks" onclick="openTab(event, 'Bank_Cyprus')" id="Bank_defaultOpen">Cyprus</button>
                     </li>
                 </ul>
             </li>
@@ -122,7 +122,7 @@
         </div>
 
         <div class="content">
-            <div id="Offshore_Cyprus" class="tabcontent">
+            <div id="Bank_Cyprus" class="tabcontent">
                 <div class="tab-name">
                     <h3 class="content-title">Country</h3>
                     <div class="sort_tab">
@@ -131,23 +131,23 @@
                         <button class="sort_tablinks" onclick="openSort(event, 'Cyprus_From')" id="Cyprus_D_From">
                             <label for="From">
                                 From
-                                <input type="date" id="offshore_Cyprus_From" name="date_from">
+                                <input type="date" id="bank_Cyprus_From" name="date_from">
                             </label>
                             <label for="To">
                                 To
-                                <input type="date" id="offshore_Cyprus_To" name="date_to">
+                                <input type="date" id="bank_Cyprus_To" name="date_to">
                             </label>
-                            <input type="sabmit" value="" id="offshore_Cyprus_search" onclick="Offshore_Cyprus()" class="sort_tablinks_search" required>
+                            <input type="sabmit" value="" id="bank_Cyprus_search" onclick="Bank_Cyprus()" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <button class="download_btn" onclick="Download()" id="down_Offshore_Cyprus">Download
+                    <button class="download_btn" onclick="Download()" id="down_Bank_Cyprus">Download
                         <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
                     </button>
                 </div>
 
                 <div id="Cyprus_Week" class="sort_tabcontent">
                     <div class="table-wrapper">
-                        <table class="offshoreCyprusWeek">
+                        <table class="bankCyprusWeek">
                             <thead>
                                 <tr>
                                     <th>PERSON</th>
@@ -164,7 +164,7 @@
 
                 <div id="Cyprus_From" class="sort_tabcontent">
                     <div class="table-wrapper">
-                        <table class="offshoreCyprusFrom">
+                        <table class="bankCyprusFrom">
                             <thead>
                                 <tr>
                                     <th>PERSON</th>
@@ -188,7 +188,7 @@
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        offshore_table_from_back({{cyprus_week | safe}}, {{cyprus_search | safe}}, {{tab | safe}});
+        bank_table_from_back({{cyprus_week | safe}}, {{cyprus_search | safe}}, {{tab | safe}});
     </script>
 
 </body>

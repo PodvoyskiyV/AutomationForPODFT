@@ -6,7 +6,7 @@ from Python import variables as var
 start_date = end_date = var.today
 flag_octo = ''
 flag_p2p = ''
-flag_offshore = ''
+flag_bank = ''
 
 
 def db_connection_func():
@@ -284,41 +284,41 @@ def p2p_data(my_cursor, start, end):
         p2p_tt_week, p2p_tt_month, p2p_tt_search, p2p_data_for_charts_month
 
 
-def offshore_data(my_cursor, start, end):
-    offshore_cyprus_week = []
+def bank_data(my_cursor, start, end):
+    bank_offshore_day = []
     my_cursor.execute("SELECT * FROM offshore_day;")
     data = my_cursor.fetchall()
     for row in data:
-        offshore_cyprus_week.append({
+        bank_offshore_day.append({
             'person': row[0],
             'birthday': row[1],
             'passport': row[4],
             'operation_date': str(row[5]),
             'amount': row[6],
-            'country': row[7]})
+            'country': row[8]})
 
-    offshore_cyprus_search = []
+    bank_offshore_search = []
     my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
                       f"WHERE (time_id BETWEEN '{start}' AND '{end}') AND country='Cyprus' "
                       "AND NOT country='nan' ORDER BY time_id;")
     data = my_cursor.fetchall()
     for row in data:
-        offshore_cyprus_search.append({
+        bank_offshore_search.append({
             'person': row[0],
             'birthday': row[1],
             'passport': row[2],
-            'operation_date': str(row[3]),
+            'operation_date': (str(row[3])[0:10]),
             'amount': row[4],
             'country': row[5]})
 
-    return offshore_cyprus_week, offshore_cyprus_search
+    return bank_offshore_day, bank_offshore_search
 
 
 def create_file_func(flag):
     if flag == '':
         pass
     elif flag == 'Cyprus_Week':
-        cyprus_week, cyprus_month, cyprus_search = offshore_data(cursor, start_date, end_date)
+        cyprus_week, cyprus_month, cyprus_search = bank_data(cursor, start_date, end_date)
         with open(f'{flag}.csv', 'w') as f:
             f.write('\n'.join(f'{tup[0]} {tup[1]} {tup[2]} {tup[3]} {tup[4]} {tup[5]}' for tup in cyprus_week))
         return f'{flag}.csv'
@@ -332,12 +332,12 @@ def delete_file(path):
 
 def flags_change_func(start, end, flag):
     if flag == 'cyprus':
-        global start_date, end_date, flag_offshore
+        global start_date, end_date, flag_bank
 
     start_date = start
     end_date = end
-    flag_offshore = flag
-    print(start_date, end_date, flag_offshore)
+    flag_bank = flag
+    print(start_date, end_date, flag_bank)
 
 
 cursor, db = db_connection_func()

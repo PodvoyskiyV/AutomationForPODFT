@@ -31,8 +31,8 @@ function openTab(evt, tabName) {
         default_sort_P2P(2);
     } else if (tabName == "P2P_TT") {
         default_sort_P2P(3);
-    } else if (tabName == "Offshore_Cyprus") {
-        default_sort_Offshore(1)
+    } else if (tabName == "Bank_Cyprus") {
+        default_sort_Bank(1)
     }
 }
 
@@ -42,8 +42,8 @@ if (document.getElementById("Mrot_defaultOpen")) {
     document.getElementById("OCTO_defaultOpen").click();
 } else if (document.getElementById("P2P_defaultOpen")) {
     document.getElementById("P2P_defaultOpen").click();
-} else if (document.getElementById("Offshore_defaultOpen")) {
-    document.getElementById("Offshore_defaultOpen").click();
+} else if (document.getElementById("Bank_defaultOpen")) {
+    document.getElementById("Bank_defaultOpen").click();
 }
 
 // Open table_sort tab
@@ -83,7 +83,7 @@ function default_sort_P2P(flag_sort) {
     }
 }
 
-function default_sort_Offshore(flag_sort) {
+function default_sort_Bank(flag_sort) {
     if (flag_sort == 1) {
         document.getElementById("Cyprus_defaultOpen").click();
     }
