@@ -75,6 +75,9 @@
                     <li>
                         <button class="tablinks" onclick="openTab(event, 'Bank_Questions')" id="Bank_Tab_Questions">Questions</button>
                     </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Bank_BRV')" id="Bank_Tab_BRV">BRV</button>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -212,6 +215,54 @@
                     </div>
                 </div>
             </div>
+
+            <div id="Bank_BRV" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">BRV</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks" onclick="openSort(event, 'BRV_Month')" id="BRV_defaultOpen">Month</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'BRV_Day')">Day</button>
+                    </div>
+                    <a class="download_btn" href="{{url_for('download')}}">Download
+                        <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
+                    </a>
+                </div>
+
+                <div id="BRV_Month" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="bankBRVMonth">
+                            <thead>
+                                <tr>
+                                    <th>PERSON</th>
+                                    <th>BIRTHDAY</th>
+                                    <th>PASSPORT</th>
+                                    <th>AMOUNT</th>
+                                    <th>BLOCK</th>
+                                    <th>OBSERVATION</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="BRV_Day" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="bankBRVDay">
+                            <thead>
+                                <tr>
+                                    <th>PERSON</th>
+                                    <th>BIRTHDAY</th>
+                                    <th>PASSPORT</th>
+                                    <th>AMOUNT</th>
+                                    <th>BLOCK</th>
+                                    <th>OBSERVATION</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer class="footer">
             <div class="footer-info">© <span class="copyright_Date"></span> Zhidko Ulyana</div>
@@ -221,7 +272,7 @@
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        bank_table_from_back({{offshore_day | safe}}, {{offshore_search | safe}}, {{questions_day | safe}}, {{questions_search | safe}}, {{tab | safe}});
+        bank_table_from_back({{offshore_day | safe}}, {{offshore_search | safe}}, {{questions_day | safe}}, {{questions_search | safe}}, {{brv_month | safe}}, {{brv_day | safe}}, {{tab | safe}});
     </script>
 
 </body>

@@ -342,7 +342,32 @@ def bank_data(my_cursor, start, end):
             'merchant': row[5],
             'mcc': row[6]})
 
-    return bank_offshore_day, bank_offshore_search, bank_questions_day, bank_questions_search
+    bank_brv_month = []
+    my_cursor.execute("SELECT * FROM brv_month LIMIT 100;")
+    data = my_cursor.fetchall()
+    for row in data:
+        bank_brv_month.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[4],
+            'amount': row[5],
+            'block': row[6],
+            'observation': row[7]})
+
+    bank_brv_day = []
+    my_cursor.execute("SELECT * FROM brv_day LIMIT 100;")
+    data = my_cursor.fetchall()
+    for row in data:
+        bank_brv_month.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[4],
+            'amount': row[5],
+            'block': row[6],
+            'observation': row[7]})
+
+    return bank_offshore_day, bank_offshore_search, bank_questions_day, bank_questions_search, bank_brv_month, \
+        bank_brv_day
 
 
 def choose_table_func():
@@ -404,6 +429,11 @@ def choose_table_func():
                 return create_file_from_table_func(db, 'questionable_operations_day')
             elif sort == 'From':
                 return create_file_from_data_func(db, 'questionable_operations')
+        elif tab == 'BRV':
+            if sort == 'Month':
+                return create_file_from_table_func(db, 'brv_month')
+            elif sort == 'Day':
+                return create_file_from_table_func(db, 'brv_day')
 
 
 def create_file_from_table_func(my_db, table_name):
@@ -493,15 +523,15 @@ def delete_file(file):
 
 
 def flags_change_func(start, end, flag):
-    if flag == 'offshore' or flag == 'questions':
+    if flag == 'offshore' or flag == 'questions' or flag == 'brv':
         global start_date, end_date, flag_bank
-
-    print(flag)
-
-    start_date = start
-    end_date = end
-    flag_bank = flag
-    print(start, end_date, flag_bank)
+        start_date = start
+        end_date = end
+        flag_bank = flag
+    elif flag == '':
+        pass
+    elif flag == '':
+        pass
 
 
 cursor, db = db_connection_func()

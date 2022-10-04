@@ -179,6 +179,8 @@ var BankOffshoreDay = document.querySelector('.bankOffshoreDay');
 var BankOffshoreFrom = document.querySelector('.bankOffshoreFrom');
 var BankQuestionsDay = document.querySelector('.bankQuestionsDay');
 var BankQuestionsFrom = document.querySelector('.bankQuestionsFrom');
+var BankBRVMonth = document.querySelector('.bankBRVMonth');
+var BankBRVDay = document.querySelector('.bankBRVDay');
 
 function template_bank_offshore(d) {
     return '<tr>' +
@@ -245,11 +247,44 @@ function render_bank_questions(table) {
         };
     };
 
-function bank_table_from_back(offshore_day, offshore_search, questions_day, questions_from, tab) {
+function template_bank_brv(d) {
+    return '<tr>' +
+            '<td>' +
+            d.person +
+            '</td>' +
+            '<td>' +
+            d.birthday +
+            '</td>' +
+            '<td>' +
+            d.passport +
+            '</td>' +
+            '<td>' +
+            d.amount +
+            '</td>' +
+            '<td>' +
+            d.block +
+            '</td>' +
+            '<td>' +
+            d.observation +
+            '</td>' +
+            '</tr>';
+};
+
+function render_bank_brv(table) {
+        return function(d) {
+            return table.innerHTML += d.map(function(i) {
+                return template_bank_brv(i);
+            }).join('');
+        };
+    };
+
+function bank_table_from_back(offshore_day, offshore_search, questions_day, questions_from, brv_month, brv_day, tab) {
     render_bank_offshore(BankOffshoreDay)(offshore_day);
     render_bank_offshore(BankOffshoreFrom)(offshore_search);
     render_bank_questions(BankQuestionsDay)(questions_day);
     render_bank_questions(BankQuestionsFrom)(questions_from);
+    render_bank_brv(BankBRVMonth)(brv_month);
+    render_bank_brv(BankBRVDay)(brv_day);
 
     if (tab == 'offshore') {
         document.getElementById("Offshore_defaultOpen").click();

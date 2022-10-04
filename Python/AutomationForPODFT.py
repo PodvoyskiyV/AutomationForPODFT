@@ -333,7 +333,23 @@ def brv_func(my_cursor, my_db, start, table):
             my_db.commit()
 
     elif table == 'day':
-        pass
+        my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, "
+                          f"SUM(amount) AS amount, IF(SUM(amount) > {var.brv_500}, '+', '-') AS block, "
+                          f"IF(SUM(amount) < {var.brv_500} AND SUM(amount) > {var.brv_500 * 0.9}, '+', '-') "
+                          "AS observation FROM (SELECT DISTINCT fio, birth_date, citizenship, registration_address, "
+                          "document_number, amount FROM  Initial_Data_P2P "
+                          f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (mcc='6010' OR mcc='6011')) "
+                          "X GROUP BY document_number, fio, birth_date, citizenship, registration_address "
+                          "ORDER BY amount DESC;")
+        data = my_cursor.fetchall()
+
+        for row in data:
+            sql = f"INSERT INTO brv_{table} (person, birthday, citizenship, registration_address, passport, amount, " \
+                  "block, observation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (f"{row[0]}", f"{row[1]}", f"{row[2]}", f"{row[3]}", f"{row[4]}", f"{row[5]}", f"{row[6]}",
+                   f"{row[7]}")
+            my_cursor.execute(sql, val)
+            my_db.commit()
 
     end_brv_func = datetime.datetime.now()
     print(f'country_p2p_func ended in {end_brv_func - start_brv_func}')
@@ -359,6 +375,7 @@ try:
     offshore_func(cursor, db, var.yesterday, 'day')
     questionable_operations_func(cursor, db, var.yesterday, 'day')
     brv_func(cursor, db, var.month_ago, 'month')
+    brv_func(cursor, db, var.yesterday, 'day')
 
     if var.current_week_day == 'Monday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')

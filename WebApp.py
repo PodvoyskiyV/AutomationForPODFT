@@ -92,20 +92,23 @@ def dates_bank():
 @app.route("/bank")
 def bank():
     Back.reconnect_to_db()
-    offshore_day, offshore_search, questions_day, questions_search = \
+    offshore_day, offshore_search, questions_day, questions_search, brv_month, brv_day = \
         Back.bank_data(Back.cursor, Back.start_date, Back.end_date)
 
     if Back.flag_bank == 'offshore':
         tab_bank = 'offshore'
     elif Back.flag_bank == 'questions':
         tab_bank = 'questions'
+    elif Back.flag_bank == 'brv':
+        tab_bank = 'brv'
     else:
         tab_bank = ''
     Back.flag_bank = ''
 
     return render_template("bank.html", offshore_day=json.dumps(offshore_day),
                            offshore_search=json.dumps(offshore_search), questions_day=json.dumps(questions_day),
-                           questions_search=json.dumps(questions_search), tab=json.dumps(tab_bank))
+                           questions_search=json.dumps(questions_search), brv_month=json.dumps(brv_month),
+                           brv_day=json.dumps(brv_day), tab=json.dumps(tab_bank))
 
 
 @app.route('/download_tab')

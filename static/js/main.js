@@ -35,6 +35,8 @@ function openTab(evt, tabName) {
         default_sort_Bank(1);
     } else if (tabName == "Bank_Questions") {
         default_sort_Bank(2);
+    } else if (tabName == "Bank_BRV") {
+        default_sort_Bank(3);
     }
 
     var flag = tabName;
@@ -95,6 +97,8 @@ function default_sort_Bank(flag_sort) {
         document.getElementById("Offshore_defaultOpen").click();
     } else if (flag_sort == 2) {
         document.getElementById("Questions_defaultOpen").click();
+    } else if (flag_sort == 3) {
+        document.getElementById("BRV_defaultOpen").click();
     }
 }
 

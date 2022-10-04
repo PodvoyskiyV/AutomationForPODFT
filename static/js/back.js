@@ -56,4 +56,10 @@ function Bank_Questions() {
     setTimeout(function() {window.location.reload();}, 1000)
 }
 
-
+function Bank_BRV() {
+    var BankBRVFrom = $("#bank_BRV_From").val();
+    var BankBRVTo = $("#bank_BRV_To").val();
+    var flag = 'brv';
+    $.get("/dates_bank", { "start_date": BankBRVFrom, "end_date": BankBRVTo, "flag": flag });
+    setTimeout(function() {window.location.reload();}, 1000)
+}
