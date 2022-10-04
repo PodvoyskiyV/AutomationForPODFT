@@ -296,7 +296,7 @@ def bank_data(my_cursor, start, end):
             'person': row[0],
             'birthday': row[1],
             'passport': row[4],
-            'operation_date': str(row[5]),
+            'operation_date': (str(row[5])[0:10]),
             'amount': row[6],
             'country': row[8]})
 
@@ -322,7 +322,7 @@ def bank_data(my_cursor, start, end):
             'person': row[0],
             'birthday': row[1],
             'passport': row[4],
-            'operations_date': str(row[5]),
+            'operation_date': (str(row[5])[0:10]),
             'amount': row[6],
             'merchant': row[9],
             'mcc': row[10]})
@@ -362,16 +362,48 @@ def choose_table_func():
                 return create_file_from_table_func(db, 'card_sender_octo_week')
             elif sort == 'Month':
                 return create_file_from_table_func(db, 'card_sender_octo_month')
-            elif sort == 'Search':
+            elif sort == 'From':
                 return create_file_from_data_func(db, 'card_sender_octo')
         elif tab == 'Receiver':
-            pass
+            if sort == 'Week':
+                return create_file_from_table_func(db, 'number_receiver_octo_week')
+            elif sort == 'Month':
+                return create_file_from_table_func(db, 'number_receiver_octo_month')
+            elif sort == 'From':
+                return create_file_from_data_func(db, 'number_receiver_octo')
+    elif page == 'P2P':
+        if tab == 'Country':
+            if sort == 'Week':
+                return create_file_from_table_func(db, 'country_p2p_week')
+            elif sort == 'Month':
+                return create_file_from_table_func(db, 'country_p2p_month')
+            elif sort == 'From':
+                return create_file_from_data_func(db, 'country_p2p')
+        elif tab == 'Pinfl':
+            if sort == 'Week':
+                return create_file_from_table_func(db, 'pinfl_receiver_week')
+            elif sort == 'Month':
+                return create_file_from_table_func(db, 'pinfl_receiver_month')
+            elif sort == 'From':
+                return create_file_from_data_func(db, 'pinfl_receiver')
+        elif tab == 'TT':
+            if sort == 'Week':
+                return create_file_from_table_func(db, 'trans_gran_to_tt_week')
+            elif sort == 'Month':
+                return create_file_from_table_func(db, 'trans_gran_to_tt_month')
+            elif sort == 'From':
+                return create_file_from_table_func(db, 'trans_gran_to_tt')
     elif page == 'Bank':
         if tab == 'Offshore':
             if sort == 'Day':
                 return create_file_from_table_func(db, 'offshore_day')
             elif sort == 'From':
                 return create_file_from_data_func(db, 'offshore')
+        elif tab == 'Questions':
+            if sort == 'Day':
+                return create_file_from_table_func(db, 'questionable_operations_day')
+            elif sort == 'From':
+                return create_file_from_data_func(db, 'questionable_operations')
 
 
 def create_file_from_table_func(my_db, table_name):
@@ -400,11 +432,56 @@ def create_file_from_data_func(my_db, table_name):
         df = pd.DataFrame(sql_query)
         df.to_csv(fr'Files/{table_name}.csv', index=False)
         path = f'Files/{table_name}.csv'
+    elif table_name == 'number_receiver_octo':
+        sql_query = pd.read_sql_query("SELECT dest_tool_id, COUNT(*) count, SUM(amount) amount FROM "
+                                      "(SELECT DISTINCT dest_tool_id, created_date, amount FROM Initial_Data_OCTO "
+                                      f"WHERE created_date BETWEEN '{start_date}' AND '{end_date}' "
+                                      "AND NOT dest_tool_id='nan') "
+                                      "X GROUP BY dest_tool_id ORDER BY amount DESC, count DESC;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
+    elif table_name == 'country_p2p':
+        sql_query = pd.read_sql_query("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
+                                      "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
+                                      f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
+                                      "AND NOT country='nan') "
+                                      "X GROUP BY country ORDER BY count DESC, amount DESC;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
+    elif table_name == 'pinfl_receiver':
+        sql_query = pd.read_sql_query("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
+                                      "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
+                                      f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
+                                      "AND NOT pinfl='nan') "
+                                      "X GROUP BY pinfl ORDER BY count DESC, amount DESC;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
+    elif table_name == 'trans_gran_to_tt':
+        sql_query = pd.read_sql_query("SELECT pos_code, COUNT(*) count FROM "
+                                      "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
+                                      f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
+                                      "AND NOT pos_code='nan') "
+                                      "X GROUP BY pos_code ORDER BY count DESC;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
     elif table_name == 'offshore':
         sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
                                       "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                                       f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') AND country='Cyprus' "
                                       "AND NOT country='nan' ORDER BY time_id;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
+    elif table_name == 'questionable_operations':
+        sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
+                                      "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
+                                      f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') "
+                                      "AND (mcc='7995' OR mcc='6211') AND NOT country='Cyprus'"
+                                      "ORDER BY time_id;", my_db)
         df = pd.DataFrame(sql_query)
         df.to_csv(fr'Files/{table_name}.csv', index=False)
         path = f'Files/{table_name}.csv'
