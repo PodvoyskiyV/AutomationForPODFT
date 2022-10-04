@@ -27,5 +27,5 @@ week_ago = ((datetime.datetime.now()) - datetime.timedelta(days=7)).strftime("%Y
 month_ago = ((datetime.datetime.now()) - datetime.timedelta(days=30)).strftime("%Y-%m-%d")
 current_week_day = (datetime.datetime.now()).strftime('%A')
 current_month = (datetime.datetime.now()).strftime('%B')
-previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=30)).strftime("%Y-%m")
+previous_month = ((datetime.datetime.now()) - datetime.timedelta(days=25)).strftime("%Y-%m")
 current_day = (datetime.datetime.now()).strftime('%d')

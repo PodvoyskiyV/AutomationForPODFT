@@ -377,14 +377,14 @@ try:
     brv_func(cursor, db, var.month_ago, 'month')
     brv_func(cursor, db, var.yesterday, 'day')
 
-    if var.current_week_day == 'Monday':
+    if var.current_week_day == 'Tuesday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
         pinfl_receiver_func(cursor, db, var.week_ago, 'week')
         country_p2p_func(cursor, db, var.week_ago, 'week')
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
         mrot_func(cursor, db, var.week_ago, 'week')
-    if var.current_day == '1':
+    if var.current_day == '5':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')

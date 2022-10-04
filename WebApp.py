@@ -25,9 +25,7 @@ def mrot():
 
 @app.route("/dates_octo")
 def dates_octo():
-    Back.start_date = request.args["start_date"]
-    Back.end_date = request.args["end_date"]
-    Back.flag_octo = request.args["flag"]
+    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
     return "OK"
 
 
@@ -53,9 +51,7 @@ def octo():
 
 @app.route("/dates_p2p")
 def dates_p2p():
-    Back.start_date = request.args["start_date"]
-    Back.end_date = request.args["end_date"]
-    Back.flag_p2p = request.args["flag"]
+    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
     return "OK"
 
 

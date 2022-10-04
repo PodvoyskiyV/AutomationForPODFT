@@ -523,15 +523,26 @@ def delete_file(file):
 
 
 def flags_change_func(start, end, flag):
+    for n in (start[:4] + start[5:7] + start[8:] + end[:4] + end[5:7] + end[8:]):
+        if n not in '0123456789':
+            return "404"
+
+    global start_date, end_date
     if flag == 'offshore' or flag == 'questions' or flag == 'brv':
-        global start_date, end_date, flag_bank
+        global flag_bank
         start_date = start
         end_date = end
         flag_bank = flag
-    elif flag == '':
-        pass
-    elif flag == '':
-        pass
+    elif flag == 'tt' or flag == 'pinfl' or flag == 'country':
+        global flag_p2p
+        start_date = start
+        end_date = end
+        flag_p2p = flag
+    elif flag == 'receiver' or flag == 'sender':
+        global flag_octo
+        start_date = start
+        end_date = end
+        flag_octo = flag
 
 
 cursor, db = db_connection_func()
