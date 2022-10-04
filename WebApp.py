@@ -92,24 +92,40 @@ def dates_bank():
 @app.route("/bank")
 def bank():
     Back.reconnect_to_db()
-    offshore_day, offshore_search = Back.bank_data(Back.cursor, Back.start_date, Back.end_date)
+    offshore_day, offshore_search, questions_day, questions_search = \
+        Back.bank_data(Back.cursor, Back.start_date, Back.end_date)
 
     if Back.flag_bank == 'offshore':
         tab_bank = 'offshore'
+    elif Back.flag_bank == 'questions':
+        tab_bank = 'questions'
     else:
         tab_bank = ''
+    Back.flag_bank = ''
 
-    print(Back.start_date, Back.flag_bank)
-    print(offshore_search)
     return render_template("bank.html", offshore_day=json.dumps(offshore_day),
-                           offshore_search=json.dumps(offshore_search), tab=json.dumps(tab_bank))
+                           offshore_search=json.dumps(offshore_search), questions_day=json.dumps(questions_day),
+                           questions_search=json.dumps(questions_search), tab=json.dumps(tab_bank))
+
+
+@app.route('/download_tab')
+def download_tab():
+    Back.flag_tab = request.args['flag']
+    print(Back.flag_tab)
+    return 'Ok'
+
+
+@app.route('/download_sort')
+def download_sort():
+    Back.flag_sort = request.args['flag']
+    print(Back.flag_sort)
+    return 'Ok'
 
 
 @app.route('/download')
 def download():
-    flag = request.args['flag']
-    path = Back.create_file_func(flag)
-    return send_file(path, as_attachment=True)
+    Back.choose_table_func()
+    return send_file(Back.path, as_attachment=True)
 
 
 app.run(host="0.0.0.0", port=80)

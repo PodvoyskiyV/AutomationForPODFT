@@ -1,9 +1,3 @@
-let flag_download = ''
-
-function change_flag(new_flag) {
-    flag_download = new_flag
-}
-
 function OCTO_Sender() {
     var senderFrom = $("#sender_From").val();
     var senderTo = $("#sender_To").val();
@@ -54,8 +48,12 @@ function Bank_Offshore() {
     setTimeout(function() {window.location.reload();}, 1000)
 }
 
-function Download(){
-    $.get("/download", { "flag": flag_download });
+function Bank_Questions() {
+    var BankQuestionsFrom = $("#bank_Questions_From").val();
+    var BankQuestionsTo = $("#bank_Questions_To").val();
+    var flag = 'questions';
+    $.get("/dates_bank", { "start_date": BankQuestionsFrom, "end_date": BankQuestionsTo, "flag": flag });
+    setTimeout(function() {window.location.reload();}, 1000)
 }
 
 

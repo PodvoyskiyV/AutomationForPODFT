@@ -1,5 +1,5 @@
 import os
-# import csv
+import pandas as pd
 import mysql.connector
 from Python import variables as var
 
@@ -7,6 +7,9 @@ start_date = end_date = var.today
 flag_octo = ''
 flag_p2p = ''
 flag_bank = ''
+flag_tab = ''
+flag_sort = ''
+path = ''
 
 
 def db_connection_func():
@@ -244,7 +247,7 @@ def p2p_data(my_cursor, start, end):
     p2p_pinfl_search = []
     my_cursor.execute("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
-                      f"WHERE time_id BETWEEN '{start}' AND '{end}') "
+                      f"WHERE (time_id BETWEEN '{start}' AND '{end}') AND NOT pinfl='nan') "
                       "X GROUP BY pinfl ORDER BY count DESC, amount DESC LIMIT 100;")
     data = my_cursor.fetchall()
     for row in data:
@@ -311,30 +314,72 @@ def bank_data(my_cursor, start, end):
             'amount': row[4],
             'country': row[5]})
 
-    return bank_offshore_day, bank_offshore_search
+    bank_questions_day = []
+    my_cursor.execute("SELECT * FROM questionable_operations_day;")
+    data = my_cursor.fetchall()
+    for row in data:
+        bank_questions_day.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[4],
+            'operations_date': str(row[5]),
+            'amount': row[6],
+            'merchant': row[9],
+            'mcc': row[10]})
+
+    bank_questions_search = []
+    my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, merch_name, mcc "
+                      f"FROM  Initial_Data_P2P WHERE (time_id BETWEEN '{start}' AND '{end}') "
+                      "AND (mcc='7995' OR mcc='6211') AND NOT country='Cyprus' ORDER BY time_id;")
+    data = my_cursor.fetchall()
+    for row in data:
+        bank_questions_search.append({
+            'person': row[0],
+            'birthday': row[1],
+            'passport': row[2],
+            'operation_date': (str(row[3])[0:10]),
+            'amount': row[4],
+            'merchant': row[5],
+            'mcc': row[6]})
+
+    return bank_offshore_day, bank_offshore_search, bank_questions_day, bank_questions_search
 
 
-def create_file_func(flag):
-    if flag == '':
-        pass
-    elif flag == 'Offshore_Day':
-        pass
-    elif flag == '':
-        pass
+def choose_table_func():
+    page = flag_tab[:flag_tab.find('_')]
+    tab = flag_sort[:flag_sort.find('_')]
+    sort = flag_sort[flag_sort.find('_')+1:]
+    if page == 'Bank':
+        if tab == 'Offshore':
+            if sort == 'Day':
+                return create_file_from_table_func(db, 'offshore_day')
 
 
-def delete_file(path):
-    os.remove(path)
+def create_file_from_table_func(my_db, table_name):
+    global path
+    if len(path) > 0:
+        delete_file(path)
+    sql_query = pd.read_sql_query(f'SELECT * FROM {table_name}', my_db)
+    df = pd.DataFrame(sql_query)
+    df.to_csv(fr'{table_name}.csv', index=False)
+    path = f'{table_name}.csv'
+
+
+def delete_file(file):
+    os.remove(file)
+    return "Ok"
 
 
 def flags_change_func(start, end, flag):
-    if flag == 'cyprus':
+    if flag == 'offshore' or flag == 'questions':
         global start_date, end_date, flag_bank
+
+    print(flag)
 
     start_date = start
     end_date = end
     flag_bank = flag
-    print(start_date, end_date, flag_bank)
+    print(start, end_date, flag_bank)
 
 
 cursor, db = db_connection_func()

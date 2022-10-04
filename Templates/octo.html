@@ -113,12 +113,12 @@
                                 To
                                 <input type="date" id="sender_To" name="date_to">
                             </label>
-                            <input type="sabmit" value="" id="sender_search" onclick="OCTO_Sender();" class="sort_tablinks_search" required>
+                            <input type="submit" value="" id="sender_search" onclick="OCTO_Sender();" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <button class="download_btn" onclick="" id="down_OCTO_Sender">Download
+                    <a class="download_btn" href="{{url_for('download')}}">Download
                         <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
-                    </button>
+                    </a>
                 </div>
 
                 <div id="Sender_Week" class="sort_tabcontent">
@@ -181,12 +181,12 @@
                                 To
                                 <input type="date" id="reciever_To" name="date_to">
                             </label>
-                            <input type="sabmit" value="" id="reciever_search" onclick="OCTO_Reciever()" class="sort_tablinks_search" required>
+                            <input type="submit" value="" id="reciever_search" onclick="OCTO_Reciever()" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <button class="download_btn" onclick="" id="down_OCTO_Reciever">Download
+                    <a class="download_btn" href="{{url_for('download')}}">Download
                         <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
-                    </button>
+                    </a>
                 </div>
 
                 <div id="Reciever_Week" class="sort_tabcontent">

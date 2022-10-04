@@ -22,9 +22,9 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active-tablinks";
 
     if (tabName == "OCTO_Sender") {
-        default_sort_OCTO(1)
+        default_sort_OCTO(1);
     } else if (tabName == "OCTO_Reciever") {
-        default_sort_OCTO(2)
+        default_sort_OCTO(2);
     } else if (tabName == "P2P_Country") {
         default_sort_P2P(1);
     } else if (tabName == "P2P_Pinfl") {
@@ -32,8 +32,13 @@ function openTab(evt, tabName) {
     } else if (tabName == "P2P_TT") {
         default_sort_P2P(3);
     } else if (tabName == "Bank_Offshore") {
-        default_sort_Bank(1)
+        default_sort_Bank(1);
+    } else if (tabName == "Bank_Questions") {
+        default_sort_Bank(2);
     }
+
+    var flag = tabName;
+    $.get("/download_tab", { "flag": flag });
 }
 
 if (document.getElementById("Mrot_defaultOpen")) {
@@ -61,14 +66,16 @@ function openSort(evt, sort_tabName) {
 
     document.getElementById(sort_tabName).style.display = "block";
     evt.currentTarget.className += " sort_active";
-    change_flag(sort_tabName)
+
+    var flag = sort_tabName;
+    $.get("/download_sort", { "flag": flag });
 }
 
 
 function default_sort_OCTO(flag_sort) {
     if (flag_sort == 1) {
         document.getElementById("Sender_defaultOpen").click();
-    } else {
+    } else if (flag_sort == 2) {
         document.getElementById("Reciever_defaultOpen").click();
     }
 }
@@ -86,6 +93,8 @@ function default_sort_P2P(flag_sort) {
 function default_sort_Bank(flag_sort) {
     if (flag_sort == 1) {
         document.getElementById("Offshore_defaultOpen").click();
+    } else if (flag_sort == 2) {
+        document.getElementById("Questions_defaultOpen").click();
     }
 }
 

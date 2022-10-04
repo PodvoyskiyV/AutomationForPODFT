@@ -1,4 +1,7 @@
 // The HTML tables.
+
+// <----------------------------- MROT ----------------------------->
+
 var mrotMonth = document.querySelector('.mrotMonth');
 var mrotWeek = document.querySelector('.mrotWeek');
 var mrotDay = document.querySelector('.mrotDay');
@@ -65,6 +68,8 @@ function mrot_table_from_back(MonthData, WeekData, DayData) {
     console.log(DayData)
 }
 
+// <----------------------------- OCTO ----------------------------->
+
 var octoSenderWeek = document.querySelector('.octoSenderWeek');
 var octoSenderMonth = document.querySelector('.octoSenderMonth');
 var octoSenderFrom = document.querySelector('.octoSenderFrom');
@@ -111,6 +116,8 @@ function octo_table_from_back(sender_week, sender_month, sender_search, receiver
         document.getElementById("Receiver_D_From").click();
     }
 }
+
+// <----------------------------- P2P ----------------------------->
 
 var p2pCountryWeek = document.querySelector('.p2pCountryWeek');
 var p2pCountryMonth = document.querySelector('.p2pCountryMonth');
@@ -166,8 +173,12 @@ function p2p_table_from_back(country_week, country_month, country_search, pinfl_
     }
 }
 
+// <----------------------------- BANK ----------------------------->
+
 var BankOffshoreDay = document.querySelector('.bankOffshoreDay');
 var BankOffshoreFrom = document.querySelector('.bankOffshoreFrom');
+var BankQuestionsDay = document.querySelector('.bankQuestionsDay');
+var BankQuestionsFrom = document.querySelector('.bankQuestionsFrom');
 
 function template_bank_offshore(d) {
     return '<tr>' +
@@ -200,12 +211,51 @@ function render_bank_offshore(table) {
         };
     };
 
-function bank_table_from_back(offshore_day, offshore_search, tab) {
+function template_bank_questions(d) {
+    return '<tr>' +
+            '<td>' +
+            d.person +
+            '</td>' +
+            '<td>' +
+            d.birthday +
+            '</td>' +
+            '<td>' +
+            d.passport +
+            '</td>' +
+            '<td>' +
+            d.operation_date +
+            '</td>' +
+            '<td>' +
+            d.amount +
+            '</td>' +
+            '<td>' +
+            d.merchant +
+            '</td>' +
+            '<td>' +
+            d.mcc +
+            '</td>' +
+            '</tr>';
+};
+
+function render_bank_questions(table) {
+        return function(d) {
+            return table.innerHTML += d.map(function(i) {
+                return template_bank_questions(i);
+            }).join('');
+        };
+    };
+
+function bank_table_from_back(offshore_day, offshore_search, questions_day, questions_from, tab) {
     render_bank_offshore(BankOffshoreDay)(offshore_day);
     render_bank_offshore(BankOffshoreFrom)(offshore_search);
+    render_bank_questions(BankQuestionsDay)(questions_day);
+    render_bank_questions(BankQuestionsFrom)(questions_from);
 
     if (tab == 'offshore') {
         document.getElementById("Offshore_defaultOpen").click();
         document.getElementById("Offshore_D_From").click();
+    } else if (tab == 'questions') {
+        document.getElementById("Questions_defaultOpen").click();
+        document.getElementById("Questions_D_From").click();
     }
 }

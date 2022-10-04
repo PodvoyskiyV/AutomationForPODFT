@@ -72,6 +72,9 @@
                     <li>
                         <button class="tablinks" onclick="openTab(event, 'Bank_Offshore')" id="Bank_defaultOpen">Offshore</button>
                     </li>
+                    <li>
+                        <button class="tablinks" onclick="openTab(event, 'Bank_Questions')" id="Bank_Tab_Questions">Questions</button>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -107,12 +110,12 @@
                                 To
                                 <input type="date" id="bank_Offshore_To" name="date_to">
                             </label>
-                            <input type="submit" value="" id="bank_Offshore_search" onclick="Bank_Offshore()" class="sort_tablinks_search" required>
+                            <input type="submit" value="" id="offshore_search" onclick="Bank_Offshore()" class="sort_tablinks_search" required>
                         </button>
                     </div>
-                    <button class="download_btn" onclick="Download()" id="down_Bank_Offshore">Download
+                    <a class="download_btn" href="{{url_for('download')}}">Download
                         <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
-                    </button>
+                    </a>
                 </div>
 
                 <div id="Offshore_Day" class="sort_tabcontent">
@@ -149,6 +152,66 @@
                     </div>
                 </div>
             </div>
+
+            <div id="Bank_Questions" class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title">Questions</h3>
+                    <div class="sort_tab">
+                        <button class="sort_tablinks" onclick="openSort(event, 'Questions_Day')" id="Questions_defaultOpen">Day</button>
+                        <div class="sep"></div>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Questions_From')" id="Questions_D_From">
+                            <label for="From">
+                                From
+                                <input type="date" id="bank_Questions_From" name="date_from">
+                            </label>
+                            <label for="To">
+                                To
+                                <input type="date" id="bank_Questions_To" name="date_to">
+                            </label>
+                            <input type="submit" value="" id="questions_search" onclick="Bank_Questions()" class="sort_tablinks_search" required>
+                        </button>
+                    </div>
+                    <a class="download_btn" href="{{url_for('download')}}">Download
+                        <img src="{{ url_for('static', filename='img/download.svg') }}" class="download" alt="download">
+                    </a>
+                </div>
+
+                <div id="Questions_Day" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="bankQuestionsDay">
+                            <thead>
+                                <tr>
+                                    <th>PERSON</th>
+                                    <th>BIRTHDAY</th>
+                                    <th>PASSPORT</th>
+                                    <th>OPERATION DATE</th>
+                                    <th>AMOUNT</th>
+                                    <th>MERCHANT</th>
+                                    <th>MCC</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Questions_From" class="sort_tabcontent">
+                    <div class="table-wrapper">
+                        <table class="bankQuestionsFrom">
+                            <thead>
+                                <tr>
+                                    <th>PERSON</th>
+                                    <th>BIRTHDAY</th>
+                                    <th>PASSPORT</th>
+                                    <th>OPERATION DATE</th>
+                                    <th>AMOUNT</th>
+                                    <th>MERCHANT</th>
+                                    <th>MCC</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer class="footer">
             <div class="footer-info">© <span class="copyright_Date"></span> Zhidko Ulyana</div>
@@ -158,7 +221,7 @@
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        bank_table_from_back({{offshore_day | safe}}, {{offshore_search | safe}}, {{tab | safe}});
+        bank_table_from_back({{offshore_day | safe}}, {{offshore_search | safe}}, {{questions_day | safe}}, {{questions_search | safe}}, {{tab | safe}});
     </script>
 
 </body>
