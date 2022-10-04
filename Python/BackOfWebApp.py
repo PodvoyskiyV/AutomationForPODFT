@@ -533,7 +533,6 @@ def flags_change_func(start, end, flag):
         start_date = start
         end_date = end
         flag_bank = flag
-        print(flag_bank)
     elif flag == 'tt' or flag == 'pinfl' or flag == 'country':
         global flag_p2p
         start_date = start
