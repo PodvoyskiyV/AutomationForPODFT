@@ -287,10 +287,10 @@ function bank_table_from_back(offshore_day, offshore_search, questions_day, ques
     render_bank_brv(BankBRVDay)(brv_day);
 
     if (tab == 'offshore') {
-        document.getElementById("Offshore_defaultOpen").click();
+        document.getElementById("Bank_defaultOpen").click();
         document.getElementById("Offshore_D_From").click();
     } else if (tab == 'questions') {
-        document.getElementById("Questions_defaultOpen").click();
+        document.getElementById("Bank_Tab_Questions").click();
         document.getElementById("Questions_D_From").click();
     }
 }

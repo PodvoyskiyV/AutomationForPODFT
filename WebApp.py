@@ -100,6 +100,7 @@ def bank():
     else:
         tab_bank = ''
     Back.flag_bank = ''
+    print(tab_bank)
 
     return render_template("bank.html", offshore_day=json.dumps(offshore_day),
                            offshore_search=json.dumps(offshore_search), questions_day=json.dumps(questions_day),
@@ -110,14 +111,12 @@ def bank():
 @app.route('/download_tab')
 def download_tab():
     Back.flag_tab = request.args['flag']
-    print(Back.flag_tab)
     return 'Ok'
 
 
 @app.route('/download_sort')
 def download_sort():
     Back.flag_sort = request.args['flag']
-    print(Back.flag_sort)
     return 'Ok'
 
 
