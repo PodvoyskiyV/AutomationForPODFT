@@ -263,7 +263,7 @@ def offshore_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
                       "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
-                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND country='Cyprus' "
+                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (country='Cyprus' OR country='Malta') "
                       "ORDER BY time_id;")
     data = my_cursor.fetchall()
 
@@ -289,7 +289,7 @@ def questionable_operations_func(my_cursor, my_db, start, table):
     my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
                       "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                       f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (mcc='7995' OR mcc='6211') "
-                      "AND NOT country='Cyprus'"
+                      # "AND NOT country='Cyprus'"
                       "ORDER BY time_id;")  # AND NOT country='nan'
     data = my_cursor.fetchall()
 
@@ -303,7 +303,7 @@ def questionable_operations_func(my_cursor, my_db, start, table):
         my_db.commit()
 
     end_questionable_operations_func = datetime.datetime.now()
-    print(f'country_p2p_func ended in {end_questionable_operations_func - start_questionable_operations_func}')
+    print(f'questionable_operations_func ended in {end_questionable_operations_func - start_questionable_operations_func}')
 
 
 def brv_func(my_cursor, my_db, start, table):
@@ -352,7 +352,7 @@ def brv_func(my_cursor, my_db, start, table):
             my_db.commit()
 
     end_brv_func = datetime.datetime.now()
-    print(f'country_p2p_func ended in {end_brv_func - start_brv_func}')
+    print(f'brv_func ended in {end_brv_func - start_brv_func}')
 
 
 def delete_files_func():
@@ -364,27 +364,27 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('OCTO 27.09.22 - OCTO 27.09.22.csv', sep=',')
-    FullDataP2P = pd.read_csv('P2P 27.09.22 - P2P 27.09.22.csv', sep=',')
+    FullDataOCTO = pd.read_csv('OCTO 27.09-03.10.22.csv', sep=',')
+    FullDataP2P = pd.read_csv('p2p 27.09-03.10.22.csv', sep=',')
 
     cursor, db = db_connection_func()
 
-    octo_to_db_func(cursor, db)
-    p2p_to_db_func(cursor, db)
+    # octo_to_db_func(cursor, db)
+    # p2p_to_db_func(cursor, db)
     mrot_func(cursor, db, var.yesterday, 'day')
     offshore_func(cursor, db, var.yesterday, 'day')
     questionable_operations_func(cursor, db, var.yesterday, 'day')
     brv_func(cursor, db, var.month_ago, 'month')
     brv_func(cursor, db, var.yesterday, 'day')
 
-    if var.current_week_day == 'Tuesday':
+    if var.current_week_day == 'Monday':
         trans_gran_to_tt_func(cursor, db, var.week_ago, 'week')
         pinfl_receiver_func(cursor, db, var.week_ago, 'week')
         country_p2p_func(cursor, db, var.week_ago, 'week')
         number_receiver_octo_func(cursor, db, var.week_ago, 'week')
         card_sender_octo_func(cursor, db, var.week_ago, 'week')
         mrot_func(cursor, db, var.week_ago, 'week')
-    if var.current_day == '5':
+    if var.current_day == '1':
         trans_gran_to_tt_func(cursor, db, f"{var.previous_month}-01", 'month')
         pinfl_receiver_func(cursor, db, f"{var.previous_month}-01", 'month')
         country_p2p_func(cursor, db, f"{var.previous_month}-01", 'month')
