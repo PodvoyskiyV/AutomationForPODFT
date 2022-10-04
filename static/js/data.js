@@ -73,9 +73,9 @@ function mrot_table_from_back(MonthData, WeekData, DayData) {
 var octoSenderWeek = document.querySelector('.octoSenderWeek');
 var octoSenderMonth = document.querySelector('.octoSenderMonth');
 var octoSenderFrom = document.querySelector('.octoSenderFrom');
-var octoReceiverWeek = document.querySelector('.octoRecieverWeek');
-var octoReceiverMonth = document.querySelector('.octoRecieverMonth');
-var octoReceiverFrom = document.querySelector('.octoRecieverFrom');
+var octoReceiverWeek = document.querySelector('.octoReceiverWeek');
+var octoReceiverMonth = document.querySelector('.octoReceiverMonth');
+var octoReceiverFrom = document.querySelector('.octoReceiverFrom');
 
 function template_octo_p2p(d) {
         return '<tr>' +
@@ -112,7 +112,7 @@ function octo_table_from_back(sender_week, sender_month, sender_search, receiver
         document.getElementById("OCTO_defaultOpen").click();
         document.getElementById("Sender_D_From").click();
     } else if (tab == 'receiver') {
-        document.getElementById("OCTO_Tab_Reciever").click();
+        document.getElementById("OCTO_Tab_Receiver").click();
         document.getElementById("Receiver_D_From").click();
     }
 }

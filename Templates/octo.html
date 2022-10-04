@@ -56,7 +56,7 @@
                         <button class="tablinks" onclick="openTab(event, 'OCTO_Sender')" id="OCTO_defaultOpen">Sender</button>
                     </li>
                     <li>
-                        <button class="tablinks" onclick="openTab(event, 'OCTO_Reciever')" id="OCTO_Tab_Reciever">Reciever</button>
+                        <button class="tablinks" onclick="openTab(event, 'OCTO_Receiver')" id="OCTO_Tab_Receiver">Receiver</button>
                     </li>
                 </ul>
             </li>
@@ -164,24 +164,24 @@
                 </div>
             </div>
 
-            <div id="OCTO_Reciever" class="tabcontent">
+            <div id="OCTO_Receiver" class="tabcontent">
                 <div class="tab-name">
-                    <h3 class="content-title">Reciever</h3>
+                    <h3 class="content-title">Receiver</h3>
                     <div class="sort_tab">
-                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_Week')" id="Reciever_defaultOpen">Week</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Receiver_Week')" id="Receiver_defaultOpen">Week</button>
                         <div class="sep"></div>
-                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_Month')">Month</button>
+                        <button class="sort_tablinks" onclick="openSort(event, 'Receiver_Month')">Month</button>
                         <div class="sep"></div>
-                        <button class="sort_tablinks" onclick="openSort(event, 'Reciever_From')" id="Receiver_D_From">
+                        <button class="sort_tablinks" onclick="openSort(event, 'Receiver_From')" id="Receiver_D_From">
                             <label for="From">
                                 From
-                                <input type="date" id="reciever_From" name="date_from">
+                                <input type="date" id="receiver_From" name="date_from">
                             </label>
                             <label for="To">
                                 To
-                                <input type="date" id="reciever_To" name="date_to">
+                                <input type="date" id="receiver_To" name="date_to">
                             </label>
-                            <input type="submit" value="" id="reciever_search" onclick="OCTO_Reciever()" class="sort_tablinks_search" required>
+                            <input type="submit" value="" id="receiver_search" onclick="OCTO_Receiver()" class="sort_tablinks_search" required>
                         </button>
                     </div>
                     <a class="download_btn" href="{{url_for('download')}}">Download
@@ -189,9 +189,9 @@
                     </a>
                 </div>
 
-                <div id="Reciever_Week" class="sort_tabcontent">
+                <div id="Receiver_Week" class="sort_tabcontent">
                     <div class="table-wrapper">
-                        <table class="octoRecieverWeek">
+                        <table class="octoReceiverWeek">
                             <thead>
                                 <tr>
                                     <th>NUMBER</th>
@@ -203,9 +203,9 @@
                     </div>
                 </div>
 
-                <div id="Reciever_Month" class="sort_tabcontent">
+                <div id="Receiver_Month" class="sort_tabcontent">
                     <div class="table-wrapper">
-                        <table class="octoRecieverMonth">
+                        <table class="octoReceiverMonth">
                             <thead>
                                 <tr>
                                     <th>NUMBER</th>
@@ -217,9 +217,9 @@
                     </div>
                 </div>
 
-                <div id="Reciever_From" class="sort_tabcontent">
+                <div id="Receiver_From" class="sort_tabcontent">
                     <div class="table-wrapper">
-                        <table class="octoRecieverFrom">
+                        <table class="octoReceiverFrom">
                             <thead>
                                 <tr>
                                     <th>NUMBER</th>

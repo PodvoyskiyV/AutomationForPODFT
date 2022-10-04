@@ -23,7 +23,7 @@ function openTab(evt, tabName) {
 
     if (tabName == "OCTO_Sender") {
         default_sort_OCTO(1);
-    } else if (tabName == "OCTO_Reciever") {
+    } else if (tabName == "OCTO_Receiver") {
         default_sort_OCTO(2);
     } else if (tabName == "P2P_Country") {
         default_sort_P2P(1);
@@ -76,7 +76,7 @@ function default_sort_OCTO(flag_sort) {
     if (flag_sort == 1) {
         document.getElementById("Sender_defaultOpen").click();
     } else if (flag_sort == 2) {
-        document.getElementById("Reciever_defaultOpen").click();
+        document.getElementById("Receiver_defaultOpen").click();
     }
 }
 

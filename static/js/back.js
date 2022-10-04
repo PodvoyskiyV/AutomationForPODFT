@@ -7,11 +7,11 @@ function OCTO_Sender() {
 }
 
 
-function OCTO_Reciever() {
-    var recieverFrom = $("#reciever_From").val();
-    var recieverTo = $("#reciever_To").val();
+function OCTO_Receiver() {
+    var receiverFrom = $("#receiver_From").val();
+    var receiverTo = $("#receiver_To").val();
     var flag = 'receiver';
-    $.get("/dates_octo", { "start_date": recieverFrom, "end_date": recieverTo, "flag": flag });
+    $.get("/dates_octo", { "start_date": receiverFrom, "end_date": receiverTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
 

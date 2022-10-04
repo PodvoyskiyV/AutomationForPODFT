@@ -347,22 +347,67 @@ def bank_data(my_cursor, start, end):
 
 def choose_table_func():
     page = flag_tab[:flag_tab.find('_')]
-    tab = flag_sort[:flag_sort.find('_')]
+    tab = flag_tab[flag_tab.find('_')+1:]
     sort = flag_sort[flag_sort.find('_')+1:]
-    if page == 'Bank':
+    if page == 'Mrot':
+        if tab == 'Month':
+            return create_file_from_table_func(db, 'mrot_month')
+        elif tab == 'Week':
+            return create_file_from_table_func(db, 'mrot_week')
+        elif tab == 'Day':
+            return create_file_from_table_func(db, 'mrot_day')
+    elif page == 'OCTO':
+        if tab == 'Sender':
+            if sort == 'Week':
+                return create_file_from_table_func(db, 'card_sender_octo_week')
+            elif sort == 'Month':
+                return create_file_from_table_func(db, 'card_sender_octo_month')
+            elif sort == 'Search':
+                return create_file_from_data_func(db, 'card_sender_octo')
+        elif tab == 'Receiver':
+            pass
+    elif page == 'Bank':
         if tab == 'Offshore':
             if sort == 'Day':
                 return create_file_from_table_func(db, 'offshore_day')
+            elif sort == 'From':
+                return create_file_from_data_func(db, 'offshore')
 
 
 def create_file_from_table_func(my_db, table_name):
     global path
     if len(path) > 0:
         delete_file(path)
+
     sql_query = pd.read_sql_query(f'SELECT * FROM {table_name}', my_db)
     df = pd.DataFrame(sql_query)
-    df.to_csv(fr'{table_name}.csv', index=False)
-    path = f'{table_name}.csv'
+    df.to_csv(fr'Files/{table_name}.csv', index=False)
+    path = f'Files/{table_name}.csv'
+
+
+def create_file_from_data_func(my_db, table_name):
+    global path, start_date, end_date
+    if len(path) > 0:
+        delete_file(path)
+
+    if table_name == 'card_sender_octo':
+        sql_query = pd.read_sql_query("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
+                                      "(SELECT DISTINCT masked_card_number, created_date, amount "
+                                      "FROM Initial_Data_OCTO "
+                                      f"WHERE created_date BETWEEN '{start_date}' AND '{end_date}' "
+                                      "AND NOT masked_card_number='nan') "
+                                      "X GROUP BY masked_card_number ORDER BY count DESC, amount DESC;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
+    elif table_name == 'offshore':
+        sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
+                                      "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
+                                      f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') AND country='Cyprus' "
+                                      "AND NOT country='nan' ORDER BY time_id;", my_db)
+        df = pd.DataFrame(sql_query)
+        df.to_csv(fr'Files/{table_name}.csv', index=False)
+        path = f'Files/{table_name}.csv'
 
 
 def delete_file(file):
