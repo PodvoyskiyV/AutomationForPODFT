@@ -10,6 +10,11 @@ def page_not_found(error):
     return redirect(url_for('index'))
 
 
+@app.errorhandler(500)
+def page_not_found(error):
+    return redirect(url_for('index'))
+
+
 @app.route("/index")
 def index():
     Back.reconnect_to_db()

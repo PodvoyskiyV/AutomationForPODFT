@@ -37,6 +37,10 @@ function openTab(evt, tabName) {
         default_sort_Bank(2);
     } else if (tabName == "Bank_BRV") {
         default_sort_Bank(3);
+    } else if (tabName == "Bank_FATF") {
+        default_sort_Bank(4);
+    } else if (tabName == "Bank_Terrorism") {
+        default_sort_Bank(5);
     }
 
     var flag = tabName;
@@ -99,6 +103,10 @@ function default_sort_Bank(flag_sort) {
         document.getElementById("Questions_defaultOpen").click();
     } else if (flag_sort == 3) {
         document.getElementById("BRV_defaultOpen").click();
+    } else if (flag_sort == 4) {
+        document.getElementById("FATF_defaultOpen").click();
+    } else if (flag_sort == 5) {
+        document.getElementById("Terrorism_defaultOpen").click();
     }
 }
 

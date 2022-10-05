@@ -181,6 +181,10 @@ var BankQuestionsDay = document.querySelector('.bankQuestionsDay');
 var BankQuestionsFrom = document.querySelector('.bankQuestionsFrom');
 var BankBRVMonth = document.querySelector('.bankBRVMonth');
 var BankBRVDay = document.querySelector('.bankBRVDay');
+var BankFATFDay = document.querySelector('.bankFATFDay');
+var BankFATFFrom = document.querySelector('.bankFATFFrom');
+var BankTerrorismDay = document.querySelector('.bankTerrorismDay');
+var BankTerrorismFrom = document.querySelector('.bankTerrorismFrom');
 
 function template_bank_offshore(d) {
     return '<tr>' +
@@ -285,6 +289,10 @@ function bank_table_from_back(offshore_day, offshore_search, questions_day, ques
     render_bank_questions(BankQuestionsFrom)(questions_from);
     render_bank_brv(BankBRVMonth)(brv_month);
     render_bank_brv(BankBRVDay)(brv_day);
+    // render_bank_fatf(BankFATFDay)(fatf_day);
+    // render_bank_fatf(BankFATFFrom)(fatf_from);
+    // render_bank_terrorism(BankTerrorismDay)(terrorism_day);
+    // render_bank_terrorism(BankTerrorismFrom)(terrorism_from);
 
     if (tab == 'offshore') {
         document.getElementById("Bank_defaultOpen").click();
@@ -292,5 +300,11 @@ function bank_table_from_back(offshore_day, offshore_search, questions_day, ques
     } else if (tab == 'questions') {
         document.getElementById("Bank_Tab_Questions").click();
         document.getElementById("Questions_D_From").click();
+    } else if (tab == 'fatf') {
+        document.getElementById("Bank_Tab_FATF").click();
+        document.getElementById("FATF_D_From").click();
+    } else if (tab == 'terrorism') {
+        document.getElementById("Bank_Tab_Terrorism").click();
+        document.getElementById("Terrorism_D_From").click();
     }
 }

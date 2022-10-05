@@ -63,3 +63,19 @@ function Bank_BRV() {
     $.get("/dates_bank", { "start_date": BankBRVFrom, "end_date": BankBRVTo, "flag": flag });
     setTimeout(function() {window.location.reload();}, 1000)
 }
+
+function Bank_FATF() {
+    var BankFATFFrom = $("#bank_FATF_From").val();
+    var BankFATFTo = $("#bank_FATF_To").val();
+    var flag = 'fatf';
+    $.get("/dates_bank", { "start_date": BankFATFFrom, "end_date": BankFATFTo, "flag": flag });
+    setTimeout(function() {window.location.reload();}, 1000)
+}
+
+function Bank_Terrorism() {
+    var BankTerrorismFrom = $("#bank_Terrorism_From").val();
+    var BankTerrorismTo = $("#bank_Terrorism_To").val();
+    var flag = 'terrorism';
+    $.get("/dates_bank", { "start_date": BankTerrorismFrom, "end_date": BankTerrorismTo, "flag": flag });
+    setTimeout(function() {window.location.reload();}, 1000)
+}
