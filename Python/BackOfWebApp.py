@@ -510,7 +510,7 @@ def create_file_from_data_func(my_db, table_name):
         sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
                                       "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                                       f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') "
-                                      "AND (mcc='7995' OR mcc='6211') AND NOT country='Cyprus'"
+                                      "AND (mcc='7995' OR mcc='6211')"
                                       "ORDER BY time_id;", my_db)
         df = pd.DataFrame(sql_query)
         df.to_csv(fr'Files/{table_name}.csv', index=False)
