@@ -364,8 +364,8 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('OCTO 04.10.22.csv', sep=',')
-    FullDataP2P = pd.read_csv('p2p 04.10.22.csv', sep=',')
+    FullDataOCTO = pd.read_csv('~/AutomationForPODFT/Python/OCTO 05.10.22.csv', sep=',')
+    FullDataP2P = pd.read_csv('~/AutomationForPODFT/Python/p2p 05.10.22.csv', sep=',')
 
     cursor, db = db_connection_func()
 

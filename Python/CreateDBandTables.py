@@ -11,7 +11,10 @@ def db_connection_func():
     )
 
     my_cursor = my_db.cursor()
-    my_cursor.execute("CREATE DATABASE PodFT")
+    try:
+        my_cursor.execute("CREATE DATABASE PodFT;")
+    except mysql.connector.errors.DatabaseError:
+        pass
     my_cursor.close()
 
     my_db = mysql.connector.connect(
