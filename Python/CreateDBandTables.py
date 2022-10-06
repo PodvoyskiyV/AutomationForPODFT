@@ -116,7 +116,7 @@ def create_secondary_tables(my_db, my_cursor):
     sql = "CREATE TABLE offshore_countries (country VARCHAR(255));"
     my_cursor.execute(sql)
 
-    data = open('~/AutomationForPODFT/Files/Tables/Offshore_countries.txt')
+    data = open('AutomationForPODFT/Files/Tables/Offshore_countries.txt')
 
     for row in data:
         sql = f"INSERT INTO offshore_countries (country) VALUES ('{row}')"
