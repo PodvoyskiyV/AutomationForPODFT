@@ -264,7 +264,7 @@ def offshore_func(my_cursor, my_db, start, table):
     my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
                       "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                       f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') "
-                      f"AND country IN (SELECT * from offshore_countries) ORDER BY time_id;")
+                      f"AND country IN (SELECT * FROM offshore_countries) ORDER BY time_id;")
     data = my_cursor.fetchall()
 
     for row in data:

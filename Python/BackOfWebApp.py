@@ -302,8 +302,8 @@ def bank_data(my_cursor, start, end):
 
     bank_offshore_search = []
     my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, country FROM  Initial_Data_P2P "
-                      f"WHERE (time_id BETWEEN '{start}' AND '{end}') AND country='Cyprus' "
-                      "AND NOT country='nan' ORDER BY time_id;")
+                      f"WHERE (time_id BETWEEN '{start}' AND '{end}') "
+                      "AND country IN (SELECT * FROM offshore_countries) ORDER BY time_id;")
     data = my_cursor.fetchall()
     for row in data:
         bank_offshore_search.append({
@@ -330,7 +330,7 @@ def bank_data(my_cursor, start, end):
     bank_questions_search = []
     my_cursor.execute("SELECT fio, birth_date, document_number, time_id, amount, merch_name, mcc "
                       f"FROM  Initial_Data_P2P WHERE (time_id BETWEEN '{start}' AND '{end}') "
-                      "AND (mcc='7995' OR mcc='6211') AND NOT country='Cyprus' ORDER BY time_id;")
+                      "AND (mcc='7995' OR mcc='6211') ORDER BY time_id;")
     data = my_cursor.fetchall()
     for row in data:
         bank_questions_search.append({
@@ -459,62 +459,44 @@ def create_file_from_data_func(my_db, table_name):
                                       f"WHERE created_date BETWEEN '{start_date}' AND '{end_date}' "
                                       "AND NOT masked_card_number='nan') "
                                       "X GROUP BY masked_card_number ORDER BY count DESC, amount DESC;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'number_receiver_octo':
         sql_query = pd.read_sql_query("SELECT dest_tool_id, COUNT(*) count, SUM(amount) amount FROM "
                                       "(SELECT DISTINCT dest_tool_id, created_date, amount FROM Initial_Data_OCTO "
                                       f"WHERE created_date BETWEEN '{start_date}' AND '{end_date}' "
                                       "AND NOT dest_tool_id='nan') "
                                       "X GROUP BY dest_tool_id ORDER BY amount DESC, count DESC;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'country_p2p':
         sql_query = pd.read_sql_query("SELECT country, COUNT(*) count, SUM(amount) amount FROM "
                                       "(SELECT DISTINCT country, time_id, amount FROM Initial_Data_P2P "
                                       f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
                                       "AND NOT country='nan') "
                                       "X GROUP BY country ORDER BY count DESC, amount DESC;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'pinfl_receiver':
         sql_query = pd.read_sql_query("SELECT pinfl, COUNT(*) count, SUM(amount) amount FROM "
                                       "(SELECT DISTINCT pinfl, time_id, amount FROM Initial_Data_P2P "
                                       f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
                                       "AND NOT pinfl='nan') "
                                       "X GROUP BY pinfl ORDER BY count DESC, amount DESC;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'trans_gran_to_tt':
         sql_query = pd.read_sql_query("SELECT pos_code, COUNT(*) count FROM "
                                       "(SELECT DISTINCT pos_code, time_id FROM Initial_Data_P2P "
                                       f"WHERE time_id BETWEEN '{start_date}' AND '{end_date}' "
                                       "AND NOT pos_code='nan') "
                                       "X GROUP BY pos_code ORDER BY count DESC;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'offshore':
         sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
                                       "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                                       f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') "
                                       "AND country IN (SELECT * from offshore_countries) ORDER BY time_id;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
     elif table_name == 'questionable_operations':
         sql_query = pd.read_sql_query("SELECT fio, birth_date, citizenship, registration_address, document_number, "
                                       "time_id, amount, currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                                       f"WHERE (time_id BETWEEN '{start_date}' AND '{end_date}') "
                                       "AND (mcc='7995' OR mcc='6211')"
                                       "ORDER BY time_id;", my_db)
-        df = pd.DataFrame(sql_query)
-        df.to_csv(fr'Files/{table_name}.csv', index=False)
-        path = f'Files/{table_name}.csv'
+    df = pd.DataFrame(sql_query)
+    df.to_csv(fr'Files/{table_name}.csv', index=False)
+    path = f'Files/{table_name}.csv'
 
 
 def delete_file(file):
