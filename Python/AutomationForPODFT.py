@@ -263,8 +263,8 @@ def offshore_func(my_cursor, my_db, start, table):
 
     my_cursor.execute("SELECT fio, birth_date, citizenship, registration_address, document_number, time_id, amount, "
                       "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
-                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (country='Cyprus' OR country='Malta') "
-                      "ORDER BY time_id;")
+                      f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') "
+                      f"AND country IN (SELECT * from offshore_countries) ORDER BY time_id;")
     data = my_cursor.fetchall()
 
     for row in data:
@@ -364,13 +364,13 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('OCTO 27.09-03.10.22.csv', sep=',')
-    FullDataP2P = pd.read_csv('p2p 27.09-03.10.22.csv', sep=',')
+    FullDataOCTO = pd.read_csv('OCTO 04.10.22.csv', sep=',')
+    FullDataP2P = pd.read_csv('p2p 04.10.22.csv', sep=',')
 
     cursor, db = db_connection_func()
 
-    # octo_to_db_func(cursor, db)
-    # p2p_to_db_func(cursor, db)
+    octo_to_db_func(cursor, db)
+    p2p_to_db_func(cursor, db)
     mrot_func(cursor, db, var.yesterday, 'day')
     offshore_func(cursor, db, var.yesterday, 'day')
     questionable_operations_func(cursor, db, var.yesterday, 'day')

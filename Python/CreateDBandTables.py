@@ -2,20 +2,6 @@ import mysql.connector
 import variables as var
 
 
-def db_connection():
-
-    my_db = mysql.connector.connect(
-        host="localhost",
-        user=f"{var.username_db}",
-        password=f"{var.password_db}",
-        database="PodFT"
-    )
-
-    my_cursor = my_db.cursor()
-
-    return my_cursor, my_db
-
-
 def db_connection_func():
 
     my_db = mysql.connector.connect(
@@ -123,8 +109,19 @@ def create_questionable_operations(my_cursor, t):
     my_cursor.execute(sql)
 
 
+def create_secondary_tables(my_db, my_cursor):
+    sql = "CREATE TABLE offshore_countries (country VARCHAR(255));"
+    my_cursor.execute(sql)
+
+    data = open('../Files/Tables/Offshore_countries.txt')
+
+    for row in data:
+        sql = f"INSERT INTO offshore_countries (country) VALUES ('{row}')"
+        my_cursor.execute(sql)
+        my_db.commit()
+
+
 cursor, db = db_connection_func()
-# cursor, db = db_connection()
 
 create_octo_table_func(cursor)
 create_p2p_table_func(cursor)
@@ -135,18 +132,19 @@ create_pinfl_receiver(cursor, 'week')
 create_pinfl_receiver(cursor, 'month')
 create_country_p2p(cursor, 'week')
 create_country_p2p(cursor, 'month')
+
 create_number_receiver_octo(cursor, 'week')
 create_number_receiver_octo(cursor, 'month')
 create_card_sender_octo(cursor, 'week')
 create_card_sender_octo(cursor, 'month')
+
 create_mrot(cursor, 'day')
 create_mrot(cursor, 'week')
 create_mrot(cursor, 'month')
 
 create_offshore(cursor, 'day')
-
 create_questionable_operations(cursor, 'day')
-
 create_brv(cursor, 'day')
 create_brv(cursor, 'month')
 
+create_secondary_tables(db, cursor)
