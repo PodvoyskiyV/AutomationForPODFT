@@ -548,6 +548,7 @@ input[type="date"] {
 
 .charts-wrap {
     display: flex;
+    justify-content: center;
 }
 
 #chartFirst,
