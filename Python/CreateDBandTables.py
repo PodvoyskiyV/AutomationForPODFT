@@ -11,10 +11,7 @@ def db_connection_func():
     )
 
     my_cursor = my_db.cursor()
-    try:
-        my_cursor.execute("CREATE DATABASE PodFT;")
-    except mysql.connector.errors.DatabaseError:
-        pass
+    my_cursor.execute("CREATE DATABASE PodFT;")
     my_cursor.close()
 
     my_db = mysql.connector.connect(
@@ -116,7 +113,7 @@ def create_secondary_tables(my_db, my_cursor):
     sql = "CREATE TABLE offshore_countries (country VARCHAR(255));"
     my_cursor.execute(sql)
 
-    data = open('AutomationForPODFT/Files/Tables/Offshore_countries.txt')
+    data = open('~/AutomationForPODFT/Files/Tables/Offshore_countries.txt')
 
     for row in data:
         sql = f"INSERT INTO offshore_countries (country) VALUES ('{row}')"

@@ -63,6 +63,8 @@ def mrot_data(my_cursor):
             'amount': row[2],
             'abs': row[3]})
 
+    my_cursor.close()
+
     return mrot_month, mrot_week, mrot_day
 
 
@@ -126,6 +128,8 @@ def octo_data(my_cursor, start, end):
             'id': row[0],
             'count': row[1],
             'amount': row[2]})
+
+    my_cursor.close()
 
     return octo_sender_week, octo_sender_month, octo_sender_search, octo_receiver_week, octo_receiver_month, \
         octo_receiver_search
@@ -283,6 +287,8 @@ def p2p_data(my_cursor, start, end):
             'id': float(row[0]),
             'count': row[1]})
 
+    my_cursor.close()
+
     return p2p_country_week, p2p_country_month, p2p_country_search, p2p_pinfl_week, p2p_pinfl_month, p2p_pinfl_search, \
         p2p_tt_week, p2p_tt_month, p2p_tt_search, p2p_data_for_charts_month
 
@@ -365,6 +371,8 @@ def bank_data(my_cursor, start, end):
             'amount': row[5],
             'block': row[6],
             'observation': row[7]})
+
+    my_cursor.close()
 
     return bank_offshore_day, bank_offshore_search, bank_questions_day, bank_questions_search, bank_brv_month, \
         bank_brv_day

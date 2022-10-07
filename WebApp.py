@@ -1,6 +1,7 @@
 import json
 from Python import BackOfWebApp as Back
 from flask import Flask, render_template, redirect, url_for, request, send_file  # pip install flask
+from waitress import serve  # pip install waitress
 
 app = Flask(__name__)
 
@@ -131,4 +132,5 @@ def download():
     return send_file(Back.path, as_attachment=True)
 
 
+# serve(app, host="0.0.0.0", port=80)
 app.run(host="0.0.0.0", port=80)

@@ -277,7 +277,7 @@ def offshore_func(my_cursor, my_db, start, table):
         my_db.commit()
 
     end_offshore_func = datetime.datetime.now()
-    print(f'country_p2p_func ended in {end_offshore_func - start_offshore_func}')
+    print(f'offshore_func ended in {end_offshore_func - start_offshore_func}')
 
 
 def questionable_operations_func(my_cursor, my_db, start, table):
@@ -364,8 +364,8 @@ try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('AutomationForPODFT/Python/OCTO.csv', sep=',')
-    FullDataP2P = pd.read_csv('AutomationForPODFT/Python/p2p.csv', sep=',')
+    FullDataOCTO = pd.read_csv('~/AutomationForPODFT/Python/OCTO 06.10.22.csv', sep=',')
+    FullDataP2P = pd.read_csv('~/AutomationForPODFT/Python/p2p 06.10.22.csv', sep=',')
 
     cursor, db = db_connection_func()
 
