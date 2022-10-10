@@ -90,7 +90,7 @@ def octo_data(my_cursor, start, end):
     octo_sender_search = []
     my_cursor.execute("SELECT masked_card_number, COUNT(*) count, SUM(amount) amount FROM "
                       "(SELECT DISTINCT masked_card_number, created_date, amount FROM Initial_Data_OCTO "
-                      f"WHERE created_date BETWEEN '{start}' AND '{end}') "
+                      f"WHERE (created_date BETWEEN '{start}' AND '{end}') AND NOT masked_card_number='nan') "
                       "X GROUP BY masked_card_number ORDER BY count DESC, amount DESC LIMIT 100;")
     data = my_cursor.fetchall()
     for row in data:
