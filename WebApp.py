@@ -1,7 +1,7 @@
 import json
 from Python import BackOfWebApp as Back
 from flask import Flask, render_template, redirect, url_for, request, send_file  # pip install flask
-from waitress import serve  # pip install waitress
+# from waitress import serve  # pip install waitress
 
 app = Flask(__name__)
 
@@ -22,6 +22,12 @@ def login():
     return render_template("login.html")
 
 
+@app.route("/dates")
+def dates():
+    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
+    return "OK"
+
+
 @app.route("/index")
 def index():
     Back.reconnect_to_db()
@@ -33,12 +39,6 @@ def mrot():
     Back.reconnect_to_db()
     month, week, day = Back.mrot_data(Back.cursor)
     return render_template("mrot.html", month=json.dumps(month), week=json.dumps(week), day=json.dumps(day))
-
-
-@app.route("/dates_octo")
-def dates_octo():
-    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
-    return "OK"
 
 
 @app.route("/octo")
@@ -59,12 +59,6 @@ def octo():
                            sender_search=json.dumps(sender_search), receiver_week=json.dumps(receiver_week),
                            receiver_month=json.dumps(receiver_month), receiver_search=json.dumps(receiver_search),
                            tab=json.dumps(tab_octo))
-
-
-@app.route("/dates_p2p")
-def dates_p2p():
-    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
-    return "OK"
 
 
 @app.route("/p2p")
@@ -89,12 +83,6 @@ def p2p():
                            pinfl_month=json.dumps(pinfl_month), pinfl_search=json.dumps(pinfl_search),
                            tt_week=json.dumps(tt_week), tt_month=json.dumps(tt_month),
                            tt_search=json.dumps(tt_search), tab=json.dumps(tab_p2p))
-
-
-@app.route("/dates_bank")
-def dates_bank():
-    Back.flags_change_func(request.args["start_date"], request.args["end_date"], request.args["flag"])
-    return "OK"
 
 
 @app.route("/bank")
