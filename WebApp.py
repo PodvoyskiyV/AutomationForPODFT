@@ -47,12 +47,7 @@ def octo():
     sender_week, sender_month, sender_search, receiver_week, receiver_month, receiver_search = \
         Back.octo_data(Back.cursor, Back.start_date, Back.end_date)
 
-    if Back.flag_octo == 'sender':
-        tab_octo = 'sender'
-    elif Back.flag_octo == 'receiver':
-        tab_octo = 'receiver'
-    else:
-        tab_octo = ''
+    tab_octo = Back.flag_octo
     Back.flag_octo = ''
 
     return render_template("octo.html", sender_week=json.dumps(sender_week), sender_month=json.dumps(sender_month),
@@ -67,14 +62,7 @@ def p2p():
     country_week, country_month, country_search, pinfl_week, pinfl_month, pinfl_search, tt_week, tt_month, tt_search, \
         p2p_data_for_charts_month = Back.p2p_data(Back.cursor, Back.start_date, Back.end_date)
 
-    if Back.flag_p2p == 'country':
-        tab_p2p = 'country'
-    elif Back.flag_p2p == 'pinfl':
-        tab_p2p = 'pinfl'
-    elif Back.flag_p2p == 'tt':
-        tab_p2p = 'tt'
-    else:
-        tab_p2p = ''
+    tab_p2p = Back.flag_p2p
     Back.flag_p2p = ''
 
     return render_template("p2p.html", p2p_data_for_charts_month=json.dumps(p2p_data_for_charts_month),
@@ -91,16 +79,8 @@ def bank():
     offshore_day, offshore_search, questions_day, questions_search, brv_month, brv_day = \
         Back.bank_data(Back.cursor, Back.start_date, Back.end_date)
 
-    if Back.flag_bank == 'offshore':
-        tab_bank = 'offshore'
-    elif Back.flag_bank == 'questions':
-        tab_bank = 'questions'
-    elif Back.flag_bank == 'brv':
-        tab_bank = 'brv'
-    else:
-        tab_bank = ''
+    tab_bank = Back.flag_bank
     Back.flag_bank = ''
-    print(tab_bank)
 
     return render_template("bank.html", offshore_day=json.dumps(offshore_day),
                            offshore_search=json.dumps(offshore_search), questions_day=json.dumps(questions_day),
