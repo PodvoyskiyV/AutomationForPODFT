@@ -8,12 +8,18 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.errorhandler(500)
 def page_not_found(error):
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
+
+
+@app.route("/login")
+def login():
+    Back.reconnect_to_db()
+    return render_template("login.html")
 
 
 @app.route("/index")

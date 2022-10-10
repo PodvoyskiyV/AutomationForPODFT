@@ -607,3 +607,121 @@ input[type="date"] {
     font-size: 12px;
     text-align: center;
 }
+
+/* LOGIN */
+
+.login-form {
+    height: 100vh;
+    background: var(--main-color-1);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form_wrap {
+    width: 800px;
+    height: 600px;
+    background: var(--main-color-2);
+    border-radius: 24px;
+}
+
+.login-form-img {
+    float: right;
+    width: 50%;
+    height: 100%;
+    border-radius: 0 24px 24px 0;
+    background: url(../img/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+}
+
+.form-img-wrap {
+    background-color: var(--main-color-1);
+    width: 220px;
+    height: 161px;
+    margin: auto;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(21px);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.login-form-info {
+    float: left;
+    width: 50%;
+}
+
+.form-signin {
+    margin: 50px auto;
+}
+
+.btn-login {
+    padding: 15px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    color: var(--main-color-2);
+    font-family: var(--main-font);
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    cursor: pointer;
+    box-shadow: 0px 8px 24px -2px rgba(11, 47, 138, 0.6);
+}
+
+.login-form-title {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 48px;
+    color: var(--main-color-4);
+    font-family: var(--main-font);
+    text-align: center;
+    margin: 100px auto 50px;
+}
+
+.login {
+    padding: 0 50px;
+}
+
+.login_field {
+    padding: 20px 0px;
+    position: relative;
+}
+
+.login_icon {
+    position: absolute;
+    top: 30px;
+    height: 15px;
+}
+
+.login_input {
+    border: none;
+    border-bottom: 2px solid var(--main-color-5);
+    font-family: var(--main-font);
+    background: none;
+    padding: 10px;
+    padding-left: 24px;
+    font-weight: 700;
+    width: 80%;
+    transition: .2s;
+}
+
+.login_input:active,
+.login_input:focus,
+.login_input:hover {
+    outline: none;
+    border-bottom-color: var(--main-color-4);
+}
