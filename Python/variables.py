@@ -7,9 +7,11 @@ load_dotenv()
 username_db = os.environ["$MYSQL_USER"]
 password_db = os.environ["$MYSQL_PASSWORD"]
 
-# hostname_sftp = os.environ["$SFTP"]
-# username_sftp = os.environ["$SFTP_USER"]
-# password_sftp = os.environ["$SFTP_PASSWORD"]
+hostname_sftp = os.environ["$SFTP"]
+username_sftp = os.environ["$SFTP_USER"]
+password_sftp = os.environ["$SFTP_PASSWORD"]
+key_sftp = os.environ["SFTP_KEY_PASS"]
+
 
 mrot = 920000
 mrot_150 = mrot * 150

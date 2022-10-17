@@ -30,9 +30,19 @@ def db_connection_func():
 
 
 def sftp_connection_func():
-    with pysftp.Connection(host=var.hostname_sftp, username=var.username_sftp, password=var.password_sftp) as sftp:
-        sftp.get("remoteOCTOFilePath", "localOCTOFilePath")
-        sftp.get("remoteP2PFilePath", "localP2PFilePath")
+    with pysftp.Connection(host=var.hostname_sftp, username=var.username_sftp, private_key=var.key_sftp,
+                           private_key_pass=var.password_sftp) as sftp:
+        print("Connection successfully established ... ")
+        local_put_file_path = '/Users/vadimpodvoyskiy/Documents/OCTO 12.10.22.csv'
+        local_get_file_path = '/Users/vadimpodvoyskiy/Downloads/OCTO 12.10.22.csv'
+        remote_file_path = '/PodFT/OCTO 12.10.22.csv'
+        # sftp.put(local_file_path, remote_file_path)
+        # sftp.get(remote_file_path, local_get_file_path)
+        # sftp.remove(remote_file_path)
+        sftp.cwd('/PodFT/')
+        directory_structure = sftp.listdir_attr()
+        for attr in directory_structure:
+            print(attr.filename, attr)
 
 
 def octo_to_db_func(my_cursor, my_db):
