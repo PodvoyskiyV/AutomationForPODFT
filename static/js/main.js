@@ -47,6 +47,7 @@ function openTab(evt, tabName) {
     $.get("/download_tab", { "flag": flag });
 }
 
+// Block with default Tabs
 if (document.getElementById("Mrot_defaultOpen")) {
     document.getElementById("Mrot_defaultOpen").click();
 } else if (document.getElementById("OCTO_defaultOpen")) {

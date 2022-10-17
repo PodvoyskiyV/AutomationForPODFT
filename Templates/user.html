@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humans</title>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/infosec.svg') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo-details">
+            <img class="logo-img" src="{{ url_for('static', filename='img/infosec.svg') }}" alt="logoSec">
+        </div>
+        <div class="separator"></div>
+
+        <ul class="nav-links">
+            <li class="categories-item dropdown-active">
+                <a href="{{ url_for('user') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/user.svg') }}" alt="users icon">
+                    <span class="link_name">Users</span>
+                </a>
+            </li>
+            <li class="categories-item">
+                <a href="{{ url_for('index') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/dashboard.svg') }}" alt="dashboards icon">
+                    <span class="link_name">Dashboards</span>
+                </a>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('mrot') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/mrot.svg') }}" alt="mrot icon">
+                        <span class="link_name">Mrot</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('octo') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/octo.svg') }}" alt="OCTO icon">
+                        <span class="link_name">OCTO</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('p2p') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/p2p.svg') }}" alt="P2P icon">
+                        <span class="link_name">P2P</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+            </li>
+            <li class="categories-item">
+                <div class="iocn-link">
+                    <a href="{{ url_for('bank') }}" class="dropdown-btn">
+                        <img src="{{ url_for('static', filename='img/bank.svg') }}" alt="Bank icon">
+                        <span class="link_name">Bank</span>
+                    </a>
+                    <img src="{{ url_for('static', filename='img/Dropdown.svg') }}" class="arrow" alt="Dropdown">
+                </div>
+            </li>
+        </ul>
+    </aside>
+
+    <section class="home-section">
+        <div class="home-content">
+            <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
+            <div class="wrap">
+                <div class="logos">
+                    <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logoHumans">
+                </div>
+                <div class="nav-info">
+                    <div class="nav-profile">
+                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                        <p class="nav-profile-name">Austin Robertson</p>
+                    </div>
+
+                    <div class="logout">
+                        <a href="login.html">
+                            <img src="{{ url_for('static', filename='img/logout.svg') }}" alt="logout">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="main-text">
+                <h2 class="main-title">Welcome to DS</h2>
+                <p class="main-desk">We are on a mission to help developers.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="tabcontent">
+                <div class="tab-name">
+                    <h3 class="content-title user-content-title">Users access</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table class="users">
+                        <thead>
+                            <tr>
+                                <th>USERS</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="app-user">
+                                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                                        <span>Louis Vuitton</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="can-toggle demo-switch">
+                                        <input id="u_1" type="checkbox">
+                                        <label for="u_1">
+                                            <div class="can-toggle__switch" data-checked="Active"
+                                                data-unchecked="Block">
+                                            </div>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="app-user">
+                                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                                        <span>Arlene Wilson</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="can-toggle demo-switch">
+                                        <input id="u_2" type="checkbox" checked>
+                                        <label for="u_2">
+                                            <div class="can-toggle__switch" data-checked="Active"
+                                                data-unchecked="Block">
+                                            </div>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="app-user">
+                                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                                        <span>Shopifi Stores</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="can-toggle demo-switch">
+                                        <input id="u_3" type="checkbox" checked>
+                                        <label for="u_3">
+                                            <div class="can-toggle__switch" data-checked="Active"
+                                                data-unchecked="Block">
+                                            </div>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="app-user">
+                                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                                        <span>Philip Steward</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="can-toggle demo-switch">
+                                        <input id="u_4" type="checkbox">
+                                        <label for="u_4">
+                                            <div class="can-toggle__switch" data-checked="Active"
+                                                data-unchecked="Block">
+                                            </div>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="app-user">
+                                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                                        <span>Evan Flores</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="can-toggle demo-switch">
+                                        <input id="u_5" type="checkbox" checked>
+                                        <label for="u_5">
+                                            <div class="can-toggle__switch" data-checked="Active"
+                                                data-unchecked="Block">
+                                            </div>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-info">© <span class="copyright_Date"></span> Zhidko Ulyana</div>
+        </footer>
+    </section>
+
+    <!-- <script src="{{ url_for('static', filename='main.js') }}"></script> -->
+</body>
+
+</html>

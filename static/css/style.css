@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 :root {
     --main-font: 'Inter', sans-serif;
     --main-color-1: #151824;
@@ -49,7 +51,6 @@
 }
 
 .logos {
-    width: 30%;
     display: flex;
     margin: 0 auto;
     justify-content: center;
@@ -303,6 +304,42 @@
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
+}
+
+.wrap {
+    width: 47%;
+    transform: translate(100%, 0%);
+    -webkit-transform: translate(100%, 0%);
+    -moz-transform: translate(100%, 0%);
+    -ms-transform: translate(100%, 0%);
+    -o-transform: translate(100%, 0%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* --------------------------------------------------------- user --------------------------------------------------------- */
+
+.nav-info {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 100px;
+}
+
+.nav-profile-name {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--main-color-2);
+    margin-left: 10px;
 }
 
 
@@ -608,7 +645,13 @@ input[type="date"] {
     text-align: center;
 }
 
-/* LOGIN */
+.login-footer {
+    margin-top: 0;
+}
+
+
+
+/* -------------------------------------------- LOGIN PAGE-------------------------------------------- */
 
 .login-form {
     height: 100vh;
@@ -617,6 +660,12 @@ input[type="date"] {
     align-content: center;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.login-logo-wrap img {
+    margin: 0 20px 50px;
 }
 
 .login-form_wrap {
@@ -635,26 +684,6 @@ input[type="date"] {
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
-}
-
-.form-img-wrap {
-    background-color: var(--main-color-1);
-    width: 220px;
-    height: 161px;
-    margin: auto;
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
-    backdrop-filter: blur(21px);
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-evenly;
 }
 
 .login-form-info {
@@ -717,6 +746,10 @@ input[type="date"] {
     font-weight: 700;
     width: 80%;
     transition: .2s;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    -ms-transition: .2s;
+    -o-transition: .2s;
 }
 
 .login_input:active,
@@ -724,4 +757,207 @@ input[type="date"] {
 .login_input:hover {
     outline: none;
     border-bottom-color: var(--main-color-4);
+}
+
+
+/* ----LOGIN_tab---- */
+
+.center {
+    min-height: 460px;
+    z-index: 9999;
+}
+
+.tab {
+    width: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tablinks {
+    margin: 10px;
+}
+
+.tab button {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #020f2e37;
+    color: var(--main-color-1);
+    font-family: var(--main-font);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    width: 50%;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+
+.tab button.active {
+    background: var(--main-color-6);
+    z-index: 1;
+    font-family: var(--main-font);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--main-color-2);
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+
+
+/* -------------------------------------------- USER PAGE-------------------------------------------- */
+
+.user-content-title {
+    width: 230px;
+}
+
+.app-user {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-left: 38%;
+}
+
+.app-user img {
+    margin-right: 10px;
+}
+
+.can-toggle {
+    position: relative;
+}
+
+.can-toggle *,
+.can-toggle *:before,
+.can-toggle *:after {
+    box-sizing: border-box;
+}
+
+.can-toggle input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.can-toggle input[type="checkbox"]:checked~label .can-toggle__switch:before {
+    content: attr(data-unchecked);
+    left: 0;
+}
+
+.can-toggle input[type="checkbox"]:checked~label .can-toggle__switch:after {
+    content: attr(data-checked);
+}
+
+.can-toggle label {
+    user-select: none;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.can-toggle label .can-toggle__switch {
+    position: relative;
+}
+
+.can-toggle label .can-toggle__switch:before {
+    content: attr(data-checked);
+    position: absolute;
+    top: 0;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+}
+
+.can-toggle label .can-toggle__switch:after {
+    content: attr(data-unchecked);
+    position: absolute;
+    z-index: 5;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--main-color-2);
+    cursor: pointer;
+}
+
+.can-toggle input[type="checkbox"]:checked~label .can-toggle__switch:after {
+    transform: translate3d(65px, 0, 0);
+    -webkit-transform: translate3d(65px, 0, 0);
+    -moz-transform: translate3d(65px, 0, 0);
+    -ms-transform: translate3d(65px, 0, 0);
+    -o-transform: translate3d(65px, 0, 0);
+}
+
+.can-toggle label .can-toggle__switch {
+    height: 36px;
+    flex: 0 0 134px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+
+.can-toggle label .can-toggle__switch:before {
+    left: 67px;
+    font-size: 12px;
+    line-height: 36px;
+    width: 67px;
+    padding: 0 12px;
+}
+
+.can-toggle label .can-toggle__switch:after {
+    top: 2px;
+    left: 2px;
+    width: 65px;
+    line-height: 32px;
+    font-size: 12px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+
+.can-toggle.demo-switch input[type="checkbox"]:checked~label .can-toggle__switch {
+    background-color: #1AA053;
+}
+
+.can-toggle.demo-switch input[type="checkbox"]:checked~label .can-toggle__switch:after {
+    color: #1AA053;
+}
+
+.can-toggle.demo-switch label .can-toggle__switch {
+    transition: background-color 0.3s ease-in-out;
+    -webkit-transition: background-color 0.3s ease-in-out;
+    -moz-transition: background-color 0.3s ease-in-out;
+    -ms-transition: background-color 0.3s ease-in-out;
+    -o-transition: background-color 0.3s ease-in-out;
+    background: #DB303F;
+}
+
+.can-toggle.demo-switch label .can-toggle__switch:before {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.can-toggle.demo-switch label .can-toggle__switch:after {
+    -webkit-transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: transform 0.3s ease-in-out;
+    -moz-transition: transform 0.3s ease-in-out;
+    -ms-transition: transform 0.3s ease-in-out;
+    -o-transition: transform 0.3s ease-in-out;
+    color: #DB303F;
 }

@@ -24,6 +24,12 @@
         <div class="separator"></div>
 
         <ul class="nav-links">
+            <li class="categories-item">
+                <a href="{{ url_for('user') }}" class="dropdown-btn">
+                    <img src="{{ url_for('static', filename='img/user.svg') }}" alt="users icon">
+                    <span class="link_name">Users</span>
+                </a>
+            </li>
             <li class="categories-item dropdown-active">
                 <a href="{{ url_for('index') }}" class="dropdown-btn">
                     <img src="{{ url_for('static', filename='img/dashboard.svg') }}" alt="dashboards icon">
@@ -72,8 +78,22 @@
     <section class="home-section">
         <div class="home-content">
             <img class="close-menu" src="{{ url_for('static', filename='img/Drag.svg') }}" alt="open menu">
-            <div class="logos">
-                <img class="logo-img" src="{{ url_for('static', filename='img/LOGO.svg') }}" alt="logoHumans">
+            <div class="wrap">
+                <div class="logos">
+                    <img class="logo-img" src="{{ url_for('static', filename='img/logo.svg') }}" alt="logoHumans">
+                </div>
+                <div class="nav-info">
+                    <div class="nav-profile">
+                        <img src="{{ url_for('static', filename='img/user-img.svg') }}" alt="profile-img">
+                        <p class="nav-profile-name">Austin Robertson</p>
+                    </div>
+
+                    <div class="logout">
+                        <a href="login.html">
+                            <img src="{{ url_for('static', filename='img/logout.svg') }}" alt="logout">
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main">

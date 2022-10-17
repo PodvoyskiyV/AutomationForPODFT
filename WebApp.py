@@ -28,6 +28,12 @@ def dates():
     return "OK"
 
 
+@app.route("/user")
+def user():
+    Back.reconnect_to_db()
+    return render_template("user.html")
+
+
 @app.route("/index")
 def index():
     Back.reconnect_to_db()
