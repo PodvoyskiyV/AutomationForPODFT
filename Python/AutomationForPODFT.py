@@ -29,20 +29,23 @@ def db_connection_func():
     return my_cursor, my_db
 
 
-def sftp_connection_func():
+def sftp_connection_func(octo, p2p, octo_f, p2p_f):
+    start_sftp_connection_func = datetime.datetime.now()
+
     with pysftp.Connection(host=var.hostname_sftp, username=var.username_sftp, private_key=var.key_sftp,
                            private_key_pass=var.password_sftp) as sftp:
-        print("Connection successfully established ... ")
-        local_put_file_path = '/Users/vadimpodvoyskiy/Documents/OCTO 12.10.22.csv'
-        local_get_file_path = '/Users/vadimpodvoyskiy/Downloads/OCTO 12.10.22.csv'
-        remote_file_path = '/PodFT/OCTO 12.10.22.csv'
-        # sftp.put(local_file_path, remote_file_path)
-        # sftp.get(remote_file_path, local_get_file_path)
-        # sftp.remove(remote_file_path)
-        sftp.cwd('/PodFT/')
-        directory_structure = sftp.listdir_attr()
-        for attr in directory_structure:
-            print(attr.filename, attr)
+        local_get_octo_file_path = octo
+        remote_octo_file_path = f'/PodFT/{octo_f}'
+        sftp.get(remote_octo_file_path, local_get_octo_file_path)
+        sftp.remove(remote_octo_file_path)
+
+        local_get_octo_file_path = p2p
+        remote_p2p_file_path = f'/PodFT/{p2p_f}'
+        sftp.get(remote_p2p_file_path, local_get_octo_file_path)
+        sftp.remove(remote_p2p_file_path)
+
+    end_sftp_connection_func = datetime.datetime.now()
+    print(f'sftp_connection_func ended in {end_sftp_connection_func - start_sftp_connection_func}')
 
 
 def octo_to_db_func(my_cursor, my_db):
@@ -52,8 +55,8 @@ def octo_to_db_func(my_cursor, my_db):
         sql = "INSERT INTO Initial_Data_OCTO (octo_trxn_id, created_date, masked_card_number, amount, currency, " \
               "transaction_status, provider_id, dest_tool_id, customer_id, type_description, schema_id, " \
               "bill_account_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (f"{FullDataOCTO.iloc[i].octo_trxn_id}", f"{FullDataOCTO.iloc[i].created_date[:-6]}",
-               f"{FullDataOCTO.iloc[i].masked_card_number}", f"{FullDataOCTO.iloc[i].amount}",
+        val = (f"{FullDataOCTO.iloc[i].octo_trxn_id}", f"{FullDataOCTO.iloc[i].created_date}",
+               f"{FullDataOCTO.iloc[i].masked_card_number}", f"{str(FullDataOCTO.iloc[i].amount).replace(',', '.')}",
                f"{FullDataOCTO.iloc[i].currency}", f"{FullDataOCTO.iloc[i].transaction_status}",
                f"{FullDataOCTO.iloc[i].provider_id}", f"{FullDataOCTO.iloc[i].dest_tool_id}",
                f"{FullDataOCTO.iloc[i].customer_id}", f"{FullDataOCTO.iloc[i].type_description}",
@@ -76,7 +79,7 @@ def p2p_to_db_func(my_cursor, my_db):
               "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (f"{FullDataP2P.iloc[i].time_id}", f"{FullDataP2P.iloc[i].customer_id}",
                f"{FullDataP2P.iloc[i].user_id}", f"{FullDataP2P.iloc[i].operation_type}",
-               f"{FullDataP2P.iloc[i].amount}", f"{FullDataP2P.iloc[i].currency_code}",
+               f"{str(FullDataP2P.iloc[i].amount).replace(',', '.')}", f"{FullDataP2P.iloc[i].currency_code}",
                f"{FullDataP2P.iloc[i].currency}", f"{FullDataP2P.iloc[i].currency_name}",
                f"{FullDataP2P.iloc[i].acq_country_code}", f"{FullDataP2P.iloc[i].acq_mcc}",
                f"{FullDataP2P.iloc[i].acq_merch_name}", f"{FullDataP2P.iloc[i].country}",
@@ -300,7 +303,7 @@ def questionable_operations_func(my_cursor, my_db, start, table):
                       "currency, country, merch_name, mcc FROM  Initial_Data_P2P "
                       f"WHERE (time_id BETWEEN '{start}' AND '{var.today}') AND (mcc='7995' OR mcc='6211') "
                       # "AND NOT country='Cyprus'"
-                      "ORDER BY time_id;")  # AND NOT country='nan'
+                      "ORDER BY time_id;")
     data = my_cursor.fetchall()
 
     for row in data:
@@ -313,7 +316,8 @@ def questionable_operations_func(my_cursor, my_db, start, table):
         my_db.commit()
 
     end_questionable_operations_func = datetime.datetime.now()
-    print(f'questionable_operations_func ended in {end_questionable_operations_func - start_questionable_operations_func}')
+    print(f'questionable_operations_func ended in '
+          f'{end_questionable_operations_func - start_questionable_operations_func}')
 
 
 def brv_func(my_cursor, my_db, start, table):
@@ -365,17 +369,25 @@ def brv_func(my_cursor, my_db, start, table):
     print(f'brv_func ended in {end_brv_func - start_brv_func}')
 
 
-def delete_files_func():
-    os.remove(f"{FullDataOCTO}")
-    os.remove(f"{FullDataP2P}")
+def delete_files_func(octo, p2p):
+    os.remove(octo)
+    os.remove(p2p)
 
 
 try:
     start_program = datetime.datetime.now()
     print(f'Program started at: {start_program} \n')
 
-    FullDataOCTO = pd.read_csv('~/AutomationForPODFT/Python/OCTO 14-16.10.22.2.csv', sep=',')
-    FullDataP2P = pd.read_csv('~/AutomationForPODFT/Python/p2p 14-16.10.22.2.csv', sep=',')
+    octo_file = f'OCTO_{var.yesterday}.csv'
+    p2p_file = f'P2P_{var.yesterday}.csv'
+
+    octo_file_address = f'/Users/vadimpodvoyskiy/AutomationForPODFT/Files/{octo_file}'
+    p2p_file_address = f'/Users/vadimpodvoyskiy/AutomationForPODFT/Files/{p2p_file}'
+
+    sftp_connection_func(octo_file_address, p2p_file_address, octo_file, p2p_file)
+
+    FullDataOCTO = pd.read_csv(octo_file_address, sep=',')
+    FullDataP2P = pd.read_csv(p2p_file_address, sep=',')
 
     cursor, db = db_connection_func()
 
@@ -401,6 +413,8 @@ try:
         number_receiver_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         card_sender_octo_func(cursor, db, f"{var.previous_month}-01", 'month')
         mrot_func(cursor, db, f"{var.previous_month}-01", 'month')
+
+    delete_files_func(octo_file_address, p2p_file_address)
 
     end_program = datetime.datetime.now()
     print(f'\nProgram ended in {end_program - start_program}')
